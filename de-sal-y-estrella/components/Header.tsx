@@ -5,6 +5,8 @@ export default function Header() {
     { href: '/', label: 'Inicio' },
     { href: '/refugios', label: 'Refugios' },
     { href: '/historia', label: 'Nuestra Historia' }, // <-- Enlace añadido
+    { href: '/contacto', label: 'Contacto' }, // <-- Enlace añadido
+    { href: '/experiencias', label: 'Experiencias' }, // <-- Enlace añadido
     // Próximamente añadiremos más enlaces aquí
     // { href: '/experiencias', label: 'Experiencias' },
   ]
