@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Añadimos esta sección para configurar los dominios de imágenes permitidos.
   images: {
     remotePatterns: [
       {
@@ -8,9 +7,15 @@ const nextConfig = {
         hostname: 'cdn.sanity.io',
         port: '',
       },
+      // --- LÍNEA AÑADIDA ---
+      // Añadimos el dominio para las imágenes de placeholder
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+        port: '',
+      },
     ],
   },
 }
 
 export default nextConfig
-
