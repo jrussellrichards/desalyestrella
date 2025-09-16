@@ -4,6 +4,7 @@ import { Property } from '@/types'
 import Image from 'next/image'
 import { urlFor } from '@/lib/image'
 import { PortableText } from '@portabletext/react'
+import BookingWidget from '@/components/BookingWidget'
 
 const query = groq`*[_type == "property" && slug.current == $slug][0]{
   _id,
@@ -14,7 +15,8 @@ const query = groq`*[_type == "property" && slug.current == $slug][0]{
   gallery,
   description,
   capacity,
-  amenities
+  amenities,
+  bookingWidgetCode
 }`
 
 export async function generateStaticParams() {
@@ -31,8 +33,10 @@ export default async function PropertyPage({
 }: {
   params: { slug: string }
 }) {
-  const { slug } = params
-  const property: Property = await client.fetch(query, { slug })
+  // --- CORRECCIÓN ---
+  // Volvemos a pasar el slug de forma explícita.
+  // Esto soluciona el error de GROQ.
+  const property: Property = await client.fetch(query, { slug: params.slug })
 
   if (!property) {
     return <div>Propiedad no encontrada</div>
@@ -43,26 +47,23 @@ export default async function PropertyPage({
   return (
     <div className="bg-white dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        {/* Galería de Imágenes */}
         <div className="mb-12">
           {hasImages ? (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {property.gallery.filter((image): image is NonNullable<typeof image> => image !== null).map((image) => {
-                const imageUrl = urlFor(image)?.url()
-                if (!imageUrl) return null
-                return (
-                  <div
-                    key={(image as any)._key}
-                    className="relative aspect-video overflow-hidden rounded-lg shadow-md"
-                  >
-                    <Image
-                      src={imageUrl}
-                      alt={`Imagen de ${property.name}`}
-                      fill
-                      className="object-cover transition-transform duration-300 hover:scale-105"
-                    />
-                  </div>
-                )
-              })}
+              {property.gallery.map((image) => (
+                <div
+                  key={(image as any)._key}
+                  className="relative aspect-video overflow-hidden rounded-lg shadow-md"
+                >
+                  <Image
+                    src={urlFor(image).url()}
+                    alt={`Imagen de ${property.name}`}
+                    fill
+                    className="object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+              ))}
             </div>
           ) : (
             <div className="flex aspect-video items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
@@ -71,7 +72,9 @@ export default async function PropertyPage({
           )}
         </div>
 
+        {/* Contenido Principal */}
         <div className="lg:grid lg:grid-cols-3 lg:gap-x-12">
+          {/* Columna de Descripción */}
           <div className="lg:col-span-2">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
               {property.name}
@@ -79,13 +82,24 @@ export default async function PropertyPage({
             <p className="mt-2 text-xl text-gray-600 dark:text-gray-300">
               {property.location}
             </p>
-
             <div className="mt-8 prose prose-lg max-w-none text-gray-700 dark:prose-invert dark:text-gray-300">
               <PortableText value={property.description} />
             </div>
           </div>
 
-          <div className="mt-12 lg:mt-0">
+          {/* Sidebar */}
+          <div className="mt-12 space-y-8 lg:mt-0">
+            {/* Sección de Reservas */}
+            <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+              <h2 className="text-lg font-medium text-gray-900 dark:text-white">
+                Reservar Ahora
+              </h2>
+              <div className="mt-4">
+                <BookingWidget htmlCode={property.bookingWidgetCode || ''} />
+              </div>
+            </div>
+
+            {/* Sección de Servicios */}
             <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
               <h2 className="text-lg font-medium text-gray-900 dark:text-white">
                 Servicios Incluidos
