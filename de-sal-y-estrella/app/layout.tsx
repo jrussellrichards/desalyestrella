@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Header from '@/components/Header' // Importamos el Header
-import Footer from '@/components/Footer' // Importamos el Footer
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,11 +18,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${inter.className} bg-white dark:bg-gray-900`}>
+      {/* CAMBIOS CLAVE:
+        - flex flex-col: Convierte el body en un contenedor flexible vertical.
+        - min-h-screen: Asegura que el body ocupe al menos el 100% de la altura de la pantalla.
+      */}
+      <body
+        className={`${inter.className} flex min-h-screen flex-col bg-white dark:bg-gray-900`}
+      >
         <Header />
-        <main>{children}</main> {/* {children} es el contenido de cada página */}
+        {/* CAMBIO CLAVE:
+        - flex-grow: Hace que el contenido principal se expanda para ocupar todo el espacio disponible,
+          empujando el Footer hacia abajo.
+        */}
+        <main className="flex-grow">{children}</main>
         <Footer />
       </body>
     </html>
   )
 }
+

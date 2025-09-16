@@ -3,6 +3,7 @@ import { client } from '@/lib/sanity.client'
 import { groq } from 'next-sanity'
 import { Property, Testimonial } from '@/types' // Importamos Testimonial
 import PropertyCard from '@/components/PropertyCard'
+import TestimonialCarousel from '@/components/TestimonialCarousel'
 
 // Consulta para obtener las 3 propiedades más recientes
 const query = groq`*[_type == "property"] | order(_createdAt desc)[0...3]{
@@ -14,8 +15,8 @@ const query = groq`*[_type == "property"] | order(_createdAt desc)[0...3]{
   gallery
 }`
 
-// Nueva consulta para obtener los 2 testimonios más recientes
-const testimonialQuery = groq`*[_type == "testimonial"] | order(_createdAt desc)[0...2]{
+// Nueva consulta para obtener hasta 8 testimonios recientes
+const testimonialQuery = groq`*[_type == "testimonial"] | order(_createdAt desc)[0...8]{
   _id,
   quote,
   author,
@@ -90,29 +91,8 @@ export default async function HomePage() {
               Lo que dicen nuestros huéspedes
             </h2>
           </div>
-          <div className="mx-auto mt-16 flow-root sm:mt-20">
-            <div className="-mt-8 sm:-mx-8 sm:mt-0 sm:pl-8">
-              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2">
-                {testimonials.map((testimonial) => (
-                  <div
-                    key={testimonial._id}
-                    className="break-inside-avoid pt-8"
-                  >
-                    <div className="flex h-full flex-col rounded-lg bg-white p-6 shadow-md ring-1 ring-gray-900/5 dark:bg-gray-700 dark:ring-white/10">
-                      <p className="flex-grow text-gray-700 dark:text-gray-300">
-                        “{testimonial.quote}”
-                      </p>
-                      <div className="mt-4 font-semibold text-gray-900 dark:text-white">
-                        {testimonial.author}
-                      </div>
-                      <div className="text-gray-600 dark:text-gray-400">
-                        {testimonial.location}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="mt-14">
+            <TestimonialCarousel testimonials={testimonials} />
           </div>
         </div>
       </section>

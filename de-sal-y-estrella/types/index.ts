@@ -8,10 +8,19 @@ export interface Property {
   slug: Slug;
   location: string;
   tagline: string;
-  gallery: Image[];
-  description: any[]; // El tipo 'any[]' es para el contenido de Portable Text de Sanity
+  gallery: Image[]; // Podría ser opcional si aún no se cargan imágenes
+  description: any[]; // Portable Text blocks
   capacity: number;
   amenities: string[];
+  bookingWidgetCode?: string; // Código embebido para el widget de reservas
+  // Campos de pricing
+  basePrice?: number; // precio base por noche
+  seasonalAdjustments?: {
+    season: string;
+    multiplier?: number; // multiplicador sobre basePrice
+    start?: string; // ISO date
+    end?: string;   // ISO date
+  }[];
 }
 
 export interface Testimonial {
@@ -20,5 +29,3 @@ export interface Testimonial {
   author: string
   location: string
 }
-
-// Signed by GitHub Copilot
