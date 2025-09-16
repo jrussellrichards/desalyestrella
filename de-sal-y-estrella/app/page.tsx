@@ -1,8 +1,41 @@
 import Link from 'next/link'
+import { client } from '@/lib/sanity.client'
+import { groq } from 'next-sanity'
+import { Property } from '@/types'
+import PropertyCard from '@/components/PropertyCard'
 
-export default function HomePage() {
+// Consulta para obtener las 3 propiedades más recientes
+const query = groq`*[_type == "property"] | order(_createdAt desc)[0...3]{
+  _id,
+  name,
+  slug,
+  location,
+  tagline,
+  gallery
+}`
+
+// Testimonios de ejemplo (más adelante podríamos moverlos al CMS)
+const testimonials = [
+  {
+    quote:
+      'Una experiencia increíble. El departamento tenía todo lo necesario para una semana de teletrabajo y surf. La vista al mar era la mejor oficina que he tenido.',
+    author: 'Daniela V.',
+    location: 'Huésped en Pichilemu',
+  },
+  {
+    quote:
+      'La escapada perfecta. La tranquilidad y el cielo estrellado desde el balcón son algo que no olvidaremos. Volveremos sin dudarlo.',
+    author: 'Matías y Sofía',
+    location: 'Huéspedes en La Serena',
+  },
+]
+
+export default async function HomePage() {
+  const properties: Property[] = await client.fetch(query)
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-white dark:bg-gray-900">
+    <main className="bg-white dark:bg-gray-900">
+      {/* Hero Section */}
       <div className="relative isolate px-6 pt-14 lg:px-8">
         <div
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -27,7 +60,7 @@ export default function HomePage() {
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link
                 href="/refugios"
-                className="rounded-md bg-gray-800 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+                className="rounded-md bg-gray-800 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-gray-700"
               >
                 Descubre Nuestros Refugios
               </Link>
@@ -35,6 +68,65 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* Sección de Propiedades Destacadas */}
+      <div className="py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+              Explora Nuestros Refugios
+            </h2>
+            <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
+              Espacios diseñados para la aventura, el descanso y la conexión.
+            </p>
+          </div>
+          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+            {properties.map((property) => (
+              <PropertyCard key={property._id} property={property} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Sección de Testimonios */}
+      <section className="bg-gray-50 py-24 dark:bg-gray-800 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+              Lo que dicen nuestros huéspedes
+            </h2>
+          </div>
+          <div className="mx-auto mt-16 flow-root sm:mt-20">
+            <div className="-mt-8 sm:-mx-8 sm:mt-0 sm:pl-8">
+              <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2">
+                {testimonials.map((testimonial) => (
+                  <div
+                    key={testimonial.author}
+                    className="break-inside-avoid pt-8"
+                  >
+                    {/* --- INICIO DE LA CORRECCIÓN --- */}
+                    {/* h-full: Hace que la tarjeta ocupe toda la altura de la fila del grid. */}
+                    {/* flex flex-col: Convierte la tarjeta en un contenedor flex vertical. */}
+                    <div className="flex h-full flex-col rounded-lg bg-white p-6 shadow-md ring-1 ring-gray-900/5 dark:bg-gray-700 dark:ring-white/10">
+                      {/* flex-grow: Hace que el párrafo de la cita se expanda para ocupar todo el espacio sobrante. */}
+                      <p className="flex-grow text-gray-700 dark:text-gray-300">
+                        “{testimonial.quote}”
+                      </p>
+                      <div className="mt-4 font-semibold text-gray-900 dark:text-white">
+                        {testimonial.author}
+                      </div>
+                      <div className="text-gray-600 dark:text-gray-400">
+                        {testimonial.location}
+                      </div>
+                    </div>
+                    {/* --- FIN DE LA CORRECCIÓN --- */}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   )
 }
