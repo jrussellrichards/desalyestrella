@@ -1,6 +1,6 @@
 import property from './property'
+// import blogPost from './blogPost'
+import testimonial from './testimonial' // <-- Importamos el nuevo esquema
 
-// Este archivo es el punto central que reúne todos tus esquemas.
-// Si en el futuro creas un esquema para "Blog Post", simplemente lo importas
-// y lo agregas a este array.
-export const schemaTypes = [property]
+// Agregamos el nuevo esquema al array para que aparezca en el Studio
+export const schemaTypes = [property, testimonial]

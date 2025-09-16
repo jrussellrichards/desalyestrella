@@ -14,3 +14,11 @@ export interface Property {
   amenities: string[];
 }
 
+export interface Testimonial {
+  _id: string
+  quote: string
+  author: string
+  location: string
+}
+
+// Signed by GitHub Copilot

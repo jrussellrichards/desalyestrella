@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { client } from '@/lib/sanity.client'
 import { groq } from 'next-sanity'
-import { Property } from '@/types'
+import { Property, Testimonial } from '@/types' // Importamos Testimonial
 import PropertyCard from '@/components/PropertyCard'
 
 // Consulta para obtener las 3 propiedades más recientes
@@ -14,24 +14,18 @@ const query = groq`*[_type == "property"] | order(_createdAt desc)[0...3]{
   gallery
 }`
 
-// Testimonios de ejemplo (más adelante podríamos moverlos al CMS)
-const testimonials = [
-  {
-    quote:
-      'Una experiencia increíble. El departamento tenía todo lo necesario para una semana de teletrabajo y surf. La vista al mar era la mejor oficina que he tenido.',
-    author: 'Daniela V.',
-    location: 'Huésped en Pichilemu',
-  },
-  {
-    quote:
-      'La escapada perfecta. La tranquilidad y el cielo estrellado desde el balcón son algo que no olvidaremos. Volveremos sin dudarlo.',
-    author: 'Matías y Sofía',
-    location: 'Huéspedes en La Serena',
-  },
-]
+// Nueva consulta para obtener los 2 testimonios más recientes
+const testimonialQuery = groq`*[_type == "testimonial"] | order(_createdAt desc)[0...2]{
+  _id,
+  quote,
+  author,
+  location
+}`
 
 export default async function HomePage() {
-  const properties: Property[] = await client.fetch(query)
+  // Hacemos ambas consultas en paralelo para mayor eficiencia
+  const [properties, testimonials]: [Property[], Testimonial[]] =
+    await Promise.all([client.fetch(query), client.fetch(testimonialQuery)])
 
   return (
     <main className="bg-white dark:bg-gray-900">
@@ -101,14 +95,10 @@ export default async function HomePage() {
               <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2">
                 {testimonials.map((testimonial) => (
                   <div
-                    key={testimonial.author}
+                    key={testimonial._id}
                     className="break-inside-avoid pt-8"
                   >
-                    {/* --- INICIO DE LA CORRECCIÓN --- */}
-                    {/* h-full: Hace que la tarjeta ocupe toda la altura de la fila del grid. */}
-                    {/* flex flex-col: Convierte la tarjeta en un contenedor flex vertical. */}
                     <div className="flex h-full flex-col rounded-lg bg-white p-6 shadow-md ring-1 ring-gray-900/5 dark:bg-gray-700 dark:ring-white/10">
-                      {/* flex-grow: Hace que el párrafo de la cita se expanda para ocupar todo el espacio sobrante. */}
                       <p className="flex-grow text-gray-700 dark:text-gray-300">
                         “{testimonial.quote}”
                       </p>
@@ -119,7 +109,6 @@ export default async function HomePage() {
                         {testimonial.location}
                       </div>
                     </div>
-                    {/* --- FIN DE LA CORRECCIÓN --- */}
                   </div>
                 ))}
               </div>
