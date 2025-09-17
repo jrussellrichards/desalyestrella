@@ -29,3 +29,14 @@ export interface Testimonial {
   author: string
   location: string
 }
+
+
+export interface BlogPost {
+  _id: string;
+  title: string;
+  slug: Slug;
+  publishedAt: string;
+  excerpt: string;
+  body: PortableTextBlock[];
+  mainImage: Image;
+}
