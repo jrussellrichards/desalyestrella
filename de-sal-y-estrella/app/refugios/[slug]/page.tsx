@@ -85,7 +85,7 @@ export default async function PropertyPage({ params }: { params: { slug: string 
                 >
                   <Image
                     src={url}
-                    alt={image.alt || `${property.name} – vista ${idx + 1}`}
+                    alt={image.alt && typeof image.alt === 'string' ? image.alt : `${property.name} – vista ${idx + 1}`}
                     fill
                     sizes={idx === 0 ? '(max-width:768px) 100vw, 50vw' : '(max-width:768px) 50vw, 25vw'}
                     className="object-cover transition-transform duration-500 hover:scale-105"
