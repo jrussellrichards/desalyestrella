@@ -66,7 +66,7 @@ export default async function PropertyPage({ params }: { params: { slug: string 
       <header className="relative">
         {hasImages ? (
           <div className="grid grid-cols-4 gap-2 px-4 pt-6 sm:px-6 lg:px-8">
-            {property.gallery!.slice(0, 5).map((image: Image, idx: number) => {
+            {property.gallery!.slice(0, 5).map((image: SanityImage, idx: number) => {
               const builder = urlFor(image)
               if (!builder) return null
               const url = builder
