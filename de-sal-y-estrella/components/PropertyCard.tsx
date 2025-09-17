@@ -13,7 +13,7 @@ export default function PropertyCard({ property }: { property: Property }) {
           {hasImage ? (
             <Image
               src={urlFor(property.gallery[0]).width(500).height(300).fit('crop').url()}
-              alt={property.gallery[0]?.alt || `Foto principal de ${property.name}`}
+              alt={property.gallery[0]?.alt && typeof property.gallery[0].alt === 'string' ? property.gallery[0].alt : `Foto principal de ${property.name}`}
               fill
               sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
               className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
