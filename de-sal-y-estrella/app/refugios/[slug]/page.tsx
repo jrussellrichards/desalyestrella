@@ -77,7 +77,7 @@ export default async function PropertyPage({ params }: { params: { slug: string 
                 .url()
               return (
                 <div
-                  key={image._key || idx}
+                  key={typeof image._key === 'string' ? image._key : idx}
                   className={`
                     relative overflow-hidden rounded-lg
                     ${idx === 0 ? 'col-span-4 md:col-span-2 row-span-2 aspect-[16/9]' : 'aspect-video'}
