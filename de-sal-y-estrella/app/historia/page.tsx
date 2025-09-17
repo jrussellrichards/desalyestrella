@@ -1,6 +1,26 @@
 import Image from 'next/image'
+import { client } from '@/lib/sanity.client'
+import { groq } from 'next-sanity'
+import { urlFor } from '@/lib/image'
+import { StyledPortableText } from '@/components/StyledPortableText' // <-- Importamos el nuevo componente
 
-export default function HistoriaPage() {
+// Definimos la interfaz para el contenido de la página
+interface PageContent {
+  title: string
+  mainImage: any
+  body: any[]
+}
+
+// Consulta para obtener el contenido de la página con el slug "nuestra-historia"
+const query = groq`*[_type == "page" && slug.current == "nuestra-historia"][0]`
+
+export default async function HistoriaPage() {
+  const pageContent: PageContent = await client.fetch(query)
+
+  if (!pageContent) {
+    return <div>Contenido no encontrado.</div>
+  }
+
   return (
     <div className="bg-white dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
@@ -8,34 +28,20 @@ export default function HistoriaPage() {
           <div className="px-6 pb-12 pt-10 sm:px-16 sm:pt-16 lg:py-16 lg:pr-0 xl:py-20 xl:px-20">
             <div className="lg:self-center">
               <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-                Nuestra Historia
+                {pageContent.title}
               </h1>
               {/* --- INICIO DE LA CORRECCIÓN --- */}
-              <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                &ldquo;De Sal y Estrella&rdquo; nació de una convicción simple: un verdadero
-                escape no es solo un cambio de lugar, sino un cambio de
-                perspectiva.
-              </p>
+              {/* Reemplazamos el div con 'prose' por nuestro nuevo componente especializado. */}
+              <div className="mt-6">
+                <StyledPortableText value={pageContent.body} />
+              </div>
               {/* --- FIN DE LA CORRECCIÓN --- */}
-              <p className="mt-6 text-base leading-7 text-gray-700 dark:text-gray-400">
-                Soy Javier Richards, y mi pasión por los paisajes contrastantes
-                de Chile me llevó a crear estos refugios. Desde la energía
-                vibrante del surf en Pichilemu hasta la calma cósmica del Valle
-                del Elqui, cada propiedad está diseñada no solo como un lugar
-                para alojarse, sino como un punto de partida para la aventura y
-                la introspección.
-              </p>
-              <p className="mt-6 text-base leading-7 text-gray-700 dark:text-gray-400">
-                Nuestra filosofía es la hospitalidad curada: espacios con
-                diseño, todas las comodidades para el viajero moderno y una
-                conexión auténtica con el entorno.
-              </p>
             </div>
           </div>
           <div className="relative aspect-video h-full w-full lg:aspect-auto">
             <Image
-              src="https://placehold.co/600x800/111827/FFFFFF?text=Javier+Richards"
-              alt="Foto de Javier Richards, fundador de De Sal y Estrella"
+              src={urlFor(pageContent.mainImage).url()}
+              alt={`Imagen principal de ${pageContent.title}`}
               fill
               className="object-cover"
             />
