@@ -61,7 +61,7 @@ export default async function CrossSell({ currentId }: CrossSellProps) {
                 <div className="relative aspect-[3/2] w-full overflow-hidden">
                   <Image
                     src={imgUrl}
-                    alt={image?.alt || p.name}
+                    alt={image?.alt && typeof image.alt === 'string' ? image.alt : p.name}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                     sizes="(max-width:768px) 100vw, 50vw"
