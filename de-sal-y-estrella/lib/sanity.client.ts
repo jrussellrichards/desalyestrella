@@ -1,18 +1,16 @@
-import {createClient} from 'next-sanity'
+import { createClient } from 'next-sanity'
 
-// --- Configuración de Conexión ---
-// Estas variables identifican tu proyecto de Sanity.
-// Las obtienes desde manage.sanity.io
-export const projectId = 'lkqqun1x'
-export const dataset = 'production'
-const apiVersion = '2023-05-03' // Usa una fecha reciente
+// Leemos las variables de entorno para una configuración segura
+export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!
+export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET!
+export const apiVersion =
+  process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2023-05-03'
+console.log('Project ID:', process.env.NEXT_PUBLIC_SANITY_PROJECT_ID)
 
-// --- Cliente de Sanity ---
-// Este es el objeto que usaremos para hacer peticiones de datos a Sanity.
 export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true, // `false` si quieres datos siempre frescos, `true` para mejor rendimiento
+  useCdn: true, // true para rendimiento en producción
 })
 
