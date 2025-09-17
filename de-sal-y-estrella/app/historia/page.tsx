@@ -10,11 +10,13 @@ export default function HistoriaPage() {
               <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
                 Nuestra Historia
               </h1>
+              {/* --- INICIO DE LA CORRECCIÓN --- */}
               <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
-                "De Sal y Estrella" nació de una convicción simple: un verdadero
+                &ldquo;De Sal y Estrella&rdquo; nació de una convicción simple: un verdadero
                 escape no es solo un cambio de lugar, sino un cambio de
                 perspectiva.
               </p>
+              {/* --- FIN DE LA CORRECCIÓN --- */}
               <p className="mt-6 text-base leading-7 text-gray-700 dark:text-gray-400">
                 Soy Javier Richards, y mi pasión por los paisajes contrastantes
                 de Chile me llevó a crear estos refugios. Desde la energía

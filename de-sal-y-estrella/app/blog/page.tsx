@@ -3,13 +3,14 @@ import { groq } from 'next-sanity'
 import Link from 'next/link'
 import Image from 'next/image'
 import { urlFor } from '@/lib/image'
+import { Image as SanityImage } from 'sanity'
 
 // Definimos una interfaz para los datos de un post en la lista
 interface BlogPost {
   _id: string
   title: string
   slug: { current: string }
-  mainImage: any
+  mainImage: SanityImage
   publishedAt: string
   excerpt: string
 }

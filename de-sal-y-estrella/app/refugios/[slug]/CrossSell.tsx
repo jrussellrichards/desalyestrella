@@ -4,9 +4,18 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { urlFor } from '@/lib/image'
 import { cache } from 'react'
+import { Image as SanityImage, Slug } from 'sanity'
 
 interface CrossSellProps {
   currentId: string
+}
+
+interface CrossSellProperty {
+  _id: string
+  name: string
+  slug: Slug
+  tagline?: string
+  gallery?: SanityImage
 }
 
 const crossSellQuery = groq`*[_type == "property" && _id != $currentId][0...2]{
@@ -18,7 +27,7 @@ const crossSellQuery = groq`*[_type == "property" && _id != $currentId][0...2]{
 }`
 
 const fetchCross = cache(async (currentId: string) => {
-  return client.fetch<any[]>(crossSellQuery, { currentId })
+  return client.fetch<CrossSellProperty[]>(crossSellQuery, { currentId })
 })
 
 export default async function CrossSell({ currentId }: CrossSellProps) {

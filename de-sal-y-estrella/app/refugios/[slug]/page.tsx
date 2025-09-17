@@ -9,6 +9,7 @@ import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import CrossSell from './CrossSell'
 import { computeDisplayPrice } from '@/utils/pricing'
+import { Image as SanityImage, Slug } from "sanity";
 
 // Revalidación ISR (5 min) para balance entre frescura y rendimiento
 export const revalidate = 300
@@ -65,7 +66,7 @@ export default async function PropertyPage({ params }: { params: { slug: string 
       <header className="relative">
         {hasImages ? (
           <div className="grid grid-cols-4 gap-2 px-4 pt-6 sm:px-6 lg:px-8">
-            {property.gallery!.slice(0, 5).map((image: any, idx: number) => {
+            {property.gallery!.slice(0, 5).map((image: Image, idx: number) => {
               const builder = urlFor(image)
               if (!builder) return null
               const url = builder

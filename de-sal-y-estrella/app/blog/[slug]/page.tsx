@@ -3,14 +3,16 @@ import { groq } from 'next-sanity'
 import Image from 'next/image'
 import { urlFor } from '@/lib/image'
 import { PortableText } from '@portabletext/react'
+import { Image as SanityImage } from 'sanity'
+import { PortableTextBlock } from '@portabletext/react'
 
 // Definimos una interfaz para los datos de un post individual
 interface BlogPost {
   _id: string
   title: string
-  mainImage: any
+  mainImage: SanityImage
   publishedAt: string
-  body: any[]
+  body: PortableTextBlock[]
 }
 
 // Consulta para obtener un solo post basado en su slug
