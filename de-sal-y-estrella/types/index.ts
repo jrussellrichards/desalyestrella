@@ -1,4 +1,4 @@
-import { Image, Slug } from "sanity";
+import { Image, Slug,PortableTextBlock } from "sanity";
 
 // Definimos una "interfaz" para decirle a nuestro código cómo es un objeto Property.
 // Esto nos dará autocompletado y nos ayudará a evitar errores.

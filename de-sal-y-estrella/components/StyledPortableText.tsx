@@ -3,6 +3,7 @@
 import { PortableText, PortableTextComponents } from '@portabletext/react'
 import Image from 'next/image'
 import { urlFor } from '@/lib/image'
+import { PortableTextBlock } from 'sanity'
 
 // Definimos los componentes personalizados que se usarán para renderizar cada tipo de bloque.
 const components: PortableTextComponents = {
@@ -32,7 +33,13 @@ const components: PortableTextComponents = {
   },
 }
 
-// Este es el componente que usarás en tus páginas.
-export function StyledPortableText({ value }: { value: any[] }) {
+// --- CORRECCIÓN ---
+// Cambiamos la exportación nombrada por una exportación por defecto.
+export default function StyledPortableText({
+  value,
+}: {
+  value: PortableTextBlock[]
+}) {
   return <PortableText value={value} components={components} />
 }
+

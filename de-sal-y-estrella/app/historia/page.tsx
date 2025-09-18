@@ -1,14 +1,15 @@
 import Image from 'next/image'
 import { client } from '@/lib/sanity.client'
 import { groq } from 'next-sanity'
+import StyledPortableText from '@/components/StyledPortableText' // <-- CORRECCIÓN: Importamos sin llaves
 import { urlFor } from '@/lib/image'
-import { StyledPortableText } from '@/components/StyledPortableText' // <-- Importamos el nuevo componente
+import type { Image as SanityImage, PortableTextBlock } from 'sanity'
 
-// Definimos la interfaz para el contenido de la página
+// Definimos la interfaz para el contenido de la página con tipos específicos
 interface PageContent {
   title: string
-  mainImage: any
-  body: any[]
+  mainImage: SanityImage
+  body: PortableTextBlock[]
 }
 
 // Consulta para obtener el contenido de la página con el slug "nuestra-historia"
@@ -30,12 +31,9 @@ export default async function HistoriaPage() {
               <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
                 {pageContent.title}
               </h1>
-              {/* --- INICIO DE LA CORRECCIÓN --- */}
-              {/* Reemplazamos el div con 'prose' por nuestro nuevo componente especializado. */}
               <div className="mt-6">
                 <StyledPortableText value={pageContent.body} />
               </div>
-              {/* --- FIN DE LA CORRECCIÓN --- */}
             </div>
           </div>
           <div className="relative aspect-video h-full w-full lg:aspect-auto">

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { client } from '@/lib/sanity.client'
 import { groq } from 'next-sanity'
-import { Property, Testimonial, Blog } from '@/types' // Importamos Testimonial
+import { Property, Testimonial } from '@/types' // Importamos Testimonial
 import PropertyCard from '@/components/PropertyCard'
 import TestimonialCarousel from '@/components/TestimonialCarousel'
 
