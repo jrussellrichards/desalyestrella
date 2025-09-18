@@ -2,8 +2,6 @@ import { client } from '@/lib/sanity.client'
 import { groq } from 'next-sanity'
 import PropertyCard from '@/components/PropertyCard'
 import { Property } from '@/types'
-import { Image, Slug } from "sanity";
-import { PortableTextBlock } from '@portabletext/react';
 
 const query = groq`*[_type == "property"]{
   _id,

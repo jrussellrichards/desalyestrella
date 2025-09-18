@@ -9,7 +9,7 @@ import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import CrossSell from './CrossSell'
 import { computeDisplayPrice } from '@/utils/pricing'
-import { Image as SanityImage, Slug } from "sanity";
+import { Image as SanityImage } from "sanity";
 
 // Revalidación ISR (5 min) para balance entre frescura y rendimiento
 export const revalidate = 300
