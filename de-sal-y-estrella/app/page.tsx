@@ -71,7 +71,7 @@ export default async function HomePage() {
                 Ver refugios
               </Link>
               <a
-                href="#refugios-destacados"
+                href="#porque-nosotros"
                 className="inline-flex items-center rounded-md border border-white/30 bg-white/10 px-5 py-2.5 text-sm font-medium text-white backdrop-blur transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50"
               >
                 ¿Por qué nosotros?
@@ -82,6 +82,74 @@ export default async function HomePage() {
             <div className="flex h-10 w-6 items-start justify-center">
               <span className="h-5 w-px animate-pulse rounded-full bg-white/60" />
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="porque-nosotros"
+        className="relative overflow-hidden py-24 sm:py-32"
+      >
+        <div className="pointer-events-none absolute inset-0 [background:radial-gradient(circle_at_25%_20%,rgba(251,191,36,0.12),transparent_65%)] dark:[background:radial-gradient(circle_at_70%_30%,rgba(251,191,36,0.15),transparent_70%)]" />
+        <div className="relative mx-auto max-w-6xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+              ¿Por qué reservar con nosotros?
+            </h2>
+            <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
+              Menos inventario, más dedicación. Experiencias costeras y cielos limpios
+              seleccionados para desconectar de verdad.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { t: 'Selección curada', d: 'Few, not many. Solo refugios que cumplen estándares de atmósfera y descanso.' },
+              { t: 'Superhost probado', d: 'Historial consistente de evaluaciones altas y soporte rápido.' },
+              { t: 'Cancelación flexible', d: 'Reembolso completo hasta 7 días antes (salvo fechas pico indicadas).' },
+              { t: 'Experiencias locales', d: 'Recomendaciones verificadas para sumar valor sin improvisar.' },
+              { t: 'Transparencia de precios', d: 'Sin tarifas sorpresa al final: claridad desde el inicio.' },
+              { t: 'Soporte durante tu estadía', d: 'Acompañamiento antes, durante y después de la reserva.' }
+            ].map(item => (
+              <div
+                key={item.t}
+                className="group relative flex flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-amber-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/70 dark:hover:border-amber-400"
+              >
+                <div className="mb-4 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-amber-50 text-amber-600 ring-1 ring-amber-200 dark:bg-amber-900/20 dark:text-amber-300 dark:ring-amber-800/60">
+                  <svg
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="none"
+                    className="h-5 w-5"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                  {item.t}
+                </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                  {item.d}
+                </p>
+                <span className="pointer-events-none absolute inset-x-0 -bottom-px h-px w-full scale-x-0 bg-gradient-to-r from-amber-400 to-amber-500 transition group-hover:scale-x-100" />
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-14 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            <a
+              href="#refugios-destacados"
+              className="inline-flex items-center rounded-md bg-amber-600 px-5 py-2.5 text-sm font-semibold text-white shadow transition hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            >
+              Ver refugios
+            </a>
+            <a
+              href="/contacto"
+              className="inline-flex items-center rounded-md border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:border-amber-400 hover:text-amber-600 dark:border-gray-600 dark:text-gray-200 dark:hover:border-amber-500 dark:hover:text-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            >
+              Consultar fechas
+            </a>
           </div>
         </div>
       </section>
