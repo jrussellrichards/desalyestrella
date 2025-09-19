@@ -6,8 +6,7 @@ import { hasAssetRef } from '@/utils/hasAssetRef'
 import type { Image as SanityImage } from 'sanity'
 
 type GalleryImage = SanityImage & { alt?: string; _key?: string }
-
-type Props = {
+interface Props {
   images: GalleryImage[]
   propertyName: string
   max?: number
@@ -15,9 +14,9 @@ type Props = {
 
 export default function LightboxGallery({ images, propertyName, max = 5 }: Props) {
   const validImages: (GalleryImage & { asset: { _ref: string } })[] = images.filter(hasAssetRef)
-  if (!validImages.length) return null
-
   const shown = validImages.slice(0, max)
+
+  // Hooks SIEMPRE (no condicionales)
   const [open, setOpen] = useState(false)
   const [index, setIndex] = useState(0)
   const [touchStartX, setTouchStartX] = useState<number | null>(null)
@@ -39,7 +38,6 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
     [validImages.length]
   )
 
-  // Teclado
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
@@ -51,7 +49,6 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
     return () => window.removeEventListener('keydown', onKey)
   }, [open, close, next, prev])
 
-  // Auto-centrar miniatura activa
   useEffect(() => {
     if (!open) return
     const c = thumbsRef.current
@@ -63,13 +60,14 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
     }
   }, [index, open])
 
+  if (!validImages.length) return null
+
   return (
     <>
-      {/* GRID PRINCIPAL (preview) */}
+      {/* GRID PREVIEW */}
       <div className="grid grid-cols-4 gap-2 px-4 pt-6 sm:px-6 lg:px-8">
         {shown.map((img, i) => {
-          const builder = urlFor(img)
-          const url = builder
+          const url = urlFor(img)
             .width(i === 0 ? 1600 : 800)
             .height(i === 0 ? 900 : 600)
             .quality(80)
@@ -109,7 +107,6 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
         })}
       </div>
 
-      {/* MODAL LIGHTBOX */}
       {open && (
         <div
           className="fixed inset-0 z-[90] flex flex-col bg-black/90 backdrop-blur-sm"
@@ -126,16 +123,15 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
             </svg>
           </button>
 
-          {/* Imagen principal con swipe */}
           <div
             className="relative mx-auto mt-12 aspect-[16/10] w-full max-w-6xl overflow-hidden rounded-lg bg-black px-4 md:mt-16"
-            onTouchStart={(e) => {
+            onTouchStart={e => {
               if (e.touches.length === 1) {
                 setTouchStartX(e.touches[0].clientX)
                 setTouchDelta(0)
               }
             }}
-            onTouchMove={(e) => {
+            onTouchMove={e => {
               if (touchStartX !== null) {
                 setTouchDelta(e.touches[0].clientX - touchStartX)
               }
@@ -151,12 +147,11 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
             {validImages.map((img, i) => {
               if (i !== index) return null
               const big = urlFor(img)
-                ?.width(1800)
+                .width(1800)
                 .height(1200)
                 .quality(85)
                 .fit('crop')
                 .url()
-              if (!big) return null
               return (
                 <Image
                   key={img._key || i}
@@ -176,12 +171,10 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
               )
             })}
 
-            {/* Indicador */}
             <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/55 px-3 py-1 text-xs font-medium text-white">
               {index + 1} / {validImages.length}
             </div>
 
-            {/* Flechas siempre visibles */}
             <button
               onClick={prev}
               aria-label="Anterior"
@@ -202,7 +195,6 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
             </button>
           </div>
 
-          {/* MINIATURAS SCROLLEABLES */}
           <div className="mx-auto mt-4 w-full max-w-5xl px-4 pb-6">
             <div
               ref={thumbsRef}
@@ -210,8 +202,7 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
               style={{ WebkitOverflowScrolling: 'touch' }}
             >
               {validImages.map((img, i) => {
-                const thumb = urlFor(img)?.width(160).height(120).fit('crop').quality(60).url()
-                if (!thumb) return null
+                const thumb = urlFor(img).width(160).height(120).fit('crop').quality(60).url()
                 return (
                   <button
                     key={img._key || i}
@@ -238,7 +229,6 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
             </div>
           </div>
 
-          {/* Cerrar haciendo click fuera (solo fondo negro libre) */}
           <div
             onClick={close}
             className="absolute inset-0 -z-10 cursor-zoom-out"
