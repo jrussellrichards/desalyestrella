@@ -58,4 +58,11 @@ export interface GlobalSettings {
     asset: { _ref: string; _type: string };
     alt?: string;
   };
+  contactEmail?: string;
+  phone?: string;
+  whatsappNumber?: string;
+  instagramUrl?: string;
+  address?: string;
+  location?: { lat?: number; lng?: number };
+  businessHours?: string[];
 }

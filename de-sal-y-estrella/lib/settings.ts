@@ -4,10 +4,14 @@ import { GlobalSettings } from '@/types'
 
 const settingsQuery = groq`*[_type == "settings"][0]{
   airbnbProfileUrl,
-  siteLogo{
-    asset->,
-    alt
-  }
+  siteLogo{ asset->, alt },
+  contactEmail,
+  phone,
+  whatsappNumber,
+  instagramUrl,
+  address,
+  location,
+  businessHours
 }`
 
 export async function fetchSettings(): Promise<GlobalSettings> {
