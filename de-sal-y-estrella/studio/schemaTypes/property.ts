@@ -1,21 +1,27 @@
 import {defineField, defineType} from 'sanity'
-import {LinkIcon} from '@sanity/icons'
 
 export default defineType({
   name: 'property',
-  title: 'Property',
+  title: 'Propiedad',
   type: 'document',
+  groups: [
+    {name: 'content', title: 'Contenido Principal', default: true},
+    {name: 'seo', title: 'SEO'},
+  ],
   fields: [
+    // --- Campos de Contenido Principal ---
     defineField({
       name: 'name',
-      title: 'Name',
+      title: 'Nombre de la Propiedad',
       type: 'string',
+      group: 'content',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'slug',
-      title: 'Slug',
+      title: 'Slug (URL)',
       type: 'slug',
+      group: 'content',
       options: {
         source: 'name',
         maxLength: 96,
@@ -24,63 +30,74 @@ export default defineType({
     }),
     defineField({
       name: 'location',
-      title: 'Location',
+      title: 'Ubicación',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      group: 'content',
     }),
     defineField({
       name: 'tagline',
-      title: 'Tagline',
+      title: 'Tagline (Frase Corta)',
       type: 'string',
-      description: 'A short, catchy phrase for the property (e.g., "Tu refugio de surf en Pichilemu")',
-      validation: (Rule) => Rule.required(),
+      group: 'content',
     }),
     defineField({
       name: 'gallery',
-      title: 'Gallery',
+      title: 'Galería de Imágenes',
       type: 'array',
-      of: [
-        {
-          type: 'image',
-          options: {
-            hotspot: true,
-            // Esta es la nueva configuración. Añade la opción de pegar una URL.
-            sources: [
-              {
-                name: 'url',
-                title: 'Pegar URL de la imagen',
-                icon: LinkIcon,
-              },
-            ],
-          },
-        },
-      ],
+      group: 'content',
+      of: [{type: 'image', options: {hotspot: true, metadata: ['source']}}],
     }),
     defineField({
       name: 'description',
-      title: 'Description',
+      title: 'Descripción Detallada',
       type: 'array',
-      of: [{type: 'block'}],
+      group: 'content',
+      of: [{type: 'block'}, {type: 'image'}],
     }),
     defineField({
       name: 'capacity',
-      title: 'Capacity',
+      title: 'Capacidad',
       type: 'number',
+      group: 'content',
     }),
     defineField({
       name: 'amenities',
-      title: 'Amenities',
+      title: 'Servicios',
       type: 'array',
+      group: 'content',
       of: [{type: 'string'}],
-      options: {
-        layout: 'tags',
-      },
+      options: {layout: 'tags'},
     }),
     defineField({
       name: 'bookingWidgetCode',
       title: 'Booking Widget Code',
       type: 'text',
-      description: 'Paste the full widget code from Hostaway here.',
+      group: 'content',
+      rows: 5,
+    }),
+
+    // --- Campos de SEO ---
+    defineField({
+      name: 'metaTitle',
+      title: 'Meta Título (SEO)',
+      description:
+        'Título para buscadores (Google) y redes sociales. Idealmente 50-60 caracteres. Si se deja en blanco, se usará el nombre de la propiedad.',
+      type: 'string',
+      group: 'seo',
+      // --- CORRECCIÓN ---
+      // 'Rule.maxLength' no es una función. La regla correcta para limitar la
+      // longitud de un campo 'string' es 'Rule.max()'.
+      validation: (Rule) => Rule.max(60),
+    }),
+    defineField({
+      name: 'metaDescription',
+      title: 'Meta Descripción (SEO)',
+      description:
+        'Descripción para buscadores. Idealmente 150-160 caracteres. Si se deja en blanco, se usará el tagline.',
+      type: 'text',
+      group: 'seo',
+      rows: 3,
+      validation: (Rule) => Rule.max(160),
     }),
   ],
 })

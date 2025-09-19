@@ -6,13 +6,6 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'quote',
-      title: 'Cita (El testimonio)',
-      type: 'text',
-      rows: 4,
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'author',
       title: 'Autor',
       type: 'string',
@@ -24,6 +17,28 @@ export default defineType({
       description: 'Ej: "Huésped en Pichilemu"',
       type: 'string',
     }),
+    // --- CAMPO AÑADIDO ---
+    defineField({
+      name: 'rating',
+      title: 'Calificación (de 1 a 5)',
+      type: 'number',
+      validation: (Rule) => Rule.required().min(1).max(5),
+    }),
+    // --- CAMPO AÑADIDO ---
+    defineField({
+      name: 'property',
+      title: 'Propiedad Asociada',
+      description: 'Vincula este testimonio a una de tus propiedades.',
+      type: 'reference',
+      to: [{type: 'property'}],
+    }),
+    defineField({
+      name: 'quote',
+      title: 'Cita (El testimonio)',
+      type: 'text',
+      rows: 4,
+      validation: (Rule) => Rule.required(),
+    }),
   ],
   preview: {
     select: {
@@ -32,3 +47,4 @@ export default defineType({
     },
   },
 })
+
