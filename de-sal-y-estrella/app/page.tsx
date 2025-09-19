@@ -13,7 +13,10 @@ const query = groq`*[_type == "property"] | order(_createdAt desc)[0...3]{
   slug,
   location,
   tagline,
-  gallery
+  gallery,
+  capacity,
+  bedrooms,
+  bathrooms
 }`
 
 const testimonialQuery = groq`*[_type == "testimonial"] | order(_createdAt desc)[0...8]{
@@ -30,7 +33,7 @@ export default async function HomePage() {
     await Promise.all([client.fetch(query), client.fetch(testimonialQuery)])
 
   const heroImage =
-    properties?.[0]?.gallery?.[0]
+    properties?.[2]?.gallery?.[4]
       ? urlFor(properties[2].gallery[4]).width(2000).height(1100).fit('crop').auto('format').url()
       : null
 
@@ -130,9 +133,9 @@ export default async function HomePage() {
             aggregateRating: {
               '@type': 'AggregateRating',
               ratingValue: '4.9',
-              reviewCount: testimonials.length,
-            },
-          }),
+              reviewCount: testimonials.length || 1
+            }
+          })
         }}
       />
     </main>

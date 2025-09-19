@@ -11,6 +11,7 @@ import CrossSell from './CrossSell'
 import { computeDisplayPrice } from '@/utils/pricing'
 import { Image as SanityImage } from "sanity";
 import { fetchSettings } from '@/lib/settings'
+import LightboxGallery from '@/components/LightboxGallery'
 
 // Revalidación ISR (5 min) para balance entre frescura y rendimiento
 export const revalidate = 300
@@ -72,44 +73,9 @@ export default async function PropertyPage({ params }: { params: { slug: string 
 
   return (
     <div className="bg-white dark:bg-gray-900">
-      {/* HERO GALERÍA */}
       <header className="relative">
         {hasImages ? (
-          <div className="grid grid-cols-4 gap-2 px-4 pt-6 sm:px-6 lg:px-8">
-            {property.gallery!.slice(0, 5).map((image: SanityImage, idx: number) => {
-              const builder = urlFor(image)
-              if (!builder) return null
-              const url = builder
-                .width(idx === 0 ? 1600 : 800)
-                .height(idx === 0 ? 900 : 600)
-                .quality(80)
-                .fit('crop')
-                .url()
-              return (
-                <div
-                  key={typeof image._key === 'string' ? image._key : idx}
-                  className={`
-                    relative overflow-hidden rounded-lg
-                    ${idx === 0 ? 'col-span-4 md:col-span-2 row-span-2 aspect-[16/9]' : 'aspect-video'}
-                  `}
-                >
-                  <Image
-                    src={url}
-                    alt={image.alt && typeof image.alt === 'string' ? image.alt : `${property.name} – vista ${idx + 1}`}
-                    fill
-                    sizes={idx === 0 ? '(max-width:768px) 100vw, 50vw' : '(max-width:768px) 50vw, 25vw'}
-                    className="object-cover transition-transform duration-500 hover:scale-105"
-                    priority={idx === 0}
-                    placeholder="blur"
-                    blurDataURL="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZWVlIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIi8+"
-                  />
-                  {idx === 0 && (
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-black/0" />
-                  )}
-                </div>
-              )
-            })}
-          </div>
+          <LightboxGallery images={property.gallery as any} propertyName={property.name} />
         ) : (
           <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8">
             <div className="flex aspect-video items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
