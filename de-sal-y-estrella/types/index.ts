@@ -17,10 +17,12 @@ export interface Property {
   basePrice?: number; // precio base por noche
   seasonalAdjustments?: {
     season: string;
-    multiplier?: number; // multiplicador sobre basePrice
-    start?: string; // ISO date
-    end?: string;   // ISO date
+    multiplier?: number;
+    start?: string;
+    end?: string;
   }[];
+  airbnbListingUrl?: string; // nueva
+  airbnbProfileUrl?: string; // nueva
 }
 
 export interface Testimonial {

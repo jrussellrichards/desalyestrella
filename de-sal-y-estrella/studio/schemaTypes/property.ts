@@ -7,6 +7,7 @@ export default defineType({
   groups: [
     {name: 'content', title: 'Contenido Principal', default: true},
     {name: 'seo', title: 'SEO'},
+    {name: 'distribution', title: 'Canales / Externo'}, // nuevo grupo
   ],
   fields: [
     // --- Campos de Contenido Principal ---
@@ -84,9 +85,6 @@ export default defineType({
         'Título para buscadores (Google) y redes sociales. Idealmente 50-60 caracteres. Si se deja en blanco, se usará el nombre de la propiedad.',
       type: 'string',
       group: 'seo',
-      // --- CORRECCIÓN ---
-      // 'Rule.maxLength' no es una función. La regla correcta para limitar la
-      // longitud de un campo 'string' es 'Rule.max()'.
       validation: (Rule) => Rule.max(60),
     }),
     defineField({
@@ -98,6 +96,19 @@ export default defineType({
       group: 'seo',
       rows: 3,
       validation: (Rule) => Rule.max(160),
+    }),
+    // mover enlaces a nuevo grupo
+    defineField({
+      name: 'airbnbListingUrl',
+      title: 'URL en Airbnb (anuncio)',
+      type: 'url',
+      group: 'distribution',
+    }),
+    defineField({
+      name: 'airbnbProfileUrl',
+      title: 'Perfil Superhost (opcional)',
+      type: 'url',
+      group: 'distribution',
     }),
   ],
 })
