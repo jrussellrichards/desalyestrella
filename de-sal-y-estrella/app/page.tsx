@@ -20,7 +20,8 @@ const testimonialQuery = groq`*[_type == "testimonial"] | order(_createdAt desc)
   _id,
   quote,
   author,
-  location
+  location,
+  rating
 }`
 
 export default async function HomePage() {
@@ -82,7 +83,6 @@ export default async function HomePage() {
           </div>
         </div>
       </div>
-
       {/* Sección de Testimonios */}
       <section className="bg-gray-50 py-24 dark:bg-gray-800 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">

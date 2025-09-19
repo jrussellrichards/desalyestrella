@@ -24,10 +24,17 @@ export interface Property {
 }
 
 export interface Testimonial {
-  _id: string
-  quote: string
-  author: string
-  location: string
+  _id: string;
+  quote: string;
+  author: string;
+  location: string;
+  rating?: number; // ahora opcional
+  property?: {
+    name: string
+    slug: {
+      current: string
+    }
+  };
 }
 
 
