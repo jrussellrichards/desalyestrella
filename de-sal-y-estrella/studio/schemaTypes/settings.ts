@@ -11,6 +11,19 @@ export default defineType({
       type: 'url',
       validation: (Rule) => Rule.uri({scheme: ['http','https']})
     }),
-    // agrega otros campos globales aquí (logo, social, etc.)
+    defineField({
+      name: 'siteLogo',
+      title: 'Logo principal',
+      type: 'image',
+      options: { hotspot: true },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Texto alternativo',
+          validation: (Rule) => Rule.required().warning('Importante para accesibilidad')
+        }
+      ]
+    }),
   ]
 })

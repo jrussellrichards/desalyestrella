@@ -76,6 +76,22 @@ export default defineType({
       group: 'content',
       rows: 5,
     }),
+    defineField({
+      name: 'bedrooms',
+      title: 'Dormitorios',
+      type: 'number',
+      group: 'content',
+      description: 'Cantidad de piezas/dormitorios',
+      validation: (Rule) => Rule.min(0).max(20),
+    }),
+    defineField({
+      name: 'bathrooms',
+      title: 'Baños',
+      type: 'number',
+      group: 'content',
+      description: 'Cantidad de baños',
+      validation: (Rule) => Rule.min(0).max(20),
+    }),
 
     // --- Campos de SEO ---
     defineField({

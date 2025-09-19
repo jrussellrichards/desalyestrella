@@ -23,6 +23,8 @@ export interface Property {
   }[];
   airbnbListingUrl?: string; // nueva
   airbnbProfileUrl?: string; // nueva
+  bedrooms?: number;         // nueva
+  bathrooms?: number;        // nueva
 }
 
 export interface Testimonial {
@@ -52,4 +54,8 @@ export interface BlogPost {
 
 export interface GlobalSettings {
   airbnbProfileUrl?: string;
+  siteLogo?: {
+    asset: { _ref: string; _type: string };
+    alt?: string;
+  };
 }

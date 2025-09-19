@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { fetchSettings } from '@/lib/settings'
+import { urlFor } from '@/lib/image'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
@@ -11,11 +13,14 @@ export const metadata: Metadata = {
   description: 'Refugios únicos donde el océano se encuentra con el cosmos.',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const settings = await fetchSettings()
+  const logoUrl = settings.siteLogo ? urlFor(settings.siteLogo).width(320).fit('max').auto('format').url() : null
+
   return (
     <html lang="es">
       {/* CAMBIOS CLAVE:
@@ -25,7 +30,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} flex min-h-screen flex-col bg-white dark:bg-gray-900`}
       >
-        <Header />
+        <Header logoUrl={logoUrl} logoAlt={settings.siteLogo?.alt || null} />
         {/* CAMBIO CLAVE:
         - flex-grow: Hace que el contenido principal se expanda para ocupar todo el espacio disponible,
           empujando el Footer hacia abajo.

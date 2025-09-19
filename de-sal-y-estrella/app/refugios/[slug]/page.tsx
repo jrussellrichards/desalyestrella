@@ -29,7 +29,9 @@ const propertyQuery = groq`*[_type == "property" && slug.current == $slug][0]{
   basePrice,
   seasonalAdjustments,
   airbnbListingUrl,
-  airbnbProfileUrl
+  airbnbProfileUrl,
+  bedrooms,
+  bathrooms
 }`
 
 export async function generateStaticParams() {
@@ -131,6 +133,40 @@ export default async function PropertyPage({ params }: { params: { slug: string 
               <p className="mt-2 inline-flex items-center rounded bg-amber-50 px-3 py-1 text-sm font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
                 {property.tagline}
               </p>
+            )}
+            {(typeof property.capacity === 'number' ||
+              typeof property.bedrooms === 'number' ||
+              typeof property.bathrooms === 'number') && (
+              <ul className="mt-4 flex flex-wrap gap-6 text-sm text-gray-600 dark:text-gray-300">
+                {typeof property.capacity === 'number' && (
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-amber-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM4 21a8 8 0 0116 0H4z" />
+                    </svg>
+                    <span className="ml-2">{property.capacity} huéspedes</span>
+                  </li>
+                )}
+                {typeof property.bedrooms === 'number' && (
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M6 10V7a3 3 0 013-3h6a3 3 0 013 3v3m-2 4v5m-8-5v5M3 10v10h18V10" />
+                    </svg>
+                    <span className="ml-2">
+                      {property.bedrooms} {property.bedrooms === 1 ? 'dormitorio' : 'dormitorios'}
+                    </span>
+                  </li>
+                )}
+                {typeof property.bathrooms === 'number' && (
+                  <li className="flex items-center">
+                    <svg className="h-5 w-5 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 9V5a3 3 0 016 0v4m4 2H5v6a4 4 0 004 4h6a4 4 0 004-4v-6z" />
+                    </svg>
+                    <span className="ml-2">
+                      {property.bathrooms} {property.bathrooms === 1 ? 'baño' : 'baños'}
+                    </span>
+                  </li>
+                )}
+              </ul>
             )}
             {priceInfo && (
               <p className="mt-4 text-base text-gray-700 dark:text-gray-300">
@@ -243,25 +279,6 @@ export default async function PropertyPage({ params }: { params: { slug: string 
                     <span>{amenity}</span>
                   </li>
                 ))}
-                {typeof property.capacity === 'number' && (
-                  <li className="flex items-start">
-                    <svg
-                      className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-amber-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
-                    <span>Capacidad: {property.capacity} personas</span>
-                  </li>
-                )}
               </ul>
             </div>
           </aside>
