@@ -8,7 +8,7 @@ export interface Property {
   slug: Slug;
   location: string;
   tagline: string;
-  gallery: Image[]; // Podría ser opcional si aún no se cargan imágenes
+  gallery?: (import('sanity').Image & { alt?: string; _key?: string })[]; // tipado estricto
   description: any[]; // Portable Text blocks
   capacity: number;
   amenities: string[];

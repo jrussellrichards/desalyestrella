@@ -2,16 +2,20 @@
 import { useState, useCallback, useEffect } from 'react'
 import Image from 'next/image'
 import { urlFor } from '@/lib/image'
+import { hasAssetRef } from '@/utils/hasAssetRef'
 import type { Image as SanityImage } from 'sanity'
 
-interface Props {
-  images: SanityImage[]
+type GalleryImage = SanityImage & { alt?: string; _key?: string }
+
+type Props = {
+  images: GalleryImage[]
   propertyName: string
-  max?: number // cuántas mostrar en el grid antes del modal
+  max?: number
 }
 
 export default function LightboxGallery({ images, propertyName, max = 5 }: Props) {
-  const shown = images.slice(0, max)
+  const validImages: (GalleryImage & { asset: { _ref: string } })[] = images.filter(hasAssetRef)
+  const shown = validImages.slice(0, max)
   const [open, setOpen] = useState(false)
   const [index, setIndex] = useState(0)
 
@@ -21,8 +25,8 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
   }, [])
 
   const close = useCallback(() => setOpen(false), [])
-  const prev = useCallback(() => setIndex(i => (i - 1 + images.length) % images.length), [images.length])
-  const next = useCallback(() => setIndex(i => (i + 1) % images.length), [images.length])
+  const prev = useCallback(() => setIndex(i => (i - 1 + validImages.length) % validImages.length), [validImages.length])
+  const next = useCallback(() => setIndex(i => (i + 1) % validImages.length), [validImages.length])
 
   useEffect(() => {
     if (!open) return
@@ -35,7 +39,7 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
     return () => window.removeEventListener('keydown', onKey)
   }, [open, close, next, prev])
 
-  if (!images.length) return null
+  if (!validImages.length) return null
 
   return (
     <>
@@ -43,7 +47,6 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
         {shown.map((img, i) => {
           const builder = urlFor(img)
           if (!builder) return null
-            // tamaños distintos para el primero
           const url = builder
             .width(i === 0 ? 1600 : 800)
             .height(i === 0 ? 900 : 600)
@@ -63,7 +66,7 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
             >
               <Image
                 src={url}
-                alt={(img as any).alt || `${propertyName} – vista ${i + 1}`}
+                alt={img.alt || `${propertyName} – vista ${i + 1}`}
                 fill
                 sizes={i === 0 ? '(max-width:768px) 100vw, 50vw' : '(max-width:768px) 50vw, 25vw'}
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -110,7 +113,7 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
             </button>
 
             <div className="relative mx-auto aspect-[16/10] w-full overflow-hidden rounded-lg bg-black">
-              {images.map((img, i) => {
+              {validImages.map((img, i) => {
                 if (i !== index) return null
                 const big = urlFor(img)?.width(1800).height(1200).quality(85).fit('crop').url()
                 if (!big) return null
@@ -118,7 +121,7 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
                   <Image
                     key={img._key || i}
                     src={big}
-                    alt={(img as any).alt || `${propertyName} – imagen ${i + 1}`}
+                    alt={img.alt || `${propertyName} – imagen ${i + 1}`}
                     fill
                     sizes="100vw"
                     className="object-contain"
@@ -140,7 +143,7 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
           </div>
 
           <div className="mx-auto mt-4 flex max-w-5xl gap-2 overflow-x-auto px-4 pb-6">
-            {images.map((img, i) => {
+            {validImages.map((img, i) => {
               const thumb = urlFor(img)?.width(160).height(120).fit('crop').quality(60).url()
               if (!thumb) return null
               return (

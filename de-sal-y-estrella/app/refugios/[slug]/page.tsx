@@ -1,7 +1,6 @@
 import { client } from '@/lib/sanity.client'
 import { groq } from 'next-sanity'
 import { Property } from '@/types'
-import Image from 'next/image'
 import { urlFor } from '@/lib/image'
 import { PortableText } from '@portabletext/react'
 import BookingWidget from '@/components/BookingWidget'
@@ -9,9 +8,9 @@ import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import CrossSell from './CrossSell'
 import { computeDisplayPrice } from '@/utils/pricing'
-import { Image as SanityImage } from "sanity";
 import { fetchSettings } from '@/lib/settings'
 import LightboxGallery from '@/components/LightboxGallery'
+import { hasAssetRef } from '@/utils/hasAssetRef'
 
 // Revalidación ISR (5 min) para balance entre frescura y rendimiento
 export const revalidate = 300
@@ -71,11 +70,16 @@ export default async function PropertyPage({ params }: { params: { slug: string 
 
   const hostProfileUrl = property.airbnbProfileUrl || settings.airbnbProfileUrl
 
+  const firstValid = property.gallery?.find(hasAssetRef)
+
   return (
     <div className="bg-white dark:bg-gray-900">
       <header className="relative">
         {hasImages ? (
-          <LightboxGallery images={property.gallery as any} propertyName={property.name} />
+          <LightboxGallery
+            images={property.gallery || []}
+            propertyName={property.name}
+          />
         ) : (
           <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8">
             <div className="flex aspect-video items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-800">
@@ -262,11 +266,9 @@ export default async function PropertyPage({ params }: { params: { slug: string 
               '@type': 'LodgingBusiness',
               name: property.name,
               address: { '@type': 'PostalAddress', addressCountry: 'CL' },
-              image:
-                property.gallery?.[0] &&
-                urlFor(property.gallery[0])?.width(1200).height(800).quality(80).url(),
+              image: firstValid ? urlFor(firstValid)?.width(1200).height(800).quality(80).url() : undefined,
               description: property.tagline || '',
-              amenityFeature: (property.amenities || []).map((a) => ({
+              amenityFeature: (property.amenities || []).map(a => ({
                 '@type': 'LocationFeatureSpecification',
                 name: a
               }))

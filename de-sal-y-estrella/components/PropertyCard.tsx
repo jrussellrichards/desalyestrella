@@ -2,9 +2,10 @@ import Image from 'next/image'
 import { urlFor } from '@/lib/image'
 import Link from 'next/link'
 import { Property } from '@/types'
+import { hasAssetRef } from '@/utils/hasAssetRef'
 
 export default function PropertyCard({ property }: { property: Property }) {
-  const cover = property.gallery?.[0]
+  const cover = property.gallery?.find(hasAssetRef)
   const imgUrl = cover ? urlFor(cover).width(800).height(600).fit('crop').auto('format').url() : null
   return (
     <Link
@@ -13,10 +14,12 @@ export default function PropertyCard({ property }: { property: Property }) {
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100 dark:bg-gray-700">
         {imgUrl && (
-          <img
+          <Image
             src={imgUrl}
             alt={property.name}
-            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+            fill
+            sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
+            className="object-cover transition duration-500 group-hover:scale-105"
             loading="lazy"
           />
         )}

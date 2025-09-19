@@ -6,6 +6,7 @@ import PropertyCard from '@/components/PropertyCard'
 import TestimonialCarousel from '@/components/TestimonialCarousel'
 import EmailCapture from '@/components/EmailCapture' // Asegúrate de que la ruta sea correcta
 import { urlFor } from '@/lib/image'
+import Image from 'next/image'
 
 const query = groq`*[_type == "property"] | order(_createdAt desc)[0...3]{
   _id,
@@ -43,11 +44,13 @@ export default async function HomePage() {
       <section className="relative">
         {heroImage && (
           <div className="absolute inset-0">
-            <img
+            <Image
               src={heroImage}
-              alt={`Escena de ${properties[0].name}`}
-              className="h-full w-full object-cover"
-              fetchPriority="high"
+              alt={`Escena de ${properties[0]?.name || 'refugio'}`}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/20 dark:from-black/80" />
           </div>
