@@ -10,6 +10,7 @@ import { cache } from 'react'
 import CrossSell from './CrossSell'
 import { computeDisplayPrice } from '@/utils/pricing'
 import { Image as SanityImage } from "sanity";
+import { fetchSettings } from '@/lib/settings'
 
 // Revalidación ISR (5 min) para balance entre frescura y rendimiento
 export const revalidate = 300
@@ -57,10 +58,15 @@ const fetchProperty = cache(async (slug: string) => {
 })
 
 export default async function PropertyPage({ params }: { params: { slug: string } }) {
-  const property = await fetchProperty(params.slug)
+  const [property, settings] = await Promise.all([
+    fetchProperty(params.slug),
+    fetchSettings()
+  ])
   if (!property) notFound()
   const hasImages = !!(property.gallery && property.gallery.length > 0)
   const priceInfo = computeDisplayPrice(property)
+
+  const hostProfileUrl = property.airbnbProfileUrl || settings.airbnbProfileUrl
 
   return (
     <div className="bg-white dark:bg-gray-900">
@@ -177,7 +183,7 @@ export default async function PropertyPage({ params }: { params: { slug: string 
               <div className="mt-4">
                 <BookingWidget htmlCode={property.bookingWidgetCode || ''} />
               </div>
-              {(property.airbnbListingUrl || property.airbnbProfileUrl) && (
+              {(property.airbnbListingUrl || hostProfileUrl) && (
                 <div className="mt-5 space-y-2">
                   <p className="text-[11px] font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
                     Confianza
@@ -202,9 +208,9 @@ export default async function PropertyPage({ params }: { params: { slug: string 
                         Ver en Airbnb
                       </a>
                     )}
-                    {property.airbnbProfileUrl && (
+                    {hostProfileUrl && (
                       <a
-                        href={property.airbnbProfileUrl}
+                        href={hostProfileUrl}
                         target="_blank"
                         rel="nofollow noopener"
                         className="inline-flex items-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm transition hover:border-amber-300 hover:text-amber-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-amber-500"

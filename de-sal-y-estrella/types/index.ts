@@ -49,3 +49,7 @@ export interface BlogPost {
   body: PortableTextBlock[];
   mainImage: Image;
 }
+
+export interface GlobalSettings {
+  airbnbProfileUrl?: string;
+}
