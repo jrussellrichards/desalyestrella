@@ -34,8 +34,8 @@ export default async function HomePage() {
     await Promise.all([client.fetch(query), client.fetch(testimonialQuery)])
 
   const heroImage =
-    properties?.[2]?.gallery?.[4]
-      ? urlFor(properties[2].gallery[4]).width(2000).height(1100).fit('crop').auto('format').url()
+    properties?.[2]?.gallery?.[3]
+      ? urlFor(properties[2].gallery[3]).width(2000).height(1100).fit('crop').auto('format').url()
       : null
 
   return (
