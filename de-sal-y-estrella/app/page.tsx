@@ -4,6 +4,7 @@ import { groq } from 'next-sanity'
 import { Property, Testimonial } from '@/types' // Importamos Testimonial
 import PropertyCard from '@/components/PropertyCard'
 import TestimonialCarousel from '@/components/TestimonialCarousel'
+import EmailCapture from '@/components/EmailCapture' // Asegúrate de que la ruta sea correcta
 
 // Consulta para obtener las 3 propiedades más recientes
 const query = groq`*[_type == "property"] | order(_createdAt desc)[0...3]{
@@ -96,6 +97,26 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      <section className="py-24 sm:py-32">
+        <div className="mx-auto max-w-3xl px-6 lg:px-8">
+          <EmailCapture />
+        </div>
+      </section>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'LodgingBusiness',
+            name: 'De Sal y Estrella',
+            aggregateRating: {
+              '@type': 'AggregateRating',
+              ratingValue: '4.9',
+              reviewCount: testimonials.length,
+            },
+          }),
+        }}
+      />
     </main>
   )
 }
