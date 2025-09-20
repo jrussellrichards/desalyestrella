@@ -71,10 +71,10 @@ export default async function BlogPage() {
                       })}
                     </time>
                   </div>
-                  <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600 dark:text-white">
+                  <h3 className="mt-3 font-display text-[1.05rem] font-semibold leading-snug text-ink group-hover:text-amber-600 dark:text-white">
                     {post.title}
                   </h3>
-                  <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                  <p className="mt-4 line-clamp-3 text-[0.85rem] leading-[1.5] text-ink-subtle dark:text-ink-dark-subtle">
                     {post.excerpt}
                   </p>
                 </div>

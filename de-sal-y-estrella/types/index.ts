@@ -1,7 +1,19 @@
-import { Image, Slug,PortableTextBlock } from "sanity";
+import { Image, Slug, PortableTextBlock } from "sanity";
 
 // Definimos una "interfaz" para decirle a nuestro código cómo es un objeto Property.
 // Esto nos dará autocompletado y nos ayudará a evitar errores.
+export type Amenity =
+  | 'Calefacción'
+  | 'Chimenea'
+  | 'WiFi'
+  | 'Smart TV'
+  | 'Cocina equipada'
+  | 'Vista al mar'
+  | 'Piscina'
+  | 'Jacuzzi'
+  | 'Pet Friendly'
+  | 'Estacionamiento'
+
 export interface Property {
   _id: string;
   name: string;
@@ -9,9 +21,9 @@ export interface Property {
   location: string;
   tagline: string;
   gallery?: (import('sanity').Image & { alt?: string; _key?: string })[]; // tipado estricto
-  description: any[]; // Portable Text blocks
+  description: PortableTextBlock[];
   capacity: number;
-  amenities: string[];
+  amenities?: Amenity[]
   bookingWidgetCode?: string; // Código embebido para el widget de reservas
   // Campos de pricing
   basePrice?: number; // precio base por noche

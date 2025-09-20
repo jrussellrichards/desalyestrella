@@ -33,12 +33,8 @@ export default async function RootLayout({
 
   return (
     <html lang="es" className={`${inter.variable} ${fraunces.variable}`}>
-      <body className="font-sans antialiased flex min-h-screen flex-col bg-white dark:bg-gray-900">
+      <body className="font-sans antialiased text-ink dark:text-ink-dark bg-white dark:bg-gray-900 selection:bg-amber-300/30 selection:text-ink-dark">
         <Header logoUrl={logoUrl} logoAlt={settings.siteLogo?.alt || null} />
-        {/* CAMBIO CLAVE:
-        - flex-grow: Hace que el contenido principal se expanda para ocupar todo el espacio disponible,
-          empujando el Footer hacia abajo.
-        */}
         <main className="flex-grow">{children}</main>
         <Footer />
       </body>

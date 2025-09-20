@@ -11,6 +11,7 @@ import { computeDisplayPrice } from '@/utils/pricing'
 import { fetchSettings } from '@/lib/settings'
 import LightboxGallery from '@/components/LightboxGallery'
 import { hasAssetRef } from '@/utils/hasAssetRef'
+import { AmenityIcon } from '@/components/AmenityIcon'
 
 // Revalidación ISR (5 min) para balance entre frescura y rendimiento
 export const revalidate = 300
@@ -233,20 +234,14 @@ export default async function PropertyPage({ params }: { params: { slug: string 
               id="amenities"
               className="rounded-lg border border-gray-200 bg-gray-50 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800"
             >
-              <h2 className="text-lg font-medium text-gray-900 dark:text-white">Servicios incluidos</h2>
-              <ul role="list" className="mt-4 space-y-3 text-sm text-gray-600 dark:text-gray-300">
-                {property.amenities?.map((amenity) => (
-                  <li key={amenity} className="flex items-start">
-                    <svg
-                      className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0 text-amber-500"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>{amenity}</span>
+              <h2 className="font-display text-h3 font-semibold text-ink dark:text-white">Servicios incluidos</h2>
+        <ul className="mt-6 grid grid-cols-1 gap-y-3 text-sm sm:grid-cols-2">
+                {(property.amenities || []).map(a => (
+          <li key={a} className="grid grid-cols-[1.75rem_1fr] items-start gap-x-2">
+                    <span className="flex h-5 w-5 items-center justify-center text-amber-600 dark:text-amber-400" aria-hidden="true">
+                      <AmenityIcon amenity={a} />
+                    </span>
+                    <span className="leading-snug text-ink-subtle dark:text-ink-dark-subtle">{a}</span>
                   </li>
                 ))}
               </ul>

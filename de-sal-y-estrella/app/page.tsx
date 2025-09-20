@@ -57,10 +57,10 @@ export default async function HomePage() {
         )}
         <div className={`relative mx-auto max-w-4xl px-6 pt-40 pb-36 sm:pt-48 sm:pb-44 lg:px-8 ${!heroImage ? 'bg-gradient-to-b from-gray-900 via-gray-800 to-gray-700 text-white rounded-b-3xl' : ''}`}>
           <div className="text-center">
-            <h1 className="font-display text-hero font-semibold text-white">
+            <h1 className="font-display text-hero font-semibold text-white drop-shadow-[0_4px_14px_rgba(0,0,0,0.35)]">
               Escapes costeros & cielos estrellados
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-200">
+            <p className="mx-auto mt-6 max-w-2xl text-copy-lg text-gray-200 md:text-lg">
               Refugios diseñados para desconectar, respirar mar y contemplar el cosmos en destinos únicos de Chile.
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -93,10 +93,10 @@ export default async function HomePage() {
         <div className="pointer-events-none absolute inset-0 [background:radial-gradient(circle_at_25%_20%,rgba(251,191,36,0.12),transparent_65%)] dark:[background:radial-gradient(circle_at_70%_30%,rgba(251,191,36,0.15),transparent_70%)]" />
         <div className="relative mx-auto max-w-6xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 id="porque-nosotros" className="font-display text-h2 font-semibold tracking-tight text-gray-900 dark:text-white">
+            <h2 className="font-display text-h2 font-semibold tracking-tight text-ink dark:text-white">
               ¿Por qué reservar con nosotros?
             </h2>
-            <p className="mt-6 max-w-prose text-copy-lg text-gray-600 dark:text-gray-300">
+            <p className="mt-6 max-w-prose text-copy-lg text-ink-subtle dark:text-ink-dark-subtle">
               Diseñamos pocos refugios para maximizar calidad y autenticidad.
             </p>
           </div>

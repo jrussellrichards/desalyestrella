@@ -66,8 +66,24 @@ export default defineType({
       title: 'Servicios',
       type: 'array',
       group: 'content',
-      of: [{type: 'string'}],
-      options: {layout: 'tags'},
+      of: [{ type: 'string' }],
+      options: {
+        // layout 'list' crea lista cerrada (no permite texto libre)
+        layout: 'list',
+        list: [
+          { title: 'Calefacción', value: 'Calefacción' },
+          { title: 'Chimenea', value: 'Chimenea' },
+          { title: 'WiFi', value: 'WiFi' },
+          { title: 'Smart TV', value: 'Smart TV' },
+          { title: 'Cocina equipada', value: 'Cocina equipada' },
+          { title: 'Vista al mar', value: 'Vista al mar' },
+          { title: 'Piscina', value: 'Piscina' },
+          { title: 'Jacuzzi', value: 'Jacuzzi' },
+          { title: 'Pet Friendly', value: 'Pet Friendly' },
+          { title: 'Estacionamiento', value: 'Estacionamiento' },
+        ]
+      },
+      validation: Rule => Rule.unique()
     }),
     defineField({
       name: 'bookingWidgetCode',

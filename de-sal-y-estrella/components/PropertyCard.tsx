@@ -31,11 +31,11 @@ export default function PropertyCard({ property }: { property: Property }) {
         )}
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+        <h3 className="text-base font-semibold text-ink dark:text-white font-display">
           {property.name}
         </h3>
         {property.location && (
-          <p className="mt-1 line-clamp-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+          <p className="mt-1 line-clamp-1 text-xs font-medium text-ink-faint dark:text-ink-dark-faint">
             {property.location}
           </p>
         )}
@@ -66,7 +66,7 @@ export default function PropertyCard({ property }: { property: Property }) {
           )}
         </div>
         {property.tagline && (
-          <p className="mt-3 line-clamp-2 text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-3 line-clamp-2 text-[0.8rem] leading-[1.4] text-ink-subtle dark:text-ink-dark-subtle">
             {property.tagline}
           </p>
         )}

@@ -9,14 +9,23 @@ import { PortableTextBlock } from 'sanity'
 const components: PortableTextComponents = {
   block: {
     // Párrafo normal: le aplicamos un margen inferior para crear el espaciado.
-    normal: ({ children }) => <p className="mb-6 leading-7">{children}</p>,
+    normal: ({ children }) => (
+      <p className="mb-6 max-w-prose text-[0.97rem] leading-[1.55] text-ink-subtle dark:text-ink-dark-subtle">
+        {children}
+      </p>
+    ),
 
     // Subtítulo H2: lo estilizamos como el párrafo principal que diseñamos.
     h2: ({ children }) => (
-      <h2 className="mb-6 text-xl leading-8 text-gray-600 dark:text-gray-300">
+      <h2 className="mt-10 mb-4 font-display text-h3 font-semibold text-ink dark:text-white">
         {children}
       </h2>
     ),
+    h3: ({ children }) => (
+      <h3 className="mt-8 mb-3 font-display text-[1.1rem] font-semibold text-ink dark:text-white">
+        {children}
+      </h3>
+    )
   },
   // Añadimos un componente para renderizar imágenes insertadas en el texto.
   types: {

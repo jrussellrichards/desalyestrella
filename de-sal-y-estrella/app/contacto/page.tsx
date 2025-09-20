@@ -21,10 +21,10 @@ export default async function ContactoPage() {
     <div className="bg-white dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+          <h1 className="font-display text-h2 font-semibold tracking-tight text-ink dark:text-white">
             Contacto
           </h1>
-          <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
+          <p className="mt-4 text-copy-lg text-ink-subtle dark:text-ink-dark-subtle">
             Escríbenos y planificamos tu estancia perfecta.
           </p>
           {wpp && (

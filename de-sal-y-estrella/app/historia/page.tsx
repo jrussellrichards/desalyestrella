@@ -28,7 +28,7 @@ export default async function HistoriaPage() {
         <div className="overflow-hidden rounded-lg bg-gray-50 shadow-sm dark:bg-gray-800 lg:grid lg:grid-cols-2 lg:gap-4">
           <div className="px-6 pb-12 pt-10 sm:px-16 sm:pt-16 lg:py-16 lg:pr-0 xl:py-20 xl:px-20">
             <div className="lg:self-center">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+              <h1 className="font-display text-h2 font-semibold tracking-tight text-ink dark:text-white">
                 {pageContent.title}
               </h1>
               <div className="mt-6">
