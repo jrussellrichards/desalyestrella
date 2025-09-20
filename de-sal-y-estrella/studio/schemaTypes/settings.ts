@@ -4,6 +4,10 @@ export default defineType({
   name: 'settings',
   title: 'Configuración Global',
   type: 'document',
+  groups: [
+    { name: 'general', title: 'General' },
+    { name: 'marketing', title: 'Marketing' },
+  ],
   fields: [
     defineField({
       name: 'airbnbProfileUrl',
@@ -68,6 +72,43 @@ export default defineType({
       type: 'array',
       of: [{ type: 'string' }],
       description: 'Ej: L-V 9:00–18:00'
+    }),
+    defineField({
+      name: 'heroTitle',
+      title: 'Hero – Título',
+      type: 'string',
+      group: 'marketing'
+    }),
+    defineField({
+      name: 'heroSubtitle',
+      title: 'Hero – Subtítulo',
+      type: 'text',
+      rows: 3,
+      group: 'marketing'
+    }),
+    defineField({
+      name: 'heroImage',
+      title: 'Hero – Imagen de fondo',
+      type: 'image',
+      options: { hotspot: true },
+      group: 'marketing'
+    }),
+    defineField({
+      name: 'whyUs',
+      title: 'Razones ¿Por qué nosotros?',
+      type: 'array',
+      group: 'marketing',
+      of: [{
+        type: 'object',
+        fields: [
+          { name: 'title', title: 'Título', type: 'string' },
+          { name: 'description', title: 'Descripción', type: 'text', rows: 2 }
+        ],
+        preview: {
+          select: { title: 'title', subtitle: 'description' }
+        }
+      }],
+      validation: Rule => Rule.max(12)
     }),
   ]
 })

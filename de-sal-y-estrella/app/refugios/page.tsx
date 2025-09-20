@@ -12,14 +12,18 @@ const query = groq`*[_type == "property"]{
   gallery
 }`
 
-export default async function RefugiosPage() {
+interface Props {
+  searchParams?: { [key: string]: string | string[] | undefined }
+}
+
+export default async function RefugiosPage({ searchParams }: Props) {
   const properties: Property[] = await client.fetch(query)
 
-  // --- INICIO DEL CÓDIGO DE DIAGNÓSTICO ---
-  // Imprimiremos los datos en la terminal donde corre Next.js (Terminal A)
-  console.log("--- DATOS RECIBIDOS DE SANITY ---")
-  console.log(JSON.stringify(properties, null, 2))
-  // --- FIN DEL CÓDIGO DE DIAGNÓSTICO ---
+  const rawLocation = typeof searchParams?.l === 'string' ? searchParams.l : undefined
+  const locationFilter = rawLocation?.trim().toLowerCase()
+  const filtered = locationFilter
+    ? properties.filter(p => (p.location || '').toLowerCase().includes(locationFilter))
+    : properties
 
   return (
     <div className="bg-white dark:bg-gray-900">
@@ -32,8 +36,35 @@ export default async function RefugiosPage() {
           única con los paisajes más inspiradores de Chile.
         </p>
 
+        <div className="mt-6 flex flex-wrap gap-3">
+          {['Pichilemu', 'La Serena'].map(loc => {
+            const active = locationFilter === loc.toLowerCase()
+            return (
+              <a
+                key={loc}
+                href={active ? '/refugios' : `/refugios?l=${encodeURIComponent(loc)}`}
+                className={`inline-flex items-center rounded-full border px-4 py-1.5 text-sm transition ${
+                  active
+                    ? 'border-amber-500 bg-amber-500 text-white shadow'
+                    : 'border-gray-300 bg-white text-gray-700 hover:border-amber-400 hover:text-amber-600 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-amber-500 dark:hover:text-amber-400'
+                }`}
+              >
+                {loc}
+                {active && (
+                  <span className="ml-2 text-xs font-medium opacity-80">(x)</span>
+                )}
+              </a>
+            )
+          })}
+        </div>
+
         <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {properties.map((property) => (
+          {filtered.length === 0 && (
+            <p className="col-span-full text-sm text-gray-500 dark:text-gray-400">
+              No hay refugios en esa ubicación.
+            </p>
+          )}
+          {filtered.map(property => (
             <PropertyCard key={property._id} property={property} />
           ))}
         </div>

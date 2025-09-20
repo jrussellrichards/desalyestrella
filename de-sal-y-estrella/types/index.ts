@@ -77,4 +77,15 @@ export interface GlobalSettings {
   address?: string;
   location?: { lat?: number; lng?: number };
   businessHours?: string[];
+  heroTitle?: string;
+  heroSubtitle?: string;
+  heroImage?: {
+    asset?: { _ref: string; _type: string };
+    alt?: string;
+  };
+  whyUs?: {
+    title?: string;
+    description?: string;
+    _key?: string;
+  }[];
 }

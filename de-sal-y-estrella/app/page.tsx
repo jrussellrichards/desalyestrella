@@ -7,6 +7,7 @@ import TestimonialCarousel from '@/components/TestimonialCarousel'
 import EmailCapture from '@/components/EmailCapture' // Asegúrate de que la ruta sea correcta
 import { urlFor } from '@/lib/image'
 import Image from 'next/image'
+import { fetchSettings } from '@/lib/settings'
 
 const query = groq`*[_type == "property"] | order(_createdAt desc)[0...3]{
   _id,
@@ -29,14 +30,32 @@ const testimonialQuery = groq`*[_type == "testimonial"] | order(_createdAt desc)
 }`
 
 export default async function HomePage() {
-  // Hacemos ambas consultas en paralelo para mayor eficiencia
-  const [properties, testimonials]: [Property[], Testimonial[]] =
-    await Promise.all([client.fetch(query), client.fetch(testimonialQuery)])
+  const [properties, testimonials, settings] = await Promise.all([
+    client.fetch(query),
+    client.fetch(testimonialQuery),
+    fetchSettings()
+  ])
 
   const heroImage =
-    properties?.[2]?.gallery?.[3]
-      ? urlFor(properties[2].gallery[3]).width(2000).height(1100).fit('crop').auto('format').url()
-      : null
+    settings?.heroImage?.asset
+      ? urlFor(settings.heroImage).width(2000).height(1100).fit('crop').auto('format').url()
+      : (properties?.[2]?.gallery?.[3]
+          ? urlFor(properties[2].gallery[3]).width(2000).height(1100).fit('crop').auto('format').url()
+          : null)
+
+  const heroTitle = settings?.heroTitle || 'Escapes costeros & cielos estrellados'
+  const heroSubtitle = settings?.heroSubtitle || 'Refugios diseñados para desconectar, respirar mar y contemplar el cosmos en destinos únicos de Chile.'
+
+  const whyUs = settings?.whyUs?.length
+    ? settings.whyUs
+    : [
+        { title: 'Selección única', description: 'Few, not many. Solo refugios que cumplen estándares de atmósfera y descanso.' },
+        { title: 'Superhost probado', description: 'Historial consistente de evaluaciones altas y soporte rápido.' },
+        { title: 'Cancelación flexible', description: 'Reembolso completo hasta 7 días antes (salvo fechas pico indicadas).' },
+        { title: 'Experiencias locales', description: 'Recomendaciones verificadas para sumar valor sin improvisar.' },
+        { title: 'Transparencia de precios', description: 'Sin tarifas sorpresa: claridad desde el inicio.' },
+        { title: 'Soporte en la estadía', description: 'Acompañamiento antes, durante y después de la reserva.' }
+      ]
 
   return (
     <main className="bg-white dark:bg-gray-900">
@@ -58,10 +77,10 @@ export default async function HomePage() {
         <div className={`relative mx-auto max-w-4xl px-6 pt-40 pb-36 sm:pt-48 sm:pb-44 lg:px-8 ${!heroImage ? 'bg-gradient-to-b from-gray-900 via-gray-800 to-gray-700 text-white rounded-b-3xl' : ''}`}>
           <div className="text-center">
             <h1 className="font-display text-hero font-semibold text-white drop-shadow-[0_4px_14px_rgba(0,0,0,0.35)]">
-              Escapes costeros & cielos estrellados
+              {heroTitle}
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-copy-lg text-gray-200 md:text-lg">
-              Refugios diseñados para desconectar, respirar mar y contemplar el cosmos en destinos únicos de Chile.
+            <p className="mx-auto mt-6 max-w-2xl text-copy-lg text-gray-200">
+              {heroSubtitle}
             </p>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <Link
@@ -102,36 +121,17 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { t: 'Selección única', d: 'Few, not many. Solo refugios que cumplen estándares de atmósfera y descanso.' },
-              { t: 'Superhost probado', d: 'Historial consistente de evaluaciones altas y soporte rápido.' },
-              { t: 'Cancelación flexible', d: 'Reembolso completo hasta 7 días antes (salvo fechas pico indicadas).' },
-              { t: 'Experiencias locales', d: 'Recomendaciones verificadas para sumar valor sin improvisar.' },
-              { t: 'Transparencia de precios', d: 'Sin tarifas sorpresa al final: claridad desde el inicio.' },
-              { t: 'Soporte durante tu estadía', d: 'Acompañamiento antes, durante y después de la reserva.' }
-            ].map(item => (
+            {whyUs.map(item => (
               <div
-                key={item.t}
+                key={item._key || item.title}
                 className="group relative flex flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-amber-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/70 dark:hover:border-amber-400"
               >
-                <div className="mb-4 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-amber-50 text-amber-600 ring-1 ring-amber-200 dark:bg-amber-900/20 dark:text-amber-300 dark:ring-amber-800/60">
-                  <svg
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    fill="none"
-                    className="h-5 w-5"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12l4 4L19 7" />
-                  </svg>
-                </div>
-                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
-                  {item.t}
+                <h3 className="font-display text-base font-semibold text-ink dark:text-white">
+                  {item.title}
                 </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
-                  {item.d}
+                <p className="mt-2 text-sm leading-relaxed text-ink-subtle dark:text-ink-dark-subtle">
+                  {item.description}
                 </p>
-                <span className="pointer-events-none absolute inset-x-0 -bottom-px h-px w-full scale-x-0 bg-gradient-to-r from-amber-400 to-amber-500 transition group-hover:scale-x-100" />
               </div>
             ))}
           </div>
@@ -153,24 +153,59 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Sección de Propiedades Destacadas */}
-      <div id="refugios-destacados" className="py-24 sm:py-32">
+      {/* Sección de Destinos */}
+      <section id="refugios-destacados" className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-              Refugios seleccionados
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-              Arquitectura simple, confort honesto y naturaleza protagonista.
-            </p>
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">Destinos</h2>
+            <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">Elige tu próxima escapada costera.</p>
           </div>
-          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-            {properties.map((property) => (
-              <PropertyCard key={property._id} property={property} />
-            ))}
+          <div className="mx-auto mt-16 grid max-w-3xl grid-cols-1 gap-10 sm:mt-20 sm:grid-cols-2">
+            {/* Card Pichilemu */}
+            <Link
+              href="/refugios?l=Pichilemu"
+              className="group relative block h-72 w-full overflow-hidden rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/60"
+            >
+              <div className="absolute inset-0">
+                <Image
+                  src="/pichilemu-surf.jpg"
+                  alt="Surf en Pichilemu"
+                  fill
+                  sizes="(min-width: 640px) 50vw, 100vw"
+                  className="object-cover transition duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/10" />
+              </div>
+              <div className="relative flex h-full flex-col justify-end p-6">
+                <h3 className="text-2xl font-semibold text-white drop-shadow-md">Pichilemu</h3>
+                <p className="mt-2 max-w-xs text-sm text-white/85">Capital del surf chileno. Olas consistentes, energía salina y atardeceres intensos.</p>
+                <span className="mt-4 inline-flex items-center text-sm font-medium text-amber-300">Ver refugios <span className="ml-1 transition group-hover:translate-x-1">→</span></span>
+              </div>
+            </Link>
+            {/* Card La Serena */}
+            <Link
+              href="/refugios?l=La%20Serena"
+              className="group relative block h-72 w-full overflow-hidden rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/60"
+            >
+              <div className="absolute inset-0">
+                <Image
+                  src="/la-serena-faro.jpg"
+                  alt="Faro de La Serena"
+                  fill
+                  sizes="(min-width: 640px) 50vw, 100vw"
+                  className="object-cover transition duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/10" />
+              </div>
+              <div className="relative flex h-full flex-col justify-end p-6">
+                <h3 className="text-2xl font-semibold text-white drop-shadow-md">La Serena</h3>
+                <p className="mt-2 max-w-xs text-sm text-white/85">Playas amplias, bruma matinal, arquitectura tradicional y cielos diáfanos.</p>
+                <span className="mt-4 inline-flex items-center text-sm font-medium text-amber-300">Ver refugios <span className="ml-1 transition group-hover:translate-x-1">→</span></span>
+              </div>
+            </Link>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Testimonios con fondo radial suave */}
       <section className="relative overflow-hidden py-24 dark:bg-gray-800/80 sm:py-32">
