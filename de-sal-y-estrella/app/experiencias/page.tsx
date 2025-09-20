@@ -30,7 +30,7 @@ export default function ExperienciasPage() {
           </h1>
           <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
             Nuestros refugios son el punto de partida. La aventura la defines
-            tú. Explora nuestras guías curadas para cada destino.
+            tú. Explora nuestras guías diseñadas para cada destino.
           </p>
         </div>
 

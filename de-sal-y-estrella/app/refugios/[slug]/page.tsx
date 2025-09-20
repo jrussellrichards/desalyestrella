@@ -153,7 +153,7 @@ export default async function PropertyPage({ params }: { params: { slug: string 
               </h2>
               <ul className="mt-4 grid gap-3 text-sm text-gray-600 dark:text-gray-300 sm:grid-cols-3">
                 <li className="rounded-md bg-gray-50 p-3 dark:bg-gray-800/60">
-                  Cuidado curatorial en cada detalle
+                  Cuidado único en cada detalle
                 </li>
                 <li className="rounded-md bg-gray-50 p-3 dark:bg-gray-800/60">
                   Conexión naturaleza + descanso profundo

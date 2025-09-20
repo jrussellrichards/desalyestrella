@@ -36,7 +36,7 @@ export default async function BlogPage() {
             Guías de Viaje
           </h1>
           <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
-            Descubre los secretos de nuestros destinos, curados por expertos
+            Descubre los secretos de nuestros destinos, diseñados por expertos
             locales.
           </p>
         </div>
