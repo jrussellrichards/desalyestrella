@@ -62,7 +62,7 @@ export default async function RefugiosPage({ searchParams }: Props) {
         </div>
 
         {locationFilter && (
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
             {destinations.map(d => {
               const active = locationFilter === d.slugParam.toLowerCase()
               return (
@@ -86,41 +86,73 @@ export default async function RefugiosPage({ searchParams }: Props) {
         )}
 
         {!locationFilter && (
-          <div className="mt-14 mx-auto grid max-w-4xl grid-cols-1 gap-10 sm:grid-cols-2">
-            {destinations.map(dest => {
-              const imageUrl = dest.image?.asset
-                ? urlFor(dest.image).width(1200).height(900).fit('crop').auto('format').url()
-                : (dest.slugParam.toLowerCase().includes('pich') ? '/pichilemu-surf.jpg' : '/la-serena-faro.jpg')
-              return (
-                <Link
-                  key={dest._key || dest.slugParam}
-                  href={`/refugios?l=${encodeURIComponent(dest.slugParam)}`}
-                  className="group relative block h-72 w-full overflow-hidden rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/60"
-                >
-                  <div className="absolute inset-0 bg-black">
-                    <Image
-                      src={imageUrl}
-                      alt={dest.title}
-                      fill
-                      sizes="(min-width: 640px) 50vw, 100vw"
-                      className="object-cover transition duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/10" />
+          <>
+            <div className="mt-14 mx-auto flex max-w-5xl flex-wrap justify-center gap-10">
+              {destinations.map(dest => {
+                const imageUrl = dest.image?.asset
+                  ? urlFor(dest.image).width(1200).height(900).fit('crop').auto('format').url()
+                  : (dest.slugParam.toLowerCase().includes('pich') ? '/pichilemu-surf.jpg' : '/la-serena-faro.jpg')
+                return (
+                  <div key={dest._key || dest.slugParam} className="w-full max-w-sm">
+                    <Link
+                      href={`/refugios?l=${encodeURIComponent(dest.slugParam)}`}
+                      className="group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/60"
+                    >
+                      <div className="absolute inset-0 bg-black">
+                        <Image
+                          src={imageUrl}
+                          alt={dest.title}
+                          fill
+                          sizes="(min-width: 640px) 50vw, 100vw"
+                          className="object-cover transition duration-700 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/10" />
+                      </div>
+                      <div className="relative flex h-full flex-col justify-end p-6">
+                        <h3 className="text-xl font-semibold text-white drop-shadow-md">{dest.title}</h3>
+                        {dest.description && (
+                          <p className="mt-2 line-clamp-3 text-sm text-white/85">{dest.description}</p>
+                        )}
+                        <span className="mt-4 inline-flex items-center text-sm font-medium text-amber-300">Ver refugios <span className="ml-1 transition group-hover:translate-x-1">→</span></span>
+                      </div>
+                    </Link>
                   </div>
-                  <div className="relative flex h-full flex-col justify-end p-6">
-                    <h3 className="text-2xl font-semibold text-white drop-shadow-md">{dest.title}</h3>
-                    {dest.description && (
-                      <p className="mt-2 max-w-xs text-sm text-white/85">{dest.description}</p>
-                    )}
-                    <span className="mt-4 inline-flex items-center text-sm font-medium text-amber-300">Ver refugios <span className="ml-1 transition group-hover:translate-x-1">→</span></span>
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
+                )
+              })}
+            </div>
+            {/* Razones para elegir cada destino */}
+            <section className="mx-auto mt-20 max-w-6xl">
+              <div className="text-center mb-12">
+                <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">¿No sabes que destino elegir?</h2>
+                <p className="mt-3 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-base">Cada lugar ofrece una energía distinta. Elige según el tipo de conexión con la naturaleza y el ritmo que buscas para tu estadía.</p>
+              </div>
+              <div className="grid gap-10 md:grid-cols-2">
+                <div className="rounded-2xl border border-gray-200/70 dark:border-gray-700/70 bg-white/70 dark:bg-gray-800/60 backdrop-blur-sm p-8 shadow-sm">
+                  <h3 className="text-xl font-semibold text-amber-600 dark:text-amber-400 flex items-center gap-2">Pichilemu <span className="text-sm font-medium text-gray-500 dark:text-gray-400">(Energía, Aventura y Desconexión Activa.)</span></h3>
+                  <ul className="mt-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                    <li className="flex gap-2"><span className="text-amber-500">•</span> Olas de clase mundial y cultura del surf viva.</li>
+                    <li className="flex gap-2"><span className="text-amber-500">•</span> Atardeceres dramáticos y bruma marina envolvente.</li>
+                    <li className="flex gap-2"><span className="text-amber-500">•</span> Gastronomía costera: mariscos frescos y cocina local.</li>
+                    <li className="flex gap-2"><span className="text-amber-500">•</span> Ritmo desacelerado para reconectar y observar.</li>
+                    <li className="flex gap-2"><span className="text-amber-500">•</span> Inspiración creativa: madera salina, viento y océano.</li>
+                  </ul>
+                </div>
+                <div className="rounded-2xl border border-gray-200/70 dark:border-gray-700/70 bg-white/70 dark:bg-gray-800/60 backdrop-blur-sm p-8 shadow-sm">
+                  <h3 className="text-xl font-semibold text-amber-600 dark:text-amber-400 flex items-center gap-2">La Serena <span className="text-sm font-medium text-gray-500 dark:text-gray-400">(Calma, Exploración y Conexión Cósmica. )</span></h3>
+                  <ul className="mt-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
+                    <li className="flex gap-2"><span className="text-amber-500">•</span> Playas extensas para caminar sin prisa.</li>
+                    <li className="flex gap-2"><span className="text-amber-500">•</span> Cielos nocturnos despejados cercanos a observatorios.</li>
+                    <li className="flex gap-2"><span className="text-amber-500">•</span> Arquitectura tradicional y patrimonio histórico.</li>
+                    <li className="flex gap-2"><span className="text-amber-500">•</span> Clima templado y luz suave gran parte del año.</li>
+                    <li className="flex gap-2"><span className="text-amber-500">•</span> Acceso al Valle de Elqui: energía, pisco y cielos.</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+          </>
         )}
         {locationFilter && (
-          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 mx-auto flex max-w-6xl flex-wrap justify-center gap-8">
             {filtered.length === 0 && (
               <div className="col-span-full flex flex-col items-center gap-4 text-center">
                 <p className="text-sm text-gray-500 dark:text-gray-400">No hay refugios en esa ubicación.</p>
@@ -128,7 +160,9 @@ export default async function RefugiosPage({ searchParams }: Props) {
               </div>
             )}
             {filtered.map(property => (
-              <PropertyCard key={property._id} property={property} />
+              <div key={property._id} className="w-full max-w-sm">
+                <PropertyCard property={property} />
+              </div>
             ))}
           </div>
         )}
