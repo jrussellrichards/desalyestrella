@@ -127,25 +127,29 @@ export default async function RefugiosPage({ searchParams }: Props) {
                 <p className="mt-3 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-base">Cada lugar ofrece una energía distinta. Elige según el tipo de conexión con la naturaleza y el ritmo que buscas para tu estadía.</p>
               </div>
               <div className="grid gap-10 md:grid-cols-2">
-                <div className="rounded-2xl border border-gray-200/70 dark:border-gray-700/70 bg-white/70 dark:bg-gray-800/60 backdrop-blur-sm p-8 shadow-sm">
-                  <h3 className="text-xl font-semibold text-amber-600 dark:text-amber-400 flex items-center gap-2">Pichilemu <span className="text-sm font-medium text-gray-500 dark:text-gray-400">(Energía, Aventura y Desconexión Activa.)</span></h3>
-                  <ul className="mt-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                    <li className="flex gap-2"><span className="text-amber-500">•</span> Olas de clase mundial y cultura del surf viva.</li>
-                    <li className="flex gap-2"><span className="text-amber-500">•</span> Atardeceres dramáticos y bruma marina envolvente.</li>
-                    <li className="flex gap-2"><span className="text-amber-500">•</span> Gastronomía costera: mariscos frescos y cocina local.</li>
-                    <li className="flex gap-2"><span className="text-amber-500">•</span> Ritmo desacelerado para reconectar y observar.</li>
-                    <li className="flex gap-2"><span className="text-amber-500">•</span> Inspiración creativa: madera salina, viento y océano.</li>
-                  </ul>
+                <div className="rounded-2xl border border-gray-200/70 dark:border-gray-700/70 bg-white/80 dark:bg-gray-800/60 backdrop-blur-sm p-8 shadow-sm">
+                  <h3 className="text-xl font-semibold text-amber-600 dark:text-amber-400">Pichilemu</h3>
+                  <div className="mt-4 space-y-4 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                    <p>Elige Pichilemu si tu energía vibra con el océano, la aventura y un espíritu libre. En la capital mundial del surf, cada día es una invitación a conectar con la naturaleza en su estado más puro. Es tu destino si buscas:</p>
+                    <ul className="space-y-2">
+                      <li className="flex gap-2"><span className="text-amber-500">•</span> Desafiar olas perfectas, seas experto o principiante.</li>
+                      <li className="flex gap-2"><span className="text-amber-500">•</span> Sumergirte en una cultura bohemia de surf, cafés de autor y gastronomía marina.</li>
+                      <li className="flex gap-2"><span className="text-amber-500">•</span> Admirar paisajes salvajes desde los icónicos acantilados de Punta de Lobos.</li>
+                    </ul>
+                    <p>Pichilemu es adrenalina y desconexión. Es la base perfecta para tu aventura en la costa indómita de Chile.</p>
+                  </div>
                 </div>
-                <div className="rounded-2xl border border-gray-200/70 dark:border-gray-700/70 bg-white/70 dark:bg-gray-800/60 backdrop-blur-sm p-8 shadow-sm">
-                  <h3 className="text-xl font-semibold text-amber-600 dark:text-amber-400 flex items-center gap-2">La Serena <span className="text-sm font-medium text-gray-500 dark:text-gray-400">(Calma, Exploración y Conexión Cósmica. )</span></h3>
-                  <ul className="mt-4 space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                    <li className="flex gap-2"><span className="text-amber-500">•</span> Playas extensas para caminar sin prisa.</li>
-                    <li className="flex gap-2"><span className="text-amber-500">•</span> Cielos nocturnos despejados cercanos a observatorios.</li>
-                    <li className="flex gap-2"><span className="text-amber-500">•</span> Arquitectura tradicional y patrimonio histórico.</li>
-                    <li className="flex gap-2"><span className="text-amber-500">•</span> Clima templado y luz suave gran parte del año.</li>
-                    <li className="flex gap-2"><span className="text-amber-500">•</span> Acceso al Valle de Elqui: energía, pisco y cielos.</li>
-                  </ul>
+                <div className="rounded-2xl border border-gray-200/70 dark:border-gray-700/70 bg-white/80 dark:bg-gray-800/60 backdrop-blur-sm p-8 shadow-sm">
+                  <h3 className="text-xl font-semibold text-amber-600 dark:text-amber-400">La Serena</h3>
+                  <div className="mt-4 space-y-4 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                    <p>Elige La Serena si buscas el equilibrio perfecto entre el descanso en la playa, la cultura y la exploración. Esta ciudad te ofrece la calma de su costa y te abre las puertas a las maravillas del Valle del Elqui. Es tu destino si buscas:</p>
+                    <ul className="space-y-2">
+                      <li className="flex gap-2"><span className="text-amber-500">•</span> Relajarte en extensas playas de arena, ideales para caminar y disfrutar del sol.</li>
+                      <li className="flex gap-2"><span className="text-amber-500">•</span> Combinar la tranquilidad del mar con el encanto de un centro histórico y una gastronomía vibrante.</li>
+                      <li className="flex gap-2"><span className="text-amber-500">•</span> Tener la base ideal para descubrir la magia del Valle del Elqui, sus viñedos y los cielos más estrellados del mundo.</li>
+                    </ul>
+                    <p>La Serena es la pausa que necesitas y el comienzo de un viaje inolvidable, desde el mar hasta las estrellas.</p>
+                  </div>
                 </div>
               </div>
             </section>
