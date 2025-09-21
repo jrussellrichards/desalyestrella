@@ -4,14 +4,12 @@ import {
   IconDeviceTv,
   IconParking,
   IconCooker,
-  IconSun,
   IconFlame,
   IconPool,
   IconBath,
   IconDog,
   IconCheck,
   IconBeach,
-  IconBuildingWarehouse,
   IconBuildingStore
 } from '@tabler/icons-react'
 
