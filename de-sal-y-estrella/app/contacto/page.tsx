@@ -85,20 +85,7 @@ export default async function ContactoPage() {
                     </div>
                   </li>
                 )}
-                {settings.address && (
-                  <li className="flex items-start gap-3">
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-amber-600/10 text-amber-600">
-                      <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s6-5.686 6-11a6 6 0 10-12 0c0 5.314 6 11 6 11z" />
-                        <circle cx="12" cy="10" r="2" />
-                      </svg>
-                    </span>
-                    <div>
-                      <p className="font-medium text-gray-900 dark:text-white">Base Operativa</p>
-                      <p>{settings.address}</p>
-                    </div>
-                  </li>
-                )}
+       
               </ul>
             </section>
 

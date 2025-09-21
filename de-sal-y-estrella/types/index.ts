@@ -88,4 +88,14 @@ export interface GlobalSettings {
     description?: string;
     _key?: string;
   }[];
+  destinations?: {
+    _key?: string;
+    title: string;
+    slugParam: string; // valor que se pasa como ?l=
+    description?: string;
+    image?: {
+      asset?: { _ref: string; _type: string };
+      alt?: string;
+    }
+  }[];
 }

@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { client } from '@/lib/sanity.client'
 import { groq } from 'next-sanity'
-import { Property, Testimonial } from '@/types' // Importamos Testimonial
-import PropertyCard from '@/components/PropertyCard'
+import { Property, Testimonial, GlobalSettings } from '@/types'
 import TestimonialCarousel from '@/components/TestimonialCarousel'
 import EmailCapture from '@/components/EmailCapture' // Asegúrate de que la ruta sea correcta
 import { urlFor } from '@/lib/image'
@@ -30,23 +29,39 @@ const testimonialQuery = groq`*[_type == "testimonial"] | order(_createdAt desc)
 }`
 
 export default async function HomePage() {
-  const [properties, testimonials, settings] = await Promise.all([
+  const [properties, testimonials, settings]: [Property[], Testimonial[], GlobalSettings] = await Promise.all([
     client.fetch(query),
     client.fetch(testimonialQuery),
     fetchSettings()
   ])
 
-  const heroImage =
-    settings?.heroImage?.asset
-      ? urlFor(settings.heroImage).width(2000).height(1100).fit('crop').auto('format').url()
-      : (properties?.[2]?.gallery?.[3]
-          ? urlFor(properties[2].gallery[3]).width(2000).height(1100).fit('crop').auto('format').url()
-          : null)
+  const heroImage = settings?.heroImage?.asset
+    ? urlFor(settings.heroImage).width(2000).height(1100).fit('crop').auto('format').url()
+    : (properties?.[2]?.gallery?.[3]
+        ? urlFor(properties[2].gallery[3]).width(2000).height(1100).fit('crop').auto('format').url()
+        : null)
+
+  const destinations: Required<GlobalSettings>['destinations'] = (settings?.destinations && settings.destinations.length > 0)
+    ? settings.destinations
+    : [
+        {
+          _key: 'pichilemu-fallback',
+          title: 'Pichilemu',
+          slugParam: 'Pichilemu',
+          description: 'Capital del surf chileno. Olas consistentes, energía salina y atardeceres intensos.'
+        },
+        {
+          _key: 'la-serena-fallback',
+          title: 'La Serena',
+          slugParam: 'La Serena',
+          description: 'Playas amplias, bruma matinal, arquitectura tradicional y cielos diáfanos.'
+        }
+      ]
 
   const heroTitle = settings?.heroTitle || 'Escapes costeros & cielos estrellados'
   const heroSubtitle = settings?.heroSubtitle || 'Refugios diseñados para desconectar, respirar mar y contemplar el cosmos en destinos únicos de Chile.'
 
-  const whyUs = settings?.whyUs?.length
+  const whyUs: NonNullable<GlobalSettings['whyUs']> = settings?.whyUs?.length
     ? settings.whyUs
     : [
         { title: 'Selección única', description: 'Few, not many. Solo refugios que cumplen estándares de atmósfera y descanso.' },
@@ -65,7 +80,7 @@ export default async function HomePage() {
           <div className="absolute inset-0">
             <Image
               src={heroImage}
-              alt={`Escena de ${properties[0]?.name || 'refugio'}`}
+              alt={`Escena de ${properties?.[0]?.name || 'refugio'}`}
               fill
               priority
               sizes="100vw"
@@ -121,7 +136,7 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {whyUs.map(item => (
+            {whyUs.map((item) => (
               <div
                 key={item._key || item.title}
                 className="group relative flex flex-col rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-amber-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-800/70 dark:hover:border-amber-400"
@@ -153,7 +168,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Sección de Destinos */}
+      {/* Sección de Destinos dinámica */}
       <section id="refugios-destacados" className="py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
@@ -161,48 +176,34 @@ export default async function HomePage() {
             <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">Elige tu próxima escapada costera.</p>
           </div>
           <div className="mx-auto mt-16 grid max-w-3xl grid-cols-1 gap-10 sm:mt-20 sm:grid-cols-2">
-            {/* Card Pichilemu */}
-            <Link
-              href="/refugios?l=Pichilemu"
-              className="group relative block h-72 w-full overflow-hidden rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/60"
-            >
-              <div className="absolute inset-0">
-                <Image
-                  src="/pichilemu-surf.jpg"
-                  alt="Surf en Pichilemu"
-                  fill
-                  sizes="(min-width: 640px) 50vw, 100vw"
-                  className="object-cover transition duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/10" />
-              </div>
-              <div className="relative flex h-full flex-col justify-end p-6">
-                <h3 className="text-2xl font-semibold text-white drop-shadow-md">Pichilemu</h3>
-                <p className="mt-2 max-w-xs text-sm text-white/85">Capital del surf chileno. Olas consistentes, energía salina y atardeceres intensos.</p>
-                <span className="mt-4 inline-flex items-center text-sm font-medium text-amber-300">Ver refugios <span className="ml-1 transition group-hover:translate-x-1">→</span></span>
-              </div>
-            </Link>
-            {/* Card La Serena */}
-            <Link
-              href="/refugios?l=La%20Serena"
-              className="group relative block h-72 w-full overflow-hidden rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/60"
-            >
-              <div className="absolute inset-0">
-                <Image
-                  src="/la-serena-faro.jpg"
-                  alt="Faro de La Serena"
-                  fill
-                  sizes="(min-width: 640px) 50vw, 100vw"
-                  className="object-cover transition duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/10" />
-              </div>
-              <div className="relative flex h-full flex-col justify-end p-6">
-                <h3 className="text-2xl font-semibold text-white drop-shadow-md">La Serena</h3>
-                <p className="mt-2 max-w-xs text-sm text-white/85">Playas amplias, bruma matinal, arquitectura tradicional y cielos diáfanos.</p>
-                <span className="mt-4 inline-flex items-center text-sm font-medium text-amber-300">Ver refugios <span className="ml-1 transition group-hover:translate-x-1">→</span></span>
-              </div>
-            </Link>
+            {destinations?.map((dest) => {
+              const imageUrl = dest.image?.asset ? urlFor(dest.image).width(1200).height(900).fit('crop').auto('format').url() : (dest.slugParam.toLowerCase().includes('pich') ? '/pichilemu-surf.jpg' : '/la-serena-faro.jpg')
+              return (
+                <Link
+                  key={dest._key || dest.slugParam}
+                  href={`/refugios?l=${encodeURIComponent(dest.slugParam)}`}
+                  className="group relative block h-72 w-full overflow-hidden rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/60"
+                >
+                  <div className="absolute inset-0">
+                    <Image
+                      src={imageUrl}
+                      alt={dest.title}
+                      fill
+                      sizes="(min-width: 640px) 50vw, 100vw"
+                      className="object-cover transition duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/10" />
+                  </div>
+                  <div className="relative flex h-full flex-col justify-end p-6">
+                    <h3 className="text-2xl font-semibold text-white drop-shadow-md">{dest.title}</h3>
+                    {dest.description && (
+                      <p className="mt-2 max-w-xs text-sm text-white/85">{dest.description}</p>
+                    )}
+                    <span className="mt-4 inline-flex items-center text-sm font-medium text-amber-300">Ver refugios <span className="ml-1 transition group-hover:translate-x-1">→</span></span>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>

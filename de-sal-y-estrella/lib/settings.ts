@@ -15,7 +15,14 @@ const settingsQuery = groq`*[_type == "settings"][0]{
   heroTitle,
   heroSubtitle,
   heroImage{asset->, alt},
-  whyUs[]{ title, description, _key }
+  whyUs[]{ title, description, _key },
+  destinations[]{
+    _key,
+    title,
+    slugParam,
+    description,
+    image{asset->, alt}
+  }
 }`
 
 export async function fetchSettings(): Promise<GlobalSettings> {

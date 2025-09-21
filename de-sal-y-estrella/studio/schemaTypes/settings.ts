@@ -110,5 +110,27 @@ export default defineType({
       }],
       validation: Rule => Rule.max(12)
     }),
+    defineField({
+      name: 'destinations',
+      title: 'Destinos (Cards Home)',
+      description: 'Configura las cards de destinos que aparecen en la home',
+      type: 'array',
+      group: 'marketing',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'title', title: 'Título', type: 'string', validation: Rule => Rule.required() },
+            { name: 'slugParam', title: 'Parámetro ?l=', type: 'string', description: 'Ej: Pichilemu / La Serena', validation: Rule => Rule.required() },
+            { name: 'description', title: 'Descripción', type: 'text', rows: 2 },
+            { name: 'image', title: 'Imagen', type: 'image', options: { hotspot: true }, validation: Rule => Rule.required() }
+          ],
+          preview: {
+            select: { title: 'title', media: 'image' }
+          }
+        }
+      ],
+      validation: Rule => Rule.max(8)
+    }),
   ]
 })
