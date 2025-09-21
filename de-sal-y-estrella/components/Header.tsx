@@ -1,7 +1,9 @@
-'use client'
+'use client'  // Añade esto al principio para marcar como Client Component
+
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
 interface HeaderProps {
   logoUrl?: string | null
@@ -10,6 +12,17 @@ interface HeaderProps {
 
 export default function Header({ logoUrl, logoAlt }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const pathname = usePathname()
+
+  useEffect(() => {
+    // View Transitions API para transiciones suaves entre páginas
+    if ('startViewTransition' in document) {
+      document.startViewTransition(() => {
+        // Aquí puedes añadir lógica adicional si necesitas
+      })
+    }
+  }, [pathname])
+
   const navLinks = [
     { href: '/', label: 'Inicio' },
     { href: '/historia', label: 'Nuestra Historia' },
@@ -62,7 +75,11 @@ export default function Header({ logoUrl, logoAlt }: HeaderProps) {
         </Link>
         <nav className="hidden items-center space-x-6 md:flex">
           {navLinks.map(l => (
-            <Link key={l.href} href={l.href} className="text-sm font-medium transition-colors hover:text-gray-300">
+            <Link
+              key={l.href}
+              href={l.href}
+              className="text-sm font-medium transition-colors duration-200 hover:text-gray-300"
+            >
               {l.label}
             </Link>
           ))}
@@ -98,14 +115,14 @@ export default function Header({ logoUrl, logoAlt }: HeaderProps) {
         </div>
       </div>
       {isMenuOpen && (
-        <div className="md:hidden">
-          <div className="space-y-1 px-2 pb-3 pt-2">
+        <div className="md:hidden overflow-hidden transition-all duration-300 ease-in-out">
+          <div className="space-y-1 px-2 pb-3 pt-2 transform translate-y-0 opacity-100 animate-slide-down">
             {navLinks.map(l => (
               <Link
                 key={l.href}
                 href={l.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-800 hover:text-white"
+                className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 transition-colors duration-200 hover:bg-gray-800 hover:text-white"
               >
                 {l.label}
               </Link>
