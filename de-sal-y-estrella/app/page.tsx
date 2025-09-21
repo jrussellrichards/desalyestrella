@@ -130,8 +130,8 @@ export default async function HomePage() {
             <h2 className="font-display text-h2 font-semibold tracking-tight text-ink dark:text-white">
               ¿Por qué reservar con nosotros?
             </h2>
-            <p className="mt-6 max-w-prose text-copy-lg text-ink-subtle dark:text-ink-dark-subtle">
-              Diseñamos pocos refugios para maximizar calidad y autenticidad.
+            <p className="mt-6 mx-auto max-w-2xl text-copy-lg text-ink-subtle dark:text-ink-dark-subtle">
+              De Sal y Estrella ofrece refugios pensados para el viajero moderno. Son tu base para explorar y tu espacio para desconectar, con todo el confort y una conexión real al paisaje chileno.
             </p>
           </div>
 
