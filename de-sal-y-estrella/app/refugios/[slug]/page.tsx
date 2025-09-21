@@ -12,6 +12,7 @@ import { fetchSettings } from '@/lib/settings'
 import LightboxGallery from '@/components/LightboxGallery'
 import { hasAssetRef } from '@/utils/hasAssetRef'
 import { AmenityIcon } from '@/components/AmenityIcon'
+import { IconUsers, IconBed, IconBath } from '@tabler/icons-react'
 
 // Revalidación ISR (5 min) para balance entre frescura y rendimiento
 export const revalidate = 300
@@ -111,17 +112,13 @@ export default async function PropertyPage({ params }: { params: { slug: string 
               <ul className="mt-4 flex flex-wrap gap-6 text-sm text-gray-600 dark:text-gray-300">
                 {typeof property.capacity === 'number' && (
                   <li className="flex items-center">
-                    <svg className="h-5 w-5 text-amber-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM4 21a8 8 0 0116 0H4z" />
-                    </svg>
+                    <IconUsers className="h-5 w-5 text-amber-500" stroke={1.8} />
                     <span className="ml-2">{property.capacity} huéspedes</span>
                   </li>
                 )}
                 {typeof property.bedrooms === 'number' && (
                   <li className="flex items-center">
-                    <svg className="h-5 w-5 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M6 10V7a3 3 0 013-3h6a3 3 0 013 3v3m-2 4v5m-8-5v5M3 10v10h18V10" />
-                    </svg>
+                    <IconBed className="h-5 w-5 text-amber-500" stroke={1.8} />
                     <span className="ml-2">
                       {property.bedrooms} {property.bedrooms === 1 ? 'dormitorio' : 'dormitorios'}
                     </span>
@@ -129,9 +126,7 @@ export default async function PropertyPage({ params }: { params: { slug: string 
                 )}
                 {typeof property.bathrooms === 'number' && (
                   <li className="flex items-center">
-                    <svg className="h-5 w-5 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 9V5a3 3 0 016 0v4m4 2H5v6a4 4 0 004 4h6a4 4 0 004-4v-6z" />
-                    </svg>
+                    <IconBath className="h-5 w-5 text-amber-500" stroke={1.8} />
                     <span className="ml-2">
                       {property.bathrooms} {property.bathrooms === 1 ? 'baño' : 'baños'}
                     </span>

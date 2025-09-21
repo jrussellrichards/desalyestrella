@@ -3,6 +3,7 @@ import { urlFor } from '@/lib/image'
 import Link from 'next/link'
 import { Property } from '@/types'
 import { hasAssetRef } from '@/utils/hasAssetRef'
+import { IconUsers, IconBed, IconBath } from '@tabler/icons-react'
 
 export default function PropertyCard({ property }: { property: Property }) {
   const cover = property.gallery?.find(hasAssetRef)
@@ -42,25 +43,19 @@ export default function PropertyCard({ property }: { property: Property }) {
         <div className="mt-3 flex flex-wrap gap-2">
           {typeof property.capacity === 'number' && (
             <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-[11px] font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-200">
-              <svg className="mr-1 h-3.5 w-3.5 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM4 21a8 8 0 0116 0H4z" />
-              </svg>
+              <IconUsers className="mr-1 h-4 w-4 text-amber-500" stroke={1.8} />
               {property.capacity} huésp.
             </span>
           )}
           {typeof property.bedrooms === 'number' && (
             <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-[11px] font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-200">
-              <svg className="mr-1 h-3.5 w-3.5 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M6 10V7a3 3 0 013-3h6a3 3 0 013 3v3m-2 4v5m-8-5v5M3 10v10h18V10" />
-              </svg>
+              <IconBed className="mr-1 h-4 w-4 text-amber-500" stroke={1.8} />
               {property.bedrooms} dorm.
             </span>
           )}
           {typeof property.bathrooms === 'number' && (
             <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-[11px] font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-200">
-              <svg className="mr-1 h-3.5 w-3.5 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 9V5a3 3 0 016 0v4m4 2H5v6a4 4 0 004 4h6a4 4 0 004-4v-6z" />
-              </svg>
+              <IconBath className="mr-1 h-4 w-4 text-amber-500" stroke={1.8} />
               {property.bathrooms} baño{property.bathrooms === 1 ? '' : 's'}
             </span>
           )}
