@@ -12,10 +12,10 @@ export default function Header({ logoUrl, logoAlt }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const navLinks = [
     { href: '/', label: 'Inicio' },
+    { href: '/historia', label: 'Nuestra Historia' },
     { href: '/refugios', label: 'Refugios' },
     { href: '/experiencias', label: 'Experiencias' },
     { href: '/blog', label: 'Guías de Viaje' },
-    { href: '/historia', label: 'Nuestra Historia' },
     { href: '/contacto', label: 'Contacto' },
   ]
   const socialLinks = [
