@@ -1,4 +1,4 @@
-import type { FC } from 'react'
+import type { FC, ReactElement } from 'react'
 import {
   IconListDetails,
   IconStar,
@@ -22,7 +22,7 @@ export type FeatureName =
   | 'rest'
   | 'check'
 
-const dict: Record<FeatureName, JSX.Element> = {
+const dict: Record<FeatureName, ReactElement> = {
   curation: <IconListDetails className={cls} stroke={2} />,
   superhost: <IconStar className={cls} stroke={2} />,
   cancel: <IconShieldCancel className={cls} stroke={2} />,

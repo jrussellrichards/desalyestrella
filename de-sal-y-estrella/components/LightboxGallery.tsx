@@ -138,7 +138,11 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
             }}
             onTouchEnd={() => {
               if (Math.abs(touchDelta) > 50) {
-                touchDelta < 0 ? next() : prev()
+                if (touchDelta < 0) {
+                  next()
+                } else {
+                  prev()
+                }
               }
               setTouchStartX(null)
               setTouchDelta(0)
