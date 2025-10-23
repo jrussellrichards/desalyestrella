@@ -19,6 +19,13 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'idHostaway',
+      title: 'Id hostaway',
+      type: 'number',
+      group: 'content',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug (URL)',
       type: 'slug',

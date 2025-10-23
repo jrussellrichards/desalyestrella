@@ -22,6 +22,7 @@ const propertyQuery = groq`*[_type == "property" && slug.current == $slug][0]{
   _id,
   name,
   slug,
+  idHostaway,
   location,
   tagline,
   gallery,
@@ -185,7 +186,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
               
               <HostawayWidget
                 baseUrl="https://desalyestrella.holidayfuture.com/"
-                listingId={435632}
+                listingId={property.idHostaway}
                 numberOfMonths={2}
                 openInNewTab={true}
                 font="Inter"

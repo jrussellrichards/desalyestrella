@@ -13,7 +13,8 @@ const query = groq`*[_type == "property"]{
   slug,
   location,
   tagline,
-  gallery
+  gallery,
+  idHostaway
 }`
 
 interface Props {
