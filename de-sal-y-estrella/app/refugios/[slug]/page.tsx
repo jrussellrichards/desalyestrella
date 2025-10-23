@@ -4,6 +4,7 @@ import { Property } from '@/types'
 import { urlFor } from '@/lib/image'
 import { PortableText } from '@portabletext/react'
 import BookingWidget from '@/components/BookingWidget'
+import HostawayWidget from '@/components/HostawayWidget'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import CrossSell from './CrossSell'
@@ -44,12 +45,13 @@ export async function generateStaticParams() {
 }
 
 // Metadata básica dinámica
-export function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const baseTitle = 'Refugio'
   return {
-    title: `${baseTitle} ${params.slug} | Sal & Estrella`,
+    title: `${baseTitle} ${slug} | Sal & Estrella`,
     openGraph: {
-      title: `${baseTitle} ${params.slug} | Sal & Estrella`,
+      title: `${baseTitle} ${slug} | Sal & Estrella`,
       type: 'article'
     }
   }
@@ -61,9 +63,10 @@ const fetchProperty = cache(async (slug: string) => {
   return client.fetch<Property | null>(propertyQuery, { slug })
 })
 
-export default async function PropertyPage({ params }: { params: { slug: string } }) {
+export default async function PropertyPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const [property, settings] = await Promise.all([
-    fetchProperty(params.slug),
+    fetchProperty(slug),
     fetchSettings()
   ])
   if (!property) notFound()
@@ -168,6 +171,34 @@ export default async function PropertyPage({ params }: { params: { slug: string 
                 <PortableText value={property.description} />
               </div>
             </section>
+
+            {/* Sección del calendario mejorada */}
+            <div className="mt-10 lg:mt-12">
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  Fechas y disponibilidad
+                </h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Selecciona las fechas para tu estadía y verifica la disponibilidad en tiempo real
+                </p>
+              </div>
+              
+              <HostawayWidget
+                baseUrl="https://desalyestrella.holidayfuture.com/"
+                listingId={435632}
+                numberOfMonths={2}
+                openInNewTab={true}
+                font="Inter"
+                rounded={true}
+                button={{ action: 'checkout', text: 'Reservar ahora' }}
+                clearButtonText="Limpiar fechas"
+                color={{ 
+                  mainColor: '#f59e0b', 
+                  frameColor: '#e5e7eb', 
+                  textColor: '#1f2937' 
+                }}
+              />
+            </div>
           </div>
 
             {/* SIDEBAR RESERVA */}
@@ -185,6 +216,7 @@ export default async function PropertyPage({ params }: { params: { slug: string 
               <div className="mt-4">
                 <BookingWidget htmlCode={property.bookingWidgetCode || ''} />
               </div>
+
               {(property.airbnbListingUrl || hostProfileUrl) && (
                 <div className="mt-5 space-y-2">
                   <p className="text-[11px] font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">

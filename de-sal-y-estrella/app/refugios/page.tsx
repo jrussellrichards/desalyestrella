@@ -17,16 +17,17 @@ const query = groq`*[_type == "property"]{
 }`
 
 interface Props {
-  searchParams?: { [key: string]: string | string[] | undefined }
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function RefugiosPage({ searchParams }: Props) {
-  const [properties, settings]: [Property[], GlobalSettings] = await Promise.all([
+  const [properties, settings, resolvedSearchParams] = await Promise.all([
     client.fetch(query),
-    fetchSettings()
+    fetchSettings(),
+    searchParams
   ])
 
-  const rawLocation = typeof searchParams?.l === 'string' ? searchParams.l : undefined
+  const rawLocation = typeof resolvedSearchParams?.l === 'string' ? resolvedSearchParams.l : undefined
   const locationFilter = rawLocation?.trim().toLowerCase()
   const filtered = locationFilter
     ? properties.filter(p => (p.location || '').toLowerCase().includes(locationFilter))

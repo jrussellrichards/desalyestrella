@@ -37,9 +37,10 @@ export async function generateStaticParams() {
 export default async function BlogPostPage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
-  const post: BlogPost = await client.fetch(query, params)
+  const { slug } = await params
+  const post: BlogPost = await client.fetch(query, { slug })
 
   if (!post) {
     return <div>Artículo no encontrado</div>
