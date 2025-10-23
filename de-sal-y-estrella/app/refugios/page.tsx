@@ -30,7 +30,7 @@ export default async function RefugiosPage({ searchParams }: Props) {
   const rawLocation = typeof resolvedSearchParams?.l === 'string' ? resolvedSearchParams.l : undefined
   const locationFilter = rawLocation?.trim().toLowerCase()
   const filtered = locationFilter
-    ? properties.filter(p => (p.location || '').toLowerCase().includes(locationFilter))
+    ? properties.filter((p: Property) => (p.location || '').toLowerCase().includes(locationFilter))
     : properties
 
   const destinations = (settings?.destinations && settings.destinations.length > 0)
@@ -164,7 +164,7 @@ export default async function RefugiosPage({ searchParams }: Props) {
                 <Link href="/refugios" className="text-sm font-medium text-amber-600 hover:underline dark:text-amber-400">Ver destinos</Link>
               </div>
             )}
-            {filtered.map(property => (
+            {filtered.map((property: Property) => (
               <div key={property._id} className="w-full max-w-sm">
                 <PropertyCard property={property} />
               </div>
