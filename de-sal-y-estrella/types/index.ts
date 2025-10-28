@@ -17,7 +17,7 @@ export type Amenity =
 export interface Property {
   _id: string;
   name: string;
-  idHostaway: integer;
+  idHostaway: number;
   slug: Slug;
   location: string;
   tagline: string;
