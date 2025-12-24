@@ -32,6 +32,14 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/chrismast',
+        destination: '/api/chrismast',
+      },
+    ]
+  },
 }
 
 export default nextConfig
