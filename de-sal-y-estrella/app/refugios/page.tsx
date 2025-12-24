@@ -1,7 +1,7 @@
 import { client } from '@/lib/sanity.client'
 import { groq } from 'next-sanity'
 import PropertyCard from '@/components/PropertyCard'
-import { Property, GlobalSettings } from '@/types'
+import { Property } from '@/types'
 import { fetchSettings } from '@/lib/settings'
 import { urlFor } from '@/lib/image'
 import Image from 'next/image'

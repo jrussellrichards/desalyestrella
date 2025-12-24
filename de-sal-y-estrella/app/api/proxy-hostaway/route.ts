@@ -18,7 +18,7 @@ export async function GET() {
         'Cache-Control': 'public, max-age=86400, stale-while-revalidate=3600'
       }
     })
-  } catch (err) {
+  } catch {
     return new NextResponse('/* proxy fetch failed */', { status: 502 })
   }
 }

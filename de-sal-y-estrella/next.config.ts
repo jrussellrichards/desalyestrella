@@ -1,12 +1,3 @@
-import type { PortableTextBlock } from '@portabletext/types'
-
-interface PageContent {
-  _id: string
-  title: string
-  slug: { current: string }
-  mainImage: import('sanity').Image
-  body: PortableTextBlock[]
-}
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
