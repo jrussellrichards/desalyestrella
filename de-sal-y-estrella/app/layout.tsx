@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, Fraunces } from 'next/font/google'
-import { Script } from 'next/script'
+import Script from 'next/script'
 import './globals.css'
 import { fetchSettings } from '@/lib/settings'
 import { urlFor } from '@/lib/image'
