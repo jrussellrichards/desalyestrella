@@ -21,6 +21,11 @@ const nextConfig = {
         hostname: 'photos.fife.usercontent.google.com', // Para la foto de Google Photos
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+      },
     ],
   },
   async rewrites() {
