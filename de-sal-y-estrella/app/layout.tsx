@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, Fraunces } from 'next/font/google'
+import { Script } from 'next/script'
 import './globals.css'
 import { fetchSettings } from '@/lib/settings'
 import { urlFor } from '@/lib/image'
@@ -38,6 +39,15 @@ export default async function RootLayout({
         <main className="flex-grow">{children}</main>
         <Footer />
       </body>
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-84W0J5FR36" strategy="afterInteractive" />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-84W0J5FR36');
+        `}
+      </Script>
     </html>
   )
 }
