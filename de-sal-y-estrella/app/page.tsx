@@ -76,7 +76,7 @@ export default async function HomePage() {
   return (
     <main className="bg-white dark:bg-gray-900">
       {/* Hero Section (Centrado Vertical + Menos gap) */}
-      <section className="relative h-screen min-h-[600px] w-full overflow-hidden">
+      <section className="relative h-[92vh] min-h-[600px] w-full overflow-hidden">
         {heroImage && (
           <div className="absolute inset-0">
             <Image
@@ -93,7 +93,7 @@ export default async function HomePage() {
           </div>
         )}
 
-        <div className="relative z-10 mx-auto grid h-full w-full max-w-[1920px] grid-cols-1 items-center gap-12 px-6 sm:px-8 md:grid-cols-12 lg:px-12 pb-20">
+        <div className="relative z-10 mx-auto grid h-full w-full max-w-[1920px] grid-cols-1 items-center gap-12 px-6 sm:px-8 md:grid-cols-12 lg:px-12 pb-32 md:pb-40">
 
           {/* Columna de Texto - Izquierda (Más ancho para balancear) */}
           <div className="md:col-span-12 lg:col-span-8 flex flex-col justify-center pt-20 md:pt-0 pl-4 lg:pl-0">
