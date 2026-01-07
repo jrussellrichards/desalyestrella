@@ -102,10 +102,10 @@ export default async function HomePage() {
                 Bienvenido a
               </span>
               <span className="text-6xl font-extrabold tracking-tight text-white sm:text-8xl md:text-9xl leading-[0.9]">
-                Tu Nuevo
+                De sal
               </span>
               <span className="font-display italic text-6xl text-amber-200 sm:text-8xl md:text-9xl leading-none mt-2">
-                Refugio
+                y estrella
               </span>
             </h1>
 
@@ -121,21 +121,23 @@ export default async function HomePage() {
           <div className="md:col-span-12 lg:col-span-4 flex w-full flex-col items-start lg:items-end justify-center pr-4 lg:pr-12 mt-10 lg:mt-0">
 
             {/* Dual Action Bar: Filtra intención (Exploración vs Acción) */}
-            <div className="flex items-center p-1.5 rounded-full bg-white/95 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/50 transition-transform hover:scale-[1.02]">
+            {/* Nuevos Botones Modernos: Separados y con jerarquía visual Clara */}
+            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <a
                 href="#coleccion"
-                className="px-6 py-3.5 rounded-full text-gray-700 font-bold text-sm hover:bg-gray-100 transition-colors tracking-wide"
+                className="px-8 py-4 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 text-white font-medium hover:bg-white/20 transition-all"
               >
-                Ver Refugios
+                Ver refugios
               </a>
+
               <a
                 href="https://wa.me/56990736569?text=Hola,%20quisiera%20reservar%20una%20estadía..."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ml-1 px-6 py-3.5 rounded-full bg-gray-900 text-white font-bold text-sm flex items-center gap-2 hover:bg-black transition-colors shadow-lg"
+                className="px-8 py-4 rounded-2xl bg-white text-gray-900 font-bold shadow-xl hover:scale-105 hover:bg-gray-50 transition-all flex items-center gap-3"
               >
-                <IconBrandWhatsapp size={18} className="text-green-400" />
-                Reserva Directa
+                <span>Reserva Directa</span>
+                <IconBrandWhatsapp className="h-5 w-5 text-green-600" />
               </a>
             </div>
 
@@ -156,23 +158,31 @@ export default async function HomePage() {
             <div className="flex flex-wrap justify-between items-center gap-6 text-white/90">
 
               {/* Features (Left) */}
-              <div className="flex gap-8 md:gap-12 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
+              <div className="flex gap-8 md:gap-16 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
+                <div className="flex items-center gap-3 min-w-max group">
+                  <span className="text-2xl text-amber-400">★</span>
+                  <a
+                    href="https://www.airbnb.cl/users/profile/1469564861055215917?previous_page_name=PdpHomeMarketplace"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col"
+                  >
+                    <span className="font-bold text-sm uppercase tracking-wider text-white group-hover:text-amber-300 transition-colors">Superhost Airbnb</span>
+                    <span className="text-[10px] text-gray-300 font-light tracking-wide">Trayectoria & Confianza</span>
+                  </a>
+                </div>
                 <div className="flex items-center gap-3 min-w-max">
-                  <span className="text-2xl text-amber-400">✦</span>
+                  <span className="text-2xl text-amber-400">❤</span>
                   <div className="flex flex-col">
-                    <span className="font-bold text-sm uppercase tracking-wider">Frente al Mar</span>
+                    <span className="font-bold text-sm uppercase tracking-wider text-white">Favorito entre Huéspedes</span>
+                    <span className="text-[10px] text-gray-300 font-light tracking-wide">Top 5% Propiedades</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 min-w-max">
                   <span className="text-2xl text-amber-400">✦</span>
                   <div className="flex flex-col">
-                    <span className="font-bold text-sm uppercase tracking-wider">Home Office</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 min-w-max">
-                  <span className="text-2xl text-amber-400">✦</span>
-                  <div className="flex flex-col">
-                    <span className="font-bold text-sm uppercase tracking-wider">Full equipados</span>
+                    <span className="font-bold text-sm uppercase tracking-wider text-white">Ubicacion privilegiada</span>
+                    <span className="text-[10px] text-gray-300 font-light tracking-wide">Seguras y Frente al Mar</span>
                   </div>
                 </div>
               </div>
@@ -204,7 +214,8 @@ export default async function HomePage() {
             <span className="text-amber-600 font-semibold tracking-wide uppercase text-sm">Escasez y Exclusividad</span>
             <h2 className="mt-2 text-3xl font-display font-bold text-gray-900 dark:text-white sm:text-4xl">Colección Privada</h2>
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-              Solo 3 propiedades gestionadas personalmente. Garantizamos limpieza impecable, respuesta rápida y detalles que hacen la diferencia.
+              Propiedades exclusivas con seguridad, privacidad y todas las comodidades premium. <br className="hidden sm:block" />
+              <strong className="text-gray-900 dark:text-white font-medium">Tus vacaciones no estarán al azar.</strong>
             </p>
           </div>
 
