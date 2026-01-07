@@ -6,6 +6,7 @@ import { fetchSettings } from '@/lib/settings'
 import { urlFor } from '@/lib/image'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import WhatsAppWidget from '@/components/WhatsAppWidget'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -16,7 +17,7 @@ const fraunces = Fraunces({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-display',
-  axes: ['SOFT','WONK'], // ignorado si no soportado
+  axes: ['SOFT', 'WONK'], // ignorado si no soportado
 })
 
 export const metadata: Metadata = {
@@ -37,6 +38,7 @@ export default async function RootLayout({
       <body className="font-sans antialiased text-ink dark:text-ink-dark bg-white dark:bg-gray-900 selection:bg-amber-300/30 selection:text-ink-dark">
         <Header logoUrl={logoUrl} logoAlt={settings.siteLogo?.alt || null} />
         <main className="flex-grow">{children}</main>
+        <WhatsAppWidget />
         <Footer />
       </body>
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-84W0J5FR36" strategy="afterInteractive" />

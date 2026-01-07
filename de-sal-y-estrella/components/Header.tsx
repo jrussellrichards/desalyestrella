@@ -43,7 +43,7 @@ export default function Header({ logoUrl, logoAlt }: HeaderProps) {
     },
     {
       name: 'WhatsApp',
-      href: 'https://wa.me/56951096594', // cambia con tu número en formato internacional
+      href: 'https://wa.me/56990736569', // cambia con tu número en formato internacional
       icon: (
         <svg viewBox="0 0 32 32" className="h-5 w-5" fill="currentColor" aria-hidden="true">
           <path d="M16.04 3C9.4 3 4 8.4 4 15.06c0 2.63.86 5.07 2.33 7.06L4 29l7.16-2.3a12.02 12.02 0 0 0 4.88 1.02h.01c6.64 0 12.04-5.4 12.04-12.06C28.09 8.4 22.69 3 16.04 3Zm6.99 17.2c-.29.82-1.7 1.6-2.34 1.7-.6.12-1.36.17-2.2-.14-.51-.18-1.17-.38-2.02-.84-3.55-1.93-5.86-5.34-6.03-5.59-.18-.25-1.44-1.9-1.44-3.63 0-1.72.91-2.57 1.24-2.93.34-.36.74-.45.98-.45.25 0 .49.01.7.02.22.02.52-.08.82.63.29.7 1 2.43 1.09 2.61.09.18.15.38.03.62-.12.25-.18.4-.34.61-.17.2-.35.45-.5.6-.17.17-.34.35-.15.69.18.34.8 1.32 1.71 2.14 1.17 1.05 2.14 1.38 2.48 1.54.34.17.55.15.75-.08.2-.22.86-.95 1.09-1.28.23-.34.46-.27.77-.16.31.11 1.96.92 2.29 1.08.34.17.57.25.66.4.08.14.08.82-.21 1.64Z" />
@@ -54,7 +54,7 @@ export default function Header({ logoUrl, logoAlt }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-50 bg-gray-900 text-white shadow-md">
-      <div className="mx-auto flex max-w-7xl items-center justify-between p-4">
+      <div className="mx-auto flex max-w-[1920px] items-center justify-between py-4 px-6 sm:px-8 lg:px-8">
         <Link
           href="/"
           className="flex items-center gap-2 font-bold tracking-tight transition-opacity hover:opacity-80"
@@ -106,9 +106,9 @@ export default function Header({ logoUrl, logoAlt }: HeaderProps) {
           >
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {isMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"/>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
               )}
             </svg>
           </button>
