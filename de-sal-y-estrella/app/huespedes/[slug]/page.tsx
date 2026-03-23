@@ -5,7 +5,7 @@ import { urlFor } from '@/lib/image'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import Image from 'next/image'
-import { IconMapPin, IconInfoCircle, IconCurrencyDollar, IconStar } from '@tabler/icons-react'
+import { IconMapPin, IconInfoCircle, IconCurrencyDollar, IconStar, IconFlame, IconDroplet, IconWifi, IconTrash, IconMessageCircle, IconHome, IconTools, IconSoup, IconBeach, IconCompass } from '@tabler/icons-react'
 
 // Revalidación ISR (5 min)
 export const revalidate = 300
@@ -75,8 +75,32 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
           </p>
         </div>
       </header>
+      
+      {/* Sticky Navigation Bar */}
+      <nav className="sticky top-0 z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 shadow-sm overflow-x-auto no-scrollbar">
+        <div className="mx-auto max-w-4xl flex items-center justify-start md:justify-center gap-2 p-3 whitespace-nowrap">
+          <a href="#inicio" className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-ocean-50 dark:bg-amber-900/20 text-ocean-700 dark:text-amber-500 text-sm font-semibold transition-colors">
+            <IconHome className="h-4 w-4" /> Inicio
+          </a>
+          <a href="#guia" className="flex items-center gap-1.5 px-4 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400 text-sm font-medium transition-colors">
+            <IconTools className="h-4 w-4" /> Guía de Uso
+          </a>
+          <a href="#gastronomia" className="flex items-center gap-1.5 px-4 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400 text-sm font-medium transition-colors">
+            <IconSoup className="h-4 w-4" /> Gastronomía
+          </a>
+          <a href="#bares" className="flex items-center gap-1.5 px-4 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400 text-sm font-medium transition-colors">
+            <IconMessageCircle className="h-4 w-4" /> Bares
+          </a>
+          <a href="#playas" className="flex items-center gap-1.5 px-4 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400 text-sm font-medium transition-colors">
+            <IconBeach className="h-4 w-4" /> Playas
+          </a>
+          <a href="#experiencias" className="flex items-center gap-1.5 px-4 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400 text-sm font-medium transition-colors">
+            <IconCompass className="h-4 w-4" /> Experiencias
+          </a>
+        </div>
+      </nav>
 
-      <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 space-y-12">
+      <main id="inicio" className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 space-y-12 scroll-mt-20">
         {/* Mensaje de Bienvenida General */}
         <section className="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 dark:border-gray-700">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">¡Hola! Qué alegría recibirte</h2>
@@ -87,6 +111,102 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
             no dudes en contactarnos.
           </p>
         </section>
+
+        {/* Guía de Uso de la Casa */}
+        <section id="guia" className="space-y-8 scroll-mt-24">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2 px-1">
+            <IconInfoCircle className="h-6 w-6 text-ocean-600 dark:text-amber-500" />
+            Guía de Uso de la Casa
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Chimenea */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 transition-all hover:shadow-md">
+              <div className="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-xl h-fit">
+                <IconFlame className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 dark:text-white mb-2">Chimenea / Calefacción</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                  Para encenderla, usa primero astillas pequeñas y abre el tiraje. Una vez prendido, agrega leña seca para mantener el calor. Evita usar líquidos inflamables.
+                </p>
+              </div>
+            </div>
+
+            {/* Calefont */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 transition-all hover:shadow-md">
+              <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-xl h-fit">
+                <IconDroplet className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 dark:text-white mb-2">Agua Caliente (Calefont)</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                  El encendido es automático. El calefont es digital, desde el panel puedes ajustar la temperatura en el nivel que gustes.
+                </p>
+              </div>
+            </div>
+
+            {/* WiFi */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 transition-all hover:shadow-md">
+              <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-xl h-fit">
+                <IconWifi className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+              </div>
+              <div className="w-full">
+                <h4 className="font-bold text-gray-900 dark:text-white mb-2">WiFi y Conectividad</h4>
+                <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                  <p><strong>Red:</strong> Richards</p>
+                  <p><strong>Clave:</strong> 951096594</p>
+                  <span className="text-xs text-gray-400 mt-2 block italic">La conexión es de alta velocidad para trabajo remoto.</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Basura */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 transition-all hover:shadow-md">
+              <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-xl h-fit">
+                <IconTrash className="h-6 w-6 text-green-600 dark:text-green-400" />
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 dark:text-white mb-2">Basura y Reciclaje</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                  Por favor, deja la basura en los contenedores exteriores habilitados.
+                </p>
+              </div>
+            </div>
+
+            {/* Ubicación */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 transition-all hover:shadow-md lg:col-span-1">
+              <div className="bg-slate-100 dark:bg-slate-900/30 p-3 rounded-xl h-fit">
+                <IconMapPin className="h-6 w-6 text-slate-600 dark:text-slate-400" />
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 dark:text-white mb-2">Donde estamos</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
+                  José Miguel Camilo 442, Pichilemu, O'Higgins.
+                </p>
+                <a href="https://maps.app.goo.gl/SoXTBvNNBYsfckck8" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                  <IconMapPin className="h-3 w-3 mr-1" /> Ver en Google Maps
+                </a>
+              </div>
+            </div>
+
+            {/* Contacto Sergio */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 transition-all hover:shadow-md lg:col-span-1">
+              <div className="bg-green-100 dark:bg-green-900/30 p-3 rounded-xl h-fit">
+                <IconMessageCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 dark:text-white mb-2">Contacto de Emergencia</h4>
+                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
+                  <strong>Sergio</strong> está encargado de ayudarlos en cualquier cosa que necesiten durante su estadía.
+                </p>
+                <a href="https://wa.me/56956605983" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300">
+                  <IconMessageCircle className="h-3 w-3 mr-1" /> WhatsApp Sergio: +56 9 5660 5983
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
 
         {/* Sección Específica: La Serena */}
         {isLaSerena && (
@@ -124,7 +244,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
         )}
 
         {/* Recomendaciones Locales (Generales para todos, pero adaptadas a la ubicación) */}
-        <section className="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 dark:border-gray-700">
+        <section id="gastronomia" className="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 dark:border-gray-700 scroll-mt-24">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
             <IconStar className="h-6 w-6 text-amber-500" />
             Nuestras Recomendaciones en {property.location}
@@ -249,39 +369,39 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
               </div>
 
                 {/* BARES Y VIDA NOCTURNA */}
-                <div className="space-y-6">
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2 mt-12">
-                    🍸 Bares y Vida Nocturna
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
-                      <h5 className="font-bold text-gray-900 dark:text-white mb-2">Waitara Club</h5>
-                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">El gran epicentro de la fiesta en La Puntilla. Discoteca completa con dos pistas de baile muy activas y grandes eventos a poquísimos pasos de las olas.</p>
-                      <a href="https://www.google.com/maps/search/Waitara+Club+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
-                        <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
-                      </a>
-                    </div>
+                <div id="bares" className="space-y-6 scroll-mt-24">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2 mt-12">
+                  🍸 Bares y Vida Nocturna
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
+                    <h5 className="font-bold text-gray-900 dark:text-white mb-2">Waitara Club</h5>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">El gran epicentro de la fiesta en La Puntilla. Discoteca completa con dos pistas de baile muy activas y grandes eventos a poquísimos pasos de las olas.</p>
+                    <a href="https://www.google.com/maps/search/Waitara+Club+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
+                    </a>
+                  </div>
 
-                    <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
-                      <h5 className="font-bold text-gray-900 dark:text-white mb-2">Bar La Virgen</h5>
-                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">El spot más "trendy" de Pichilemu. Ofrece una mezcla perfecta de coctelería de autor y ambiente relajado con una vista privilegiada al mar.</p>
-                      <a href="https://maps.app.goo.gl/vY2N6oGgD2z6Vv7V6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
-                        <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
-                      </a>
-                    </div>
+                  <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
+                    <h5 className="font-bold text-gray-900 dark:text-white mb-2">Bar La Virgen</h5>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">El spot más "trendy" de Pichilemu. Ofrece una mezcla perfecta de coctelería de autor y ambiente relajado con una vista privilegiada al mar.</p>
+                    <a href="https://maps.app.goo.gl/vY2N6oGgD2z6Vv7V6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
+                    </a>
+                  </div>
 
-                    <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
-                      <h5 className="font-bold text-gray-900 dark:text-white mb-2">Osaka</h5>
-                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Propuesta exclusiva de cocina Nikkei (fusión peruano-japonesa). Mixología de alto nivel frente a la playa en un entorno muy sofisticado.</p>
-                      <a href="https://maps.app.goo.gl/vY2N6oGgD2z6Vv7V6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
-                        <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
-                      </a>
-                    </div>
+                  <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
+                    <h5 className="font-bold text-gray-900 dark:text-white mb-2">Osaka</h5>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Propuesta exclusiva de cocina Nikkei (fusión peruano-japonesa). Mixología de alto nivel frente a la playa en un entorno muy sofisticado.</p>
+                    <a href="https://maps.app.goo.gl/vY2N6oGgD2z6Vv7V6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
+                    </a>
                   </div>
                 </div>
+              </div>
 
               {/* PLAYAS */}
-              <div className="space-y-6">
+              <div id="playas" className="space-y-6 scroll-mt-24">
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2 mt-12">
                   🌊 Playas Principales
                 </h3>
@@ -311,7 +431,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
               </div>
 
               {/* EXPERIENCIAS Y CULTURA */}
-              <div className="space-y-6">
+              <div id="experiencias" className="space-y-6 scroll-mt-24">
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-2 mt-12">
                   🏄‍♂️ Experiencias, Tours y Cultura
                 </h3>
