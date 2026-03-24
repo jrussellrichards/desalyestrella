@@ -38,6 +38,11 @@ export interface Property {
   airbnbProfileUrl?: string; // nueva
   bedrooms?: number;         // nueva
   bathrooms?: number;        // nueva
+  address?: string;          // nueva
+  wifiName?: string;         // nueva
+  wifiPassword?: string;     // nueva
+  parkingInfo?: string;      // nueva
+  tower?: string;            // nueva
 }
 
 export interface Testimonial {
