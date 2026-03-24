@@ -1,13 +1,13 @@
-import {defineField, defineType} from 'sanity'
+import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'property',
   title: 'Propiedad',
   type: 'document',
   groups: [
-    {name: 'content', title: 'Contenido Principal', default: true},
-    {name: 'seo', title: 'SEO'},
-    {name: 'distribution', title: 'Canales / Externo'}, // nuevo grupo
+    { name: 'content', title: 'Contenido Principal', default: true },
+    { name: 'seo', title: 'SEO' },
+    { name: 'distribution', title: 'Canales / Externo' }, // nuevo grupo
   ],
   fields: [
     // --- Campos de Contenido Principal ---
@@ -86,14 +86,14 @@ export default defineType({
       title: 'Galería de Imágenes',
       type: 'array',
       group: 'content',
-      of: [{type: 'image', options: {hotspot: true, metadata: ['source']}}],
+      of: [{ type: 'image', options: { hotspot: true, metadata: ['source'] } }],
     }),
     defineField({
       name: 'description',
       title: 'Descripción Detallada',
       type: 'array',
       group: 'content',
-      of: [{type: 'block'}, {type: 'image'}],
+      of: [{ type: 'block' }, { type: 'image' }],
     }),
     defineField({
       name: 'capacity',

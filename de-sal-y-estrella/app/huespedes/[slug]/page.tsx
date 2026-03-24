@@ -327,7 +327,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                   <div>
                     <h4 className="font-bold text-gray-900 dark:text-white mb-2">Entretenimiento</h4>
                     <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                      La TV cuenta con televisión digital, YouTube Premium y YouTube Music para una experiencia completa. Las cuentas ya se encuentran agregadas, si hay algún problema contáctanos.
+                      La TV cuenta con televisión digital, Prime Video, YouTube Premium y YouTube Music para una experiencia completa. Las cuentas ya se encuentran conectadas y listas para usar; si hay algún problema, no dudes en contactarnos.
                     </p>
                   </div>
                 </div>
