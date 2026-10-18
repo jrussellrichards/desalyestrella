@@ -1,18 +1,27 @@
 import { fetchSettings } from '@/lib/settings'
 import ContactForm from '@/components/ContactForm'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+import { INSTAGRAM_URL, SITE_URL, WHATSAPP_NUMBER } from '@/lib/site'
+
+export const metadata: Metadata = {
+  title: 'Contacto y reservas',
+  description: 'Escríbenos por WhatsApp, email o formulario para consultar fechas y reservar directo en La Serena o Pichilemu.',
+  alternates: { canonical: '/contacto' },
+}
 
 export const revalidate = 300
 
 export default async function ContactoPage() {
   const settings = await fetchSettings()
-  const wpp = settings.whatsappNumber ? `https://wa.me/${settings.whatsappNumber}` : null
-  const instagram = settings.instagramUrl
+  const whatsappNumber = settings.whatsappNumber || WHATSAPP_NUMBER
+  const wpp = `https://wa.me/${whatsappNumber}`
+  const instagram = INSTAGRAM_URL
   const email = settings.contactEmail
   const coord = settings.location?.lat && settings.location?.lng ? settings.location : null
 
   const faq = [
-    { q: '¿Tiempo de respuesta?', a: 'Normalmente respondemos en menos de 12 horas.' },
+    { q: '¿Tiempo de respuesta?', a: 'Por WhatsApp respondemos rápido, normalmente en minutos. Por email, en menos de 12 horas.' },
     { q: '¿Pet Friendly?', a: 'Algunos refugios sí; consúltanos indicando fechas.' },
     { q: '¿Política de cancelación?', a: 'Flexible: hasta 7 días antes reembolso completo (salvo fechas pico).' },
   ]
@@ -50,36 +59,36 @@ export default async function ContactoPage() {
               <ul className="mt-4 space-y-4 text-sm text-gray-600 dark:text-gray-300">
                 {email && (
                   <li className="flex items-start gap-3">
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-amber-600/10 text-amber-600">
+                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-navy-900/10 text-gold-700">
                       @
                     </span>
                     <div>
                       <p className="font-medium text-gray-900 dark:text-white">Email</p>
-                      <a href={`mailto:${email}`} className="hover:text-amber-600">{email}</a>
+                      <a href={`mailto:${email}`} className="hover:text-gold-700">{email}</a>
                     </div>
                   </li>
                 )}
                 {wpp && (
                   <li className="flex items-start gap-3">
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-amber-600/10 text-amber-600">
+                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-navy-900/10 text-gold-700">
                       <svg aria-hidden="true" viewBox="0 0 32 32" className="h-5 w-5" fill="currentColor"><path d="M16.04 3C9.4 3 4 8.4 4 15.06c0 2.63.86 5.07 2.33 7.06L4 29l7.16-2.3a12.02 12.02 0 0 0 4.88 1.02h.01c6.64 0 12.04-5.4 12.04-12.06C28.09 8.4 22.69 3 16.04 3Zm6.99 17.2c-.29.82-1.7 1.6-2.34 1.7-.6.12-1.36.17-2.2-.14-.51-.18-1.17-.38-2.02-.84-3.55-1.93-5.86-5.34-6.03-5.59-.18-.25-1.44-1.9-1.44-3.63 0-1.72.91-2.57 1.24-2.93.34-.36.74-.45.98-.45.25 0 .49.01.7.02.22.02.52-.08.82.63.29.7 1 2.43 1.09 2.61.09.18.15.38.03.62-.12.25-.18.4-.34.61-.17.2-.35.45-.5.6-.17.17-.34.35-.15.69.18.34.8 1.32 1.71 2.14 1.17 1.05 2.14 1.38 2.48 1.54.34.17.55.15.75-.08.2-.22.86-.95 1.09-1.28.23-.34.46-.27.77-.16.31.11 1.96.92 2.29 1.08.34.17.57.25.66.4.08.14.08.82-.21 1.64Z"/></svg>
                     </span>
                     <div>
                       <p className="font-medium text-gray-900 dark:text-white">WhatsApp</p>
-                      <a href={wpp} target="_blank" rel="noopener" className="hover:text-amber-600">
-                        +{settings.whatsappNumber}
+                      <a href={wpp} target="_blank" rel="noopener" className="hover:text-gold-700">
+                        +{whatsappNumber}
                       </a>
                     </div>
                   </li>
                 )}
                 {instagram && (
                   <li className="flex items-start gap-3">
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-amber-600/10 text-amber-600">
+                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-navy-900/10 text-gold-700">
                       <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm10.75 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5A3.5 3.5 0 1 0 12 16a3.5 3.5 0 0 0 0-7Z"/></svg>
                     </span>
                     <div>
                       <p className="font-medium text-gray-900 dark:text-white">Instagram</p>
-                      <a href={instagram} target="_blank" rel="noopener" className="hover:text-amber-600">
+                      <a href={instagram} target="_blank" rel="noopener" className="hover:text-gold-700">
                         Ver perfil
                       </a>
                     </div>
@@ -161,7 +170,7 @@ export default async function ContactoPage() {
               '@context': 'https://schema.org',
               '@type': 'ContactPage',
               name: 'Contacto - De Sal y Estrella',
-              url: 'https://www.desalyestrella.com/contacto',
+              url: `${SITE_URL}/contacto`,
               contactPoint: [{
                 '@type': 'ContactPoint',
                 email: email,

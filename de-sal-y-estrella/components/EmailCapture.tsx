@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { trackEvent } from '@/lib/analytics'
 
 export default function EmailCapture() {
   const [email, setEmail] = useState('')
@@ -10,13 +11,14 @@ export default function EmailCapture() {
     if (!email || status === 'loading') return
     setStatus('loading')
     try {
-      // Endpoint futuro (ajusta cuando exista)
-      await fetch('/api/lead', {
+      const res = await fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({ email })
       })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
       setStatus('ok')
+      trackEvent('generate_lead', { form: 'newsletter' })
       setEmail('')
     } catch {
       setStatus('error')
@@ -40,12 +42,12 @@ export default function EmailCapture() {
           value={email}
           onChange={(e)=>setEmail(e.target.value)}
           placeholder="tu@email..."
-          className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500/30 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500"
+          className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/30 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500"
         />
         <button
           type="submit"
             disabled={status === 'loading' || status === 'ok'}
-          className="inline-flex items-center justify-center rounded-md bg-amber-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-amber-500 disabled:opacity-60 disabled:hover:bg-amber-600"
+          className="inline-flex items-center justify-center rounded-md bg-navy-900 px-5 py-2 text-sm font-medium text-white transition hover:bg-navy-800 disabled:opacity-60 disabled:hover:bg-navy-900"
         >
           {status === 'loading' && 'Enviando…'}
           {status === 'idle' && 'Unirme'}
@@ -56,7 +58,7 @@ export default function EmailCapture() {
       <div className="mt-2 min-h-[20px]">
         {status === 'ok' && (
           <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
-            Te añadimos. Revisa tu bandeja (y spam).
+            ¡Gracias! Te escribiremos con fechas disponibles y novedades.
           </p>
         )}
         {status === 'error' && (

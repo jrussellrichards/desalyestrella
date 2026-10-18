@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import { Inter, Fraunces } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
-import { fetchSettings } from '@/lib/settings'
-import { urlFor } from '@/lib/image'
 import Header from '@/components/Header'
+import AnalyticsListener from '@/components/AnalyticsListener'
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site'
 import Footer from '@/components/Footer'
 import WhatsAppWidget from '@/components/WhatsAppWidget'
 
@@ -21,35 +21,46 @@ const fraunces = Fraunces({
 })
 
 export const metadata: Metadata = {
-  title: 'De Sal y Estrella',
-  description: 'Refugios únicos donde el océano se encuentra con el cosmos.',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'De Sal y Estrella · Departamentos frente al mar en La Serena y cabaña en Pichilemu',
+    template: '%s · De Sal y Estrella',
+  },
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    locale: 'es_CL',
+    siteName: SITE_NAME,
+    url: SITE_URL,
+    images: [{ url: '/og.jpg', width: 1200, height: 630, alt: SITE_NAME }],
+  },
+  twitter: { card: 'summary_large_image', images: ['/og.jpg'] },
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const settings = await fetchSettings()
-  const logoUrl = settings.siteLogo ? urlFor(settings.siteLogo).width(320).fit('max').auto('format').url() : null
-
   return (
     <html lang="es" className={`${inter.variable} ${fraunces.variable}`}>
-      <body className="font-sans antialiased text-ink dark:text-ink-dark bg-white dark:bg-gray-900 selection:bg-amber-300/30 selection:text-ink-dark">
-        <Header logoUrl={logoUrl} logoAlt={settings.siteLogo?.alt || null} />
+      <body className="font-sans antialiased text-ink dark:text-ink-dark bg-white dark:bg-gray-900 selection:bg-gold-300/40 selection:text-navy-950">
+        <Header />
         <main className="flex-grow">{children}</main>
         <WhatsAppWidget />
         <Footer />
+        <AnalyticsListener />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-84W0J5FR36" strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-84W0J5FR36');
+          `}
+        </Script>
       </body>
-      <Script src="https://www.googletagmanager.com/gtag/js?id=G-84W0J5FR36" strategy="afterInteractive" />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-84W0J5FR36');
-        `}
-      </Script>
     </html>
   )
 }

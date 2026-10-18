@@ -43,6 +43,10 @@ export interface Property {
   wifiPassword?: string;     // nueva
   parkingInfo?: string;      // nueva
   tower?: string;            // nueva
+  metaTitle?: string;
+  metaDescription?: string;
+  rating?: number;           // calificación en Airbnb
+  reviewCount?: number;      // número de reseñas en Airbnb
 }
 
 export interface Testimonial {

@@ -2,8 +2,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    // Habilita el uso de imágenes SVG, necesario para placehold.co
-    dangerouslyAllowSVG: true,
     // Lista de dominios de imagen permitidos
     remotePatterns: [
       {
@@ -13,17 +11,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'placehold.co', // Para las imágenes de placeholder
-        port: '',
-      },
-      {
-        protocol: 'https',
         hostname: 'photos.fife.usercontent.google.com', // Para la foto de Google Photos
-        port: '',
-      },
-      {
-        protocol: 'https',
-        hostname: 'randomuser.me', // Para avatares aleatorios (demo)
         port: '',
       },
     ],
