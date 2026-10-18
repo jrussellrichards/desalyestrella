@@ -14,7 +14,7 @@ export default function RefugioCard({ property }: { property: Property }) {
   const cover = property.gallery?.find(hasAssetRef)
   const img = cover
     ? urlFor(cover).width(900).height(700).fit('crop').auto('format').url()
-    : /pichilemu/i.test(property.location || '') ? '/destinos/pichilemu-cabana.jpg' : '/destinos/la-serena.jpg'
+    : /pichilemu/i.test(property.location || '') ? '/destinos/pichilemu-cabana.jpg' : '/destinos/aqua-resort-playa.jpg'
   const rating = getRating(property)
   const price = computeDisplayPrice(property)
 
