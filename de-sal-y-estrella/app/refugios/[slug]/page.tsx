@@ -13,9 +13,9 @@ import { fetchSettings } from '@/lib/settings'
 import LightboxGallery from '@/components/LightboxGallery'
 import { hasAssetRef } from '@/utils/hasAssetRef'
 import { AmenityIcon } from '@/components/AmenityIcon'
-import { IconUsers, IconBed, IconBath, IconBrandWhatsapp, IconStarFilled, IconClock24 } from '@tabler/icons-react'
+import { IconUsers, IconBed, IconBath, IconBrandWhatsapp, IconStarFilled, IconClock24, IconGift, IconMapPin } from '@tabler/icons-react'
 import type { Metadata } from 'next'
-import { AIRBNB_PROFILE_URL, SITE_URL, assistantLink, getRating, whatsappLink } from '@/lib/site'
+import { AIRBNB_PROFILE_URL, DIRECT_BOOKING_PERK, SITE_URL, assistantLink, getLocationInfo, getRating, whatsappLink } from '@/lib/site'
 import type { Testimonial } from '@/types'
 
 // Revalidación ISR (5 min) para balance entre frescura y rendimiento
@@ -46,12 +46,13 @@ const propertyQuery = groq`*[_type == "property" && slug.current == $slug][0]{
   reviewCount
 }`
 
-const reviewsQuery = groq`*[_type == "testimonial" && property._ref == $id] | order(_createdAt desc)[0...3]{
+const reviewsQuery = groq`*[_type == "testimonial" && property._ref == $id] | order(_createdAt desc)[0...12]{
   _id,
   quote,
   author,
   location,
-  rating
+  rating,
+  stayDate
 }`
 
 export async function generateStaticParams() {
@@ -101,6 +102,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
   const hasImages = !!(property.gallery && property.gallery.length > 0)
   const priceInfo = computeDisplayPrice(property)
 
+  const locationInfo = getLocationInfo(property)
   const hostProfileUrl = property.airbnbProfileUrl || settings.airbnbProfileUrl || AIRBNB_PROFILE_URL
 
   const firstValid = property.gallery?.find(hasAssetRef)
@@ -206,14 +208,72 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 
             {reviews.length > 0 && (
               <section aria-labelledby="resenas" className="mt-10">
-                <h2 id="resenas" className="font-display text-h3 font-semibold text-ink dark:text-white">Lo que dicen los huéspedes</h2>
-                <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+                <div className="flex flex-wrap items-end justify-between gap-2">
+                  <h2 id="resenas" className="font-display text-h3 font-semibold text-ink dark:text-white">Lo que dicen los huéspedes</h2>
+                  {rating && (
+                    <p className="flex items-center gap-1 text-sm text-ink-subtle">
+                      <IconStarFilled className="h-4 w-4 text-gold-500" />
+                      <strong className="text-ink dark:text-white">{rating.rating.toFixed(2).replace('.', ',')}</strong> · {rating.reviewCount} reseñas en Airbnb
+                    </p>
+                  )}
+                </div>
+                <ul className="mt-5 grid gap-4 sm:grid-cols-2">
                   {reviews.map(r => (
-                    <li key={r._id} className="rounded-xl border border-gray-200 p-5 text-sm shadow-sm dark:border-gray-700">
-                      <p className="text-gray-700 dark:text-gray-300">“{r.quote}”</p>
-                      <p className="mt-2 font-medium text-gray-900 dark:text-white">
-                        {r.author}{r.location ? <span className="font-normal text-gray-500"> · {r.location}</span> : null}
+                    <li key={r._id} className="flex flex-col rounded-2xl bg-white p-5 text-sm shadow-sm ring-1 ring-gray-200 dark:bg-gray-800 dark:ring-gray-700">
+                      <div className="flex items-center gap-3">
+                        <span
+                          aria-hidden="true"
+                          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sea-500 font-display text-base font-bold text-white"
+                        >
+                          {r.author.trim().charAt(0).toUpperCase()}
+                        </span>
+                        <div>
+                          <p className="font-semibold text-ink dark:text-white">{r.author}</p>
+                          <p className="text-xs text-ink-faint">{r.stayDate ? `${r.stayDate} · ` : ''}Reseña en Airbnb</p>
+                        </div>
+                      </div>
+                      <p className="mt-3 flex gap-0.5" aria-label={`${r.rating || 5} de 5 estrellas`}>
+                        {Array.from({ length: r.rating || 5 }).map((_, i) => (
+                          <IconStarFilled key={i} className="h-3.5 w-3.5 text-gold-500" />
+                        ))}
                       </p>
+                      <p className="mt-2 leading-relaxed text-gray-700 dark:text-gray-300">“{r.quote}”</p>
+                    </li>
+                  ))}
+                </ul>
+                {property.airbnbListingUrl && (
+                  <a
+                    href={property.airbnbListingUrl}
+                    target="_blank"
+                    rel="nofollow noopener"
+                    className="mt-4 inline-block text-sm font-semibold text-sea-700 hover:text-sea-800 dark:text-sea-300"
+                  >
+                    Ver todas las reseñas en Airbnb →
+                  </a>
+                )}
+              </section>
+            )}
+
+            {locationInfo && (
+              <section aria-labelledby="ubicacion" className="mt-10">
+                <h2 id="ubicacion" className="font-display text-h3 font-semibold text-ink dark:text-white">Ubicación</h2>
+                <p className="mt-1 flex items-center gap-1 text-sm text-ink-subtle">
+                  <IconMapPin className="h-4 w-4 text-sea-600" /> {locationInfo.area}
+                </p>
+                <div className="mt-4 overflow-hidden rounded-2xl ring-1 ring-gray-200 dark:ring-gray-700">
+                  <iframe
+                    title={`Mapa de ${property.name}`}
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(locationInfo.mapQuery)}&z=15&output=embed`}
+                    className="h-72 w-full"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
+                <ul className="mt-4 grid gap-2 text-sm sm:grid-cols-2">
+                  {locationInfo.nearby.map(n => (
+                    <li key={n.place} className="flex justify-between gap-3 rounded-xl bg-sea-50 px-4 py-3 dark:bg-gray-800/60">
+                      <span className="font-medium text-ink dark:text-white">{n.place}</span>
+                      <span className="text-right text-ink-subtle">{n.time}</span>
                     </li>
                   ))}
                 </ul>
@@ -262,6 +322,10 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                   </a>
                 )}
               </div>
+              <p className="mt-4 flex items-center gap-2 rounded-xl bg-gold-50 px-4 py-3 text-sm text-ink dark:bg-gray-700 dark:text-white">
+                <IconGift className="h-5 w-5 shrink-0 text-gold-600" />
+                <span><strong>Al reservar aquí:</strong> {DIRECT_BOOKING_PERK.charAt(0).toLowerCase() + DIRECT_BOOKING_PERK.slice(1)}.</span>
+              </p>
               {hasBeds24 && (
                 <a
                   href={whatsappLink(bookingText)}

@@ -57,6 +57,7 @@ export interface Testimonial {
   author: string;
   location: string;
   rating?: number; // ahora opcional
+  stayDate?: string;
   property?: {
     name: string
     slug: {
