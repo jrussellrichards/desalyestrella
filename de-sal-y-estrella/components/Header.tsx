@@ -38,7 +38,7 @@ export default function Header() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 bg-navy-900 text-white shadow-md">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-navy-900 text-white shadow-md">
       <div className="mx-auto flex max-w-[1920px] items-center justify-between py-4 px-6 sm:px-8 lg:px-8">
         <Link
           href="/"
@@ -48,8 +48,8 @@ export default function Header() {
           <Image
             src="/brand/logo-horizontal-claro.png"
             alt="De Sal y Estrella"
-            width={640}
-            height={196}
+            width={1160}
+            height={356}
             className="h-12 w-auto sm:h-14"
             priority
           />

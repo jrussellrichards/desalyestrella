@@ -18,7 +18,7 @@ export default async function Footer() {
     <footer className="bg-navy-950 text-white/80">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
         <div>
-          <Image src="/brand/logo-horizontal-claro.png" alt="De Sal y Estrella" width={640} height={196} className="h-12 w-auto" />
+          <Image src="/brand/logo-horizontal-claro.png" alt="De Sal y Estrella" width={1160} height={356} className="h-14 w-auto" />
           <p className="mt-4 text-sm leading-relaxed">
             Departamentos frente al mar en Aqua Resort La Serena y cabaña en Pichilemu.
           </p>
