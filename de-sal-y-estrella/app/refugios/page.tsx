@@ -23,7 +23,6 @@ const query = groq`*[_type == "property"]{
   location,
   tagline,
   gallery,
-  idHostaway,
   capacity,
   bedrooms,
   bathrooms,

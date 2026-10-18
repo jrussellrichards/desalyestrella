@@ -4,7 +4,7 @@ import { Property } from '@/types'
 import { urlFor } from '@/lib/image'
 import { PortableText } from '@portabletext/react'
 import BookingWidget from '@/components/BookingWidget'
-import HostawayWidget from '@/components/HostawayWidget'
+import Beds24Booking from '@/components/Beds24Booking'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import CrossSell from './CrossSell'
@@ -25,7 +25,8 @@ const propertyQuery = groq`*[_type == "property" && slug.current == $slug][0]{
   _id,
   name,
   slug,
-  idHostaway,
+  beds24PropId,
+  beds24RoomId,
   location,
   tagline,
   gallery,
@@ -96,6 +97,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
   const reviews = await client.fetch<Testimonial[]>(reviewsQuery, { id: property._id }).catch(() => [])
   const rating = getRating(property)
   const bookingText = `Hola, quisiera reservar ${property.name}. Mis fechas son: `
+  const hasBeds24 = Boolean(property.beds24RoomId || property.beds24PropId)
   const hasImages = !!(property.gallery && property.gallery.length > 0)
   const priceInfo = computeDisplayPrice(property)
 
@@ -233,21 +235,12 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 </p>
               </div>
 
-              {property.idHostaway ? (
-                <HostawayWidget
-                  baseUrl="https://desalyestrella.holidayfuture.com/"
-                  listingId={property.idHostaway}
-                  numberOfMonths={2}
-                  openInNewTab={true}
-                  font="Inter"
-                  rounded={true}
-                  button={{ action: 'checkout', text: 'Reservar ahora' }}
-                  clearButtonText="Limpiar fechas"
-                  color={{
-                    mainColor: '#181b46',
-                    frameColor: '#e5e7eb',
-                    textColor: '#1f2937'
-                  }}
+              {hasBeds24 ? (
+                <Beds24Booking
+                  propId={property.beds24PropId}
+                  roomId={property.beds24RoomId}
+                  maxGuests={property.capacity || 4}
+                  propertyName={property.name}
                 />
               ) : (
                 <a
@@ -284,7 +277,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 </div>
               ) : (
                 <div className="mt-4 flex flex-col gap-3">
-                  {property.idHostaway ? (
+                  {hasBeds24 ? (
                     <a
                       href="#calendario"
                       data-track="click_ver_calendario"
@@ -398,8 +391,8 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             {priceInfo ? `Desde ${priceInfo.display}/noche` : '¿Listo para reservar?'}
           </span>
           <a
-            href={property.idHostaway ? '#calendario' : whatsappLink(bookingText)}
-            {...(property.idHostaway ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
+            href={hasBeds24 ? '#calendario' : whatsappLink(bookingText)}
+            {...(hasBeds24 ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
             className="rounded-md bg-navy-900 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-navy-800 focus:outline-none focus:ring-2 focus:ring-gold-500"
           >
             Reservar

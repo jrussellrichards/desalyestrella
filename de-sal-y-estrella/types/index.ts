@@ -17,7 +17,9 @@ export type Amenity =
 export interface Property {
   _id: string;
   name: string;
-  idHostaway: number;
+  idHostaway?: number;          // ya no se usa (antes Hostaway)
+  beds24PropId?: number;        // ID de propiedad en Beds24
+  beds24RoomId?: number;        // ID de habitación en Beds24
   slug: Slug;
   location: string;
   tagline: string;

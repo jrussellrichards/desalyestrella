@@ -15,7 +15,7 @@ export default function AnalyticsListener() {
       const custom = el.dataset.track
       if (custom) return trackEvent(custom, { page, label: el.textContent?.trim().slice(0, 80) })
       if (href.includes('wa.me')) return trackEvent('click_whatsapp', { page })
-      if (href.includes('holidayfuture.com') || href.includes('beds24.com')) return trackEvent('click_reservar', { page })
+      if (href.includes('beds24.com')) return trackEvent('click_reservar', { page })
       if (href.includes('airbnb.')) return trackEvent('click_airbnb', { page })
       if (href.includes('instagram.com')) return trackEvent('click_instagram', { page })
     }
