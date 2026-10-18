@@ -64,7 +64,7 @@ const aquaHowTo: HowTo[] = [
   {
     id: 'tv',
     title: 'TV',
-    text: 'Tiene TV digital, Prime Video, YouTube Premium y YouTube Music, con las cuentas ya conectadas.',
+    text: 'Tiene TV digital, Prime Video, YouTube Premium y YouTube Music, con las cuentas ya conectadas. A veces un huésped anterior cambia o cierra una cuenta: si alguna no está conectada, escríbele a Javier por WhatsApp y te ayuda a conectarla.',
   },
   {
     id: 'basura',
@@ -74,7 +74,8 @@ const aquaHowTo: HowTo[] = [
 ]
 
 const aquaArrival = (tower: string, unit: string, parking: string) => [
-  `Estaciona en el estacionamiento N° ${parking}, al interior del condominio.`,
+  `En auto: entra por Avenida Las Higueras, por el acceso al estacionamiento, y estaciona en el N° ${parking}.`,
+  'A pie: entra por Avenida del Mar, directo a conserjería.',
   'Regístrate en conserjería (atiende 24/7). Es obligatorio y te da acceso a las instalaciones.',
   `Sube a la torre ${tower}, departamento ${unit}.`,
   'Toca el panel de la cerradura digital para encenderlo y escribe tu clave. Usa la cerradura de la puerta, no la caja externa.',
@@ -82,7 +83,6 @@ const aquaArrival = (tower: string, unit: string, parking: string) => [
 
 const aquaDeparture = [
   'Deja la basura en el ducto del piso.',
-  'Deja la loza lavada o dentro del lavaplatos.',
   'Apaga luces, TV y cocina, y cierra las ventanas y la terraza.',
   'Cierra la puerta: la cerradura se bloquea sola.',
 ]
@@ -148,7 +148,6 @@ export const STAYS: Record<string, Stay> = {
     ],
     departure: [
       'Deja la basura en los contenedores de afuera.',
-      'Deja la loza lavada.',
       'Revisa que la salamandra quede sin fuego y apaga las luces.',
       'Cierra ventanas y puerta: la cerradura se bloquea sola.',
     ],
