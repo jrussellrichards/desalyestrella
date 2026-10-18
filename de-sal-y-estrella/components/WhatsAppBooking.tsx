@@ -12,8 +12,17 @@ function formatDate(iso: string) {
 }
 
 // Consulta por WhatsApp con fechas y huéspedes ya escritos, para responder de una vez
-// con disponibilidad y precio. Se usa mientras no haya motor de reservas.
-export default function WhatsAppBooking({ propertyName, maxGuests = 4 }: { propertyName: string; maxGuests?: number }) {
+// con disponibilidad y precio. Las noches ocupadas en Beds24 salen tachadas.
+export default function WhatsAppBooking({
+  propertyName,
+  maxGuests = 4,
+  blocked,
+}: {
+  propertyName: string
+  maxGuests?: number
+  // Noches ocupadas según Beds24 (YYYY-MM-DD)
+  blocked?: string[]
+}) {
   const [checkin, setCheckin] = useState('')
   const [checkout, setCheckout] = useState('')
   const [guests, setGuests] = useState(2)
@@ -32,6 +41,7 @@ export default function WhatsAppBooking({ propertyName, maxGuests = 4 }: { prope
       <DateRangePicker
         checkin={checkin}
         checkout={checkout}
+        blocked={blocked}
         onChange={(a, b) => {
           setCheckin(a)
           setCheckout(b)

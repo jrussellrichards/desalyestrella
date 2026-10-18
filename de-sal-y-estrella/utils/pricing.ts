@@ -9,7 +9,7 @@ interface DisplayPriceInfo {
 }
 
 // Formateo simple CLP (puedes reemplazar por Intl.NumberFormat si necesitas locales múltiples)
-const formatCLP = (value: number) => {
+export const formatCLP = (value: number) => {
   return new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 }).format(
     value
   )

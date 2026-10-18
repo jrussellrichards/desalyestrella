@@ -5,11 +5,11 @@ import { urlFor } from '@/lib/image'
 import { PortableText } from '@portabletext/react'
 import BookingWidget from '@/components/BookingWidget'
 import WhatsAppBooking from '@/components/WhatsAppBooking'
-import Beds24Booking from '@/components/Beds24Booking'
+import { getBlockedDates, getMinPrice } from '@/lib/beds24'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import CrossSell from './CrossSell'
-import { computeDisplayPrice } from '@/utils/pricing'
+import { computeDisplayPrice, formatCLP } from '@/utils/pricing'
 import { fetchSettings } from '@/lib/settings'
 import LightboxGallery from '@/components/LightboxGallery'
 import { hasAssetRef } from '@/utils/hasAssetRef'
@@ -101,7 +101,12 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
   const bookingText = `Hola, quisiera reservar ${property.name}. Mis fechas son: `
   const hasBeds24 = Boolean(property.beds24RoomId || property.beds24PropId)
   const hasImages = !!(property.gallery && property.gallery.length > 0)
-  const priceInfo = computeDisplayPrice(property)
+  const beds24Ids = { propId: property.beds24PropId, roomId: property.beds24RoomId }
+  const [blockedDates, beds24Price] = hasBeds24
+    ? await Promise.all([getBlockedDates(beds24Ids), getMinPrice(beds24Ids)])
+    : [[], null]
+  // El precio de Beds24 manda; si no hay, el precio base de Sanity
+  const priceInfo = beds24Price ? { display: formatCLP(beds24Price), seasonNote: undefined } : computeDisplayPrice(property)
 
   const locationInfo = getLocationInfo(property)
   const hostProfileUrl = property.airbnbProfileUrl || settings.airbnbProfileUrl || AIRBNB_PROFILE_URL
@@ -303,33 +308,14 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
               <div id="calendario" className="mt-5 scroll-mt-28">
                 {property.bookingWidgetCode && !hasBeds24 ? (
                   <BookingWidget htmlCode={property.bookingWidgetCode} />
-                ) : hasBeds24 ? (
-                  <Beds24Booking
-                    propId={property.beds24PropId}
-                    roomId={property.beds24RoomId}
-                    maxGuests={property.capacity || 4}
-                    propertyName={property.name}
-                    variant="sidebar"
-                  />
                 ) : (
-                  <WhatsAppBooking propertyName={property.name} maxGuests={property.capacity || 4} />
+                  <WhatsAppBooking propertyName={property.name} maxGuests={property.capacity || 4} blocked={blockedDates} />
                 )}
               </div>
               <p className="mt-4 flex items-center gap-2 rounded-xl bg-gold-50 px-4 py-3 text-sm text-ink dark:bg-gray-700 dark:text-white">
                 <IconGift className="h-5 w-5 shrink-0 text-gold-600" />
                 <span><strong>Al reservar aquí:</strong> {DIRECT_BOOKING_PERK.charAt(0).toLowerCase() + DIRECT_BOOKING_PERK.slice(1)}.</span>
               </p>
-              {hasBeds24 && (
-                <a
-                  href={whatsappLink(bookingText)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 flex items-center justify-center gap-2 text-sm font-medium text-ink-subtle hover:text-navy-900 dark:text-gray-300"
-                >
-                  <IconBrandWhatsapp className="h-4 w-4" />
-                  ¿Dudas? Escríbenos por WhatsApp
-                </a>
-              )}
               <a
                 href={assistantLink(`Hola, tengo una pregunta sobre ${property.name}`)}
                 target="_blank"

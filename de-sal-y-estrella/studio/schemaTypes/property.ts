@@ -23,7 +23,7 @@ export default defineType({
       title: 'Beds24: ID de propiedad',
       type: 'number',
       group: 'distribution',
-      description: 'En Beds24: Configuración > Propiedades. Activa el botón de reserva directa en la ficha.',
+      description: 'En Beds24: Configuración > Propiedades. Con él, el calendario de la ficha tacha las noches ocupadas y muestra el precio desde Beds24.',
     }),
     defineField({
       name: 'beds24RoomId',

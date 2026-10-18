@@ -41,6 +41,7 @@ function Month({
   hover,
   today,
   blocked,
+  checkoutOk,
   onPick,
   onHover,
 }: {
@@ -50,6 +51,7 @@ function Month({
   hover: string
   today: string
   blocked: Set<string>
+  checkoutOk: string
   onPick: (iso: string) => void
   onHover: (iso: string) => void
 }) {
@@ -66,7 +68,9 @@ function Month({
       <div className="grid grid-cols-7 gap-y-1">
         {monthDays(month).map((iso, i) => {
           if (!iso) return <span key={i} />
-          const disabled = iso < today || blocked.has(iso)
+          // La mañana de una noche ocupada sí sirve como salida
+          const isBlocked = blocked.has(iso) && iso !== checkoutOk
+          const disabled = iso < today || isBlocked
           const isStart = iso === checkin
           const isEnd = iso === end
           const inRange = checkin && end && iso > checkin && iso < end
@@ -88,7 +92,7 @@ function Month({
                   isStart || isEnd
                     ? 'scale-105 bg-sea-500 font-semibold text-white shadow-md'
                     : disabled
-                      ? `cursor-not-allowed text-gray-300 dark:text-gray-600 ${blocked.has(iso) ? 'line-through' : ''}`
+                      ? `cursor-not-allowed text-gray-300 dark:text-gray-600 ${isBlocked ? 'line-through' : ''}`
                       : 'text-ink hover:ring-2 hover:ring-sea-400 dark:text-white'
                 }`}
                 aria-label={fromISO(iso).toLocaleDateString('es-CL', { weekday: 'long', day: 'numeric', month: 'long' })}
@@ -121,6 +125,11 @@ export default function DateRangePicker({
   const [hover, setHover] = useState('')
   const ref = useRef<HTMLDivElement>(null)
   const blockedSet = useMemo(() => new Set(blocked), [blocked])
+  // Primera noche ocupada después de la llegada: se puede elegir como día de salida
+  const checkoutOk = useMemo(
+    () => (checkin && !checkout ? [...blocked].sort().find(d => d > checkin) || '' : ''),
+    [blocked, checkin, checkout]
+  )
   const firstMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1)
   const canGoBack = addMonths(month, 0) > firstMonth
 
@@ -215,6 +224,7 @@ export default function DateRangePicker({
                 hover={hover}
                 today={today}
                 blocked={blockedSet}
+                checkoutOk={checkoutOk}
                 onPick={pick}
                 onHover={setHover}
               />
