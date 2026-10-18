@@ -189,7 +189,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                     : 'Atendido personalmente por sus dueños, Superanfitriones en Airbnb'}
                 </li>
                 <li className="rounded-xl bg-sea-50 p-4 dark:bg-gray-800/60">
-                  Pago seguro en nuestro sistema de reservas
+                  Reservas por WhatsApp y pagas por transferencia o a través de Airbnb
                 </li>
                 <li className="rounded-xl bg-sea-50 p-4 dark:bg-gray-800/60">
                   Te respondemos 24/7 por WhatsApp: llegada, salida y datos de la zona
@@ -296,7 +296,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                     {priceInfo.seasonNote && <span className="ml-1 text-xs">({priceInfo.seasonNote})</span>}
                   </>
                 ) : (
-                  'Elige tus fechas para ver el precio.'
+                  'Escríbenos tus fechas y te confirmamos disponibilidad y precio.'
                 )}
               </p>
               <div id="calendario" className="mt-5 scroll-mt-28">
