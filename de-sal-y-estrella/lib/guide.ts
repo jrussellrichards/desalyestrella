@@ -74,7 +74,8 @@ const aquaHowTo: HowTo[] = [
 ]
 
 const aquaArrival = (tower: string, unit: string, parking: string) => [
-  `Estaciona en el estacionamiento N° ${parking}, al interior del condominio.`,
+  `En auto: entra por Avenida Las Higueras, por el acceso al estacionamiento, y estaciona en el N° ${parking}.`,
+  'A pie: entra por Avenida del Mar, directo a conserjería.',
   'Regístrate en conserjería (atiende 24/7). Es obligatorio y te da acceso a las instalaciones.',
   `Sube a la torre ${tower}, departamento ${unit}.`,
   'Toca el panel de la cerradura digital para encenderlo y escribe tu clave. Usa la cerradura de la puerta, no la caja externa.',
