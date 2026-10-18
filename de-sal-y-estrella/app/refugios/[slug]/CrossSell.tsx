@@ -36,7 +36,7 @@ export default async function CrossSell({ currentId }: CrossSellProps) {
   return (
     <section aria-labelledby="explora-tambien" className="mt-16 border-t border-gray-200 pt-12 dark:border-gray-800">
       <div className="mb-6 flex items-center justify-between">
-        <h2 id="explora-tambien" className="text-lg font-semibold text-gray-900 dark:text-white">
+        <h2 id="explora-tambien" className="font-display text-h3 font-semibold text-ink dark:text-white">
           Explora también
         </h2>
         <Link

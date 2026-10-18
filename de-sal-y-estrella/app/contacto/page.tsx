@@ -1,6 +1,7 @@
 import { fetchSettings } from '@/lib/settings'
 import ContactForm from '@/components/ContactForm'
 import Link from 'next/link'
+import { IconBrandWhatsapp } from '@tabler/icons-react'
 import type { Metadata } from 'next'
 import { INSTAGRAM_URL, SITE_URL, WHATSAPP_NUMBER } from '@/lib/site'
 
@@ -20,21 +21,16 @@ export default async function ContactoPage() {
   const email = settings.contactEmail
   const coord = settings.location?.lat && settings.location?.lng ? settings.location : null
 
-  const faq = [
-    { q: '¿Tiempo de respuesta?', a: 'Por WhatsApp respondemos rápido, normalmente en minutos. Por email, en menos de 12 horas.' },
-    { q: '¿Pet Friendly?', a: 'Algunos refugios sí; consúltanos indicando fechas.' },
-    { q: '¿Política de cancelación?', a: 'Flexible: hasta 7 días antes reembolso completo (salvo fechas pico).' },
-  ]
 
   return (
     <div className="bg-white dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h1 className="font-display text-h2 font-semibold tracking-tight text-ink dark:text-white">
+          <h1 className="font-display text-h1 font-semibold text-ink dark:text-white">
             Contacto
           </h1>
           <p className="mt-4 text-copy-lg text-ink-subtle dark:text-ink-dark-subtle">
-            Escríbenos y planificamos tu estancia perfecta.
+            Por WhatsApp te respondemos normalmente en minutos. También puedes dejarnos un mensaje en el formulario.
           </p>
           {wpp && (
             <div className="mt-6 flex justify-center">
@@ -42,10 +38,10 @@ export default async function ContactoPage() {
                 href={wpp}
                 target="_blank"
                 rel="noopener"
-                className="inline-flex items-center rounded-md bg-emerald-600 px-5 py-2 text-sm font-semibold text-white shadow transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="inline-flex items-center gap-2 rounded-xl bg-gold-500 px-7 py-4 text-base font-semibold text-navy-950 shadow-lg transition hover:bg-gold-300"
               >
-                <svg aria-hidden="true" viewBox="0 0 32 32" className="mr-2 h-4 w-4" fill="currentColor"><path d="M16.04 3C9.4 3 4 8.4 4 15.06c0 2.63.86 5.07 2.33 7.06L4 29l7.16-2.3a12.02 12.02 0 0 0 4.88 1.02h.01c6.64 0 12.04-5.4 12.04-12.06C28.09 8.4 22.69 3 16.04 3Zm6.99 17.2c-.29.82-1.7 1.6-2.34 1.7-.6.12-1.36.17-2.2-.14-.51-.18-1.17-.38-2.02-.84-3.55-1.93-5.86-5.34-6.03-5.59-.18-.25-1.44-1.9-1.44-3.63 0-1.72.91-2.57 1.24-2.93.34-.36.74-.45.98-.45.25 0 .49.01.7.02.22.02.52-.08.82.63.29.7 1 2.43 1.09 2.61.09.18.15.38.03.62-.12.25-.18.4-.34.61-.17.2-.35.45-.5.6-.17.17-.34.35-.15.69.18.34.8 1.32 1.71 2.14 1.17 1.05 2.14 1.38 2.48 1.54.34.17.55.15.75-.08.2-.22.86-.95 1.09-1.28.23-.34.46-.27.77-.16.31.11 1.96.92 2.29 1.08.34.17.57.25.66.4.08.14.08.82-.21 1.64Z"/></svg>
-                Contactar por WhatsApp
+                <IconBrandWhatsapp className="h-5 w-5" />
+                Escribir por WhatsApp
               </a>
             </div>
           )}
@@ -55,7 +51,7 @@ export default async function ContactoPage() {
           {/* Columna info */}
           <div className="space-y-8 md:col-span-2">
             <section>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Datos directos</h3>
+              <h3 className="font-display text-xl font-semibold text-ink dark:text-white">Datos directos</h3>
               <ul className="mt-4 space-y-4 text-sm text-gray-600 dark:text-gray-300">
                 {email && (
                   <li className="flex items-start gap-3">
@@ -100,7 +96,7 @@ export default async function ContactoPage() {
 
             {settings.businessHours?.length ? (
               <section>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Horario</h3>
+                <h3 className="font-display text-xl font-semibold text-ink dark:text-white">Horario</h3>
                 <ul className="mt-3 space-y-1 text-sm text-gray-600 dark:text-gray-300">
                   {settings.businessHours.map(h => <li key={h}>{h}</li>)}
                 </ul>
@@ -108,20 +104,15 @@ export default async function ContactoPage() {
             ) : null}
 
             <section>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">FAQ</h3>
-              <ul className="mt-4 space-y-4">
-                {faq.map(f => (
-                  <li key={f.q}>
-                    <p className="text-sm font-medium text-gray-900 dark:text-white">{f.q}</p>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{f.a}</p>
-                  </li>
-                ))}
-              </ul>
+              <h3 className="font-display text-xl font-semibold text-ink dark:text-white">¿Tienes dudas?</h3>
+              <p className="mt-2 text-sm text-ink-subtle dark:text-ink-dark-subtle">
+                Revisa las <Link href="/#preguntas" className="font-medium text-gold-700 hover:underline">preguntas frecuentes</Link> sobre reservas, check-in, cancelación y mascotas.
+              </p>
             </section>
 
             {coord && (
               <section>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Mapa</h3>
+                <h3 className="font-display text-xl font-semibold text-ink dark:text-white">Mapa</h3>
                 <div className="mt-3 overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700">
                   <iframe
                     title="Ubicación"
@@ -135,23 +126,12 @@ export default async function ContactoPage() {
               </section>
             )}
 
-            <div>
-              {wpp && (
-                <Link
-                  href={wpp}
-                  target="_blank"
-                  className="inline-flex items-center rounded-md bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                >
-                  Chat inmediato en WhatsApp
-                </Link>
-              )}
-            </div>
           </div>
 
           {/* Columna formulario */}
           <div className="md:col-span-3">
-            <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Escríbenos</h2>
+            <div className="rounded-2xl border border-gray-200 bg-sand-50 p-8 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+              <h2 className="font-display text-h3 font-semibold text-ink dark:text-white">Escríbenos</h2>
               <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                 Cuéntanos fechas tentativas, número de huéspedes y dudas.
               </p>

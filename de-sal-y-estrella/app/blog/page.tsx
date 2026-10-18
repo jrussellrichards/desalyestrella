@@ -41,14 +41,19 @@ export default async function BlogPage() {
     <div className="bg-white dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+          <h1 className="font-display text-h1 font-semibold text-ink dark:text-white">
             Guías de Viaje
           </h1>
           <p className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-300">
-            Descubre los secretos de nuestros destinos, diseñados por expertos
-            locales.
+            Ideas y datos para aprovechar tu viaje a La Serena, el Valle del Elqui y Pichilemu.
           </p>
         </div>
+        {posts.length === 0 && (
+          <p className="mx-auto mt-10 max-w-xl text-center text-ink-subtle dark:text-ink-dark-subtle">
+            Pronto publicaremos nuestras guías. Mientras tanto, revisa{' '}
+            <Link href="/experiencias" className="font-medium text-gold-700 hover:underline">qué hacer en cada destino</Link>.
+          </p>
+        )}
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {posts.map((post) => (
             <Link

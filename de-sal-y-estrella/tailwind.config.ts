@@ -15,6 +15,7 @@ const config: Config = {
       },
       fontSize: {
         hero: ['clamp(2.75rem,6vw,4.2rem)', { lineHeight: '1.04', letterSpacing: '-0.025em' }],
+        h1: ['clamp(2.25rem,4.2vw,3.25rem)', { lineHeight: '1.08', letterSpacing: '-0.02em' }],
         h2: ['clamp(2rem,3.2vw,2.6rem)', { lineHeight: '1.12', letterSpacing: '-0.018em' }],
         h3: ['clamp(1.4rem,2.2vw,1.75rem)', { lineHeight: '1.22', letterSpacing: '-0.01em' }],
         'copy-lg': ['1.07rem', { lineHeight: '1.55' }],

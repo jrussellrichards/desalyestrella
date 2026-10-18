@@ -122,26 +122,30 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
         )}
       </header>
 
-      <div className="mx-auto max-w-7xl px-4 pb-20 pt-8 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 pb-28 pt-8 sm:px-6 md:pb-20 lg:px-8">
         <div className="lg:grid lg:grid-cols-3 lg:gap-x-12">
           {/* CONTENIDO PRINCIPAL */}
           <div className="lg:col-span-2">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+            {property.location && (
+              <p className="text-sm font-semibold uppercase tracking-wider text-gold-700">{property.location}</p>
+            )}
+            <h1 className="mt-2 font-display text-h1 font-semibold text-ink dark:text-white">
               {property.name}
             </h1>
-            {property.location && (
-              <p className="mt-2 text-lg text-gray-600 dark:text-gray-300">{property.location}</p>
+            {property.tagline && (
+              <p className="mt-3 text-copy-lg text-ink-subtle dark:text-ink-dark-subtle">{property.tagline}</p>
             )}
             {rating && (
-              <p className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-gray-800 dark:text-gray-200">
+              <a
+                href={property.airbnbListingUrl || hostProfileUrl}
+                target="_blank"
+                rel="nofollow noopener"
+                className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-gold-700 dark:text-gray-200"
+              >
                 <IconStarFilled className="h-4 w-4 text-gold-500" />
-                {rating.rating.toFixed(2).replace('.', ',')} · {rating.reviewCount} reseñas en Airbnb · Superanfitrión
-              </p>
-            )}
-            {property.tagline && (
-              <p className="mt-2 inline-flex items-center rounded bg-gold-50 px-3 py-1 text-sm font-medium text-gold-800 dark:bg-gold-900/30 dark:text-gold-200">
-                {property.tagline}
-              </p>
+                <strong>{rating.rating.toFixed(2).replace('.', ',')}</strong>
+                <span className="text-ink-subtle dark:text-ink-dark-subtle">· {rating.reviewCount} reseñas en Airbnb · Superanfitriones</span>
+              </a>
             )}
             {(typeof property.capacity === 'number' ||
               typeof property.bedrooms === 'number' ||
@@ -171,29 +175,21 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 )}
               </ul>
             )}
-            {priceInfo && (
-              <p className="mt-4 text-base text-gray-700 dark:text-gray-300">
-                <span className="font-semibold text-gray-900 dark:text-white">Desde {priceInfo.display}/noche</span>
-                {priceInfo.seasonNote && (
-                  <span className="ml-2 text-xs text-gray-500">{priceInfo.seasonNote}</span>
-                )}
-              </p>
-            )}
             {/* Micro narrativa diferenciadora */}
             <section aria-labelledby="porque" className="mt-8">
-              <h2 id="porque" className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h2 id="porque" className="font-display text-h3 font-semibold text-ink dark:text-white">
                 ¿Por qué este refugio?
               </h2>
               <ul className="mt-4 grid gap-3 text-sm text-gray-600 dark:text-gray-300 sm:grid-cols-3">
-                <li className="rounded-md bg-gray-50 p-3 dark:bg-gray-800/60">
+                <li className="rounded-xl bg-sand-50 p-4 dark:bg-gray-800/60">
                   {rating
                     ? `Huéspedes lo califican con ${rating.rating.toFixed(2).replace('.', ',')} en ${rating.reviewCount} reseñas`
                     : 'Atendido personalmente por sus dueños, Superanfitriones en Airbnb'}
                 </li>
-                <li className="rounded-md bg-gray-50 p-3 dark:bg-gray-800/60">
+                <li className="rounded-xl bg-sand-50 p-4 dark:bg-gray-800/60">
                   Reservando directo te ahorras la comisión de la plataforma
                 </li>
-                <li className="rounded-md bg-gray-50 p-3 dark:bg-gray-800/60">
+                <li className="rounded-xl bg-sand-50 p-4 dark:bg-gray-800/60">
                   Te respondemos por WhatsApp antes y durante tu estadía
                 </li>
               </ul>
@@ -210,10 +206,10 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 
             {reviews.length > 0 && (
               <section aria-labelledby="resenas" className="mt-10">
-                <h2 id="resenas" className="text-lg font-semibold text-gray-900 dark:text-white">Lo que dicen los huéspedes</h2>
+                <h2 id="resenas" className="font-display text-h3 font-semibold text-ink dark:text-white">Lo que dicen los huéspedes</h2>
                 <ul className="mt-4 grid gap-4 sm:grid-cols-2">
                   {reviews.map(r => (
-                    <li key={r._id} className="rounded-lg border border-gray-200 p-4 text-sm dark:border-gray-700">
+                    <li key={r._id} className="rounded-xl border border-gray-200 p-5 text-sm shadow-sm dark:border-gray-700">
                       <p className="text-gray-700 dark:text-gray-300">“{r.quote}”</p>
                       <p className="mt-2 font-medium text-gray-900 dark:text-white">
                         {r.author}{r.location ? <span className="font-normal text-gray-500"> · {r.location}</span> : null}
@@ -224,84 +220,64 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
               </section>
             )}
 
-            {/* Calendario y reserva directa */}
-            <div id="calendario" className="mt-10 scroll-mt-28 lg:mt-12">
-              <div className="mb-6">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                  Fechas y disponibilidad
-                </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Elige tus fechas para ver disponibilidad y precio, y reserva directo.
-                </p>
-              </div>
-
-              {hasBeds24 ? (
-                <Beds24Booking
-                  propId={property.beds24PropId}
-                  roomId={property.beds24RoomId}
-                  maxGuests={property.capacity || 4}
-                  propertyName={property.name}
-                />
-              ) : (
-                <a
-                  href={whatsappLink(bookingText)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-md bg-navy-900 px-5 py-3 text-sm font-semibold text-white hover:bg-navy-800"
-                >
-                  <IconBrandWhatsapp className="h-5 w-5" />
-                  Consultar disponibilidad por WhatsApp
-                </a>
-              )}
-            </div>
           </div>
 
             {/* SIDEBAR RESERVA */}
           <aside className="mt-12 space-y-8 self-start lg:mt-0 lg:sticky lg:top-28">
             <div
               id="reservar"
-              className="rounded-lg border border-gray-200 bg-gray-50 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+              className="scroll-mt-28 rounded-2xl border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800"
             >
-              <h2 className="text-lg font-medium text-gray-900 dark:text-white">Reserva</h2>
-              {priceInfo && (
-                <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-                  Desde <span className="font-semibold text-gray-900 dark:text-white">{priceInfo.display}</span> / noche
-                </p>
-              )}
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
-                Reserva directo y ahórrate la comisión de las plataformas.
+              <h2 className="font-display text-h3 font-semibold text-ink dark:text-white">Reserva directo</h2>
+              <p className="mt-1 text-sm text-ink-subtle dark:text-ink-dark-subtle">
+                {priceInfo ? (
+                  <>
+                    Desde <strong className="text-lg text-ink dark:text-white">{priceInfo.display}</strong> / noche
+                    {priceInfo.seasonNote && <span className="ml-1 text-xs">({priceInfo.seasonNote})</span>}
+                  </>
+                ) : (
+                  'Sin comisión de plataforma. Elige tus fechas para ver el precio.'
+                )}
               </p>
-              {property.bookingWidgetCode ? (
-                <div className="mt-4">
+              <div id="calendario" className="mt-5 scroll-mt-28">
+                {property.bookingWidgetCode && !hasBeds24 ? (
                   <BookingWidget htmlCode={property.bookingWidgetCode} />
-                </div>
-              ) : (
-                <div className="mt-4 flex flex-col gap-3">
-                  {hasBeds24 ? (
-                    <a
-                      href="#calendario"
-                      data-track="click_ver_calendario"
-                      className="inline-flex items-center justify-center rounded-md bg-navy-900 px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-navy-800"
-                    >
-                      Ver fechas y reservar
-                    </a>
-                  ) : null}
+                ) : hasBeds24 ? (
+                  <Beds24Booking
+                    propId={property.beds24PropId}
+                    roomId={property.beds24RoomId}
+                    maxGuests={property.capacity || 4}
+                    propertyName={property.name}
+                    variant="sidebar"
+                  />
+                ) : (
                   <a
                     href={whatsappLink(bookingText)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 hover:border-navy-900 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold-500 px-5 py-3.5 text-base font-semibold text-navy-950 shadow transition hover:bg-gold-300"
                   >
-                    <IconBrandWhatsapp className="h-5 w-5 text-green-600" />
-                    Consultar por WhatsApp
+                    <IconBrandWhatsapp className="h-5 w-5" />
+                    Consultar disponibilidad
                   </a>
-                </div>
+                )}
+              </div>
+              {hasBeds24 && (
+                <a
+                  href={whatsappLink(bookingText)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 flex items-center justify-center gap-2 text-sm font-medium text-ink-subtle hover:text-navy-900 dark:text-gray-300"
+                >
+                  <IconBrandWhatsapp className="h-4 w-4" />
+                  ¿Dudas? Escríbenos por WhatsApp
+                </a>
               )}
 
               {(property.airbnbListingUrl || hostProfileUrl) && (
                 <div className="mt-5 space-y-2">
-                  <p className="text-[11px] font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                    Confianza
+                  <p className="border-t border-gray-100 pt-4 text-[11px] font-medium uppercase tracking-wide text-gray-500 dark:border-gray-700 dark:text-gray-400">
+                    Míranos en Airbnb
                   </p>
                   <div className="flex flex-wrap gap-3">
                     {property.airbnbListingUrl && (
@@ -340,7 +316,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 
             <div
               id="amenities"
-              className="rounded-lg border border-gray-200 bg-gray-50 p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+              className="rounded-2xl border border-gray-200 bg-sand-50 p-6 dark:border-gray-700 dark:bg-gray-800"
             >
               <h2 className="font-display text-h3 font-semibold text-ink dark:text-white">Servicios incluidos</h2>
         <ul className="mt-6 grid grid-cols-1 gap-y-3 text-sm sm:grid-cols-2">
@@ -385,15 +361,27 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
       </div>
 
       {/* CTA FLOTANTE MOBILE */}
-      <div className="fixed inset-x-0 bottom-0 z-50 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70 dark:bg-gray-900/90 md:hidden">
-        <div className="mx-auto flex max-w-md items-center justify-between px-4 py-3">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-            {priceInfo ? `Desde ${priceInfo.display}/noche` : '¿Listo para reservar?'}
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-gray-200 bg-white/95 backdrop-blur dark:border-gray-700 dark:bg-gray-900/95 md:hidden">
+        <div className="mx-auto flex max-w-md items-center gap-3 px-4 py-3">
+          <span className="flex-1 text-sm text-ink-subtle dark:text-gray-200">
+            {priceInfo ? (
+              <>Desde <strong className="text-base text-ink dark:text-white">{priceInfo.display}</strong> / noche</>
+            ) : (
+              'Reserva directo, sin comisión'
+            )}
           </span>
           <a
-            href={hasBeds24 ? '#calendario' : whatsappLink(bookingText)}
-            {...(hasBeds24 ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
-            className="rounded-md bg-navy-900 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-navy-800 focus:outline-none focus:ring-2 focus:ring-gold-500"
+            href={whatsappLink(bookingText)}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Consultar por WhatsApp"
+            className="rounded-xl border border-gray-300 p-2.5 text-[#128C7E] dark:border-gray-600"
+          >
+            <IconBrandWhatsapp className="h-5 w-5" />
+          </a>
+          <a
+            href="#reservar"
+            className="rounded-xl bg-gold-500 px-5 py-2.5 text-sm font-semibold text-navy-950 shadow"
           >
             Reservar
           </a>
