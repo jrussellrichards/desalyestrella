@@ -132,7 +132,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
           <a href="#wifi" className={`${card} flex flex-col gap-1`}>
             <IconWifi className="h-6 w-6 text-sea-500" />
             <span className="font-semibold text-ink dark:text-white">WiFi</span>
-            <span className="text-xs text-ink-subtle dark:text-ink-dark-subtle">{wifiName ? wifiName : 'Red y clave'}</span>
+            <span className="text-xs text-ink-subtle dark:text-ink-dark-subtle">{wifiName ? wifiName : '800 Mbps'}</span>
           </a>
           {parking ? (
             <a href="#llegada" className={`${card} flex flex-col gap-1`}>
@@ -202,6 +202,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
             <div className="flex items-center gap-2">
               <IconWifi className="h-5 w-5 text-sea-500" />
               <p className="font-semibold text-ink dark:text-white">WiFi</p>
+              <span className="rounded-full bg-sea-50 px-2 py-0.5 text-xs font-semibold text-sea-700 dark:bg-gray-900 dark:text-sea-300">Alta velocidad 800 Mbps</span>
             </div>
             {wifiName && wifiPassword ? (
               <div className="mt-3 space-y-2 text-sm">
