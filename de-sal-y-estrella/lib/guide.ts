@@ -18,8 +18,6 @@ export type PlaceGroup = { id: string; title: string; places: Place[] }
 
 // Aviso de descuentos que se muestra en "Dónde comer" de cada zona
 export const DISCOUNTS = {
-  url: 'https://buzka.cl',
-  label: 'buzka.cl',
   title: '¿Tienes alguna tarjeta o descuento?',
   text: 'Revisa en buzka.cl los descuentos que hay cada día en los restaurantes de la zona con las tarjetas que tienes.',
   perk: 'Por ser visitante, pide tu membresía premium gratis.',
@@ -31,6 +29,8 @@ export type Zone = {
   name: string
   emergency: { label: string; maps: string }[]
   tsunami: string
+  // Descuentos de restaurantes de la zona en buzka.cl
+  discounts: string
   groups: PlaceGroup[]
 }
 
@@ -207,6 +207,7 @@ export const EMERGENCY_NUMBERS = [
 export const ZONES: Record<Stay['zone'], Zone> = {
   laserena: {
     name: 'La Serena',
+    discounts: 'https://buzka.cl/descuentos?categoria=restaurantes&region=coquimbo',
     emergency: [
       { label: 'Hospital San Juan de Dios de La Serena', maps: maps('Hospital San Juan de Dios La Serena') },
       { label: 'Farmacias cercanas', maps: maps('farmacia Avenida del Mar La Serena') },
@@ -269,6 +270,7 @@ export const ZONES: Record<Stay['zone'], Zone> = {
   },
   pichilemu: {
     name: 'Pichilemu',
+    discounts: 'https://buzka.cl/descuentos?region=ohiggins&categoria=restaurantes',
     emergency: [
       { label: 'Hospital de Pichilemu', maps: maps('Hospital de Pichilemu') },
       { label: 'Farmacias en el centro', maps: maps('farmacia Pichilemu') },

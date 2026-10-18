@@ -1,6 +1,19 @@
 @import "tailwindcss";
 @config "../tailwind.config.ts";
 
+/* Modo oscuro: sigue al celular, salvo que la guía del huésped lo fije con su botón
+   (.tema-claro o .tema-oscuro en un contenedor). */
+@custom-variant dark {
+  @media (prefers-color-scheme: dark) {
+    &:not(.tema-claro, .tema-claro *) {
+      @slot;
+    }
+  }
+  &:where(.tema-oscuro, .tema-oscuro *) {
+    @slot;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #14193a;
