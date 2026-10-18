@@ -44,3 +44,42 @@ export function whatsappLink(text?: string) {
 export function assistantLink(text?: string) {
   return `https://wa.me/${ASSISTANT_WHATSAPP_NUMBER}${text ? `?text=${encodeURIComponent(text)}` : ''}`
 }
+
+// Beneficio de la casa para quien reserva en la página (se muestra junto al botón de reservar).
+export const DIRECT_BOOKING_PERK = 'Late check-out sin costo, según disponibilidad'
+
+// Ubicación de cada refugio: dirección para el mapa y tiempos aproximados.
+type LocationInfo = { mapQuery: string; area: string; nearby: { place: string; time: string }[] }
+
+const LOCATION_BY_NAME: { match: RegExp; info: LocationInfo }[] = [
+  {
+    match: /403|308|serena/i,
+    info: {
+      mapQuery: 'Aqua Resort, Avenida Las Higueras 671, La Serena, Chile',
+      area: 'Avenida del Mar, La Serena',
+      nearby: [
+        { place: 'Playa', time: 'cruzando la Avenida del Mar' },
+        { place: 'Centro de La Serena', time: '15 min en auto' },
+        { place: 'Aeropuerto La Florida', time: '20 min en auto' },
+        { place: 'Valle del Elqui (Vicuña)', time: '1 h en auto' },
+      ],
+    },
+  },
+  {
+    match: /pichilemu/i,
+    info: {
+      mapQuery: 'José Miguel Camilo 442, Pichilemu, Chile',
+      area: 'Pichilemu',
+      nearby: [
+        { place: 'Playa', time: 'a pasos' },
+        { place: 'Punta de Lobos', time: '10 min en auto' },
+        { place: 'Cáhuil y sus salinas', time: '25 min en auto' },
+      ],
+    },
+  },
+]
+
+export function getLocationInfo(p: { name?: string; location?: string }): LocationInfo | null {
+  const haystack = `${p.name || ''} ${p.location || ''}`
+  return LOCATION_BY_NAME.find(l => l.match.test(haystack))?.info ?? null
+}

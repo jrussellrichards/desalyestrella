@@ -33,6 +33,12 @@ export default defineType({
       to: [{type: 'property'}],
     }),
     defineField({
+      name: 'stayDate',
+      title: 'Fecha de la estadía',
+      description: 'Ej: "Septiembre 2026" (opcional)',
+      type: 'string',
+    }),
+    defineField({
       name: 'quote',
       title: 'Cita (El testimonio)',
       type: 'text',
