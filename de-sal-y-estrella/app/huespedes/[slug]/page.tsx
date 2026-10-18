@@ -381,8 +381,12 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
             <p className="mt-3 font-display text-lg font-bold text-ink dark:text-white">¡Gracias por quedarte con nosotros!</p>
             <p className="mt-1 text-sm text-ink-subtle dark:text-ink-dark-subtle">Nos encantaría saber cómo te fue y recibirte de nuevo.</p>
             <div className="mt-4 rounded-xl bg-sea-50 p-4 dark:bg-gray-900">
-              <p className="font-semibold text-ink dark:text-white">Síguenos en Instagram y te regalamos un cupón de 15% de descuento para tu próxima visita</p>
-              <p className="mt-1 text-xs text-ink-subtle dark:text-ink-dark-subtle">Escríbenos por WhatsApp para recibirlo. No aplica en temporada alta.</p>
+              <p className="font-semibold text-ink dark:text-white">Un descuento para tu próxima visita</p>
+              <ul className="mx-auto mt-2 max-w-xs space-y-1 text-sm text-ink dark:text-white">
+                <li><strong>10%</strong> si nos sigues en Instagram</li>
+                <li><strong>20%</strong> si subes una historia y nos etiquetas</li>
+              </ul>
+              <p className="mt-2 text-xs text-ink-subtle dark:text-ink-dark-subtle">Escríbenos por WhatsApp para recibir tu cupón. No aplica en temporada alta.</p>
               <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-sea-500 px-4 py-2 text-sm font-semibold text-white hover:bg-sea-600">
                 <IconBrandInstagram className="h-4 w-4" /> Seguir a @de_sal_y_estrella
               </a>
