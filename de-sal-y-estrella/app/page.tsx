@@ -6,9 +6,10 @@ import { Property, Testimonial } from '@/types'
 import TestimonialCarousel from '@/components/TestimonialCarousel'
 import EmailCapture from '@/components/EmailCapture'
 import RefugioCard from '@/components/RefugioCard'
-import AirbnbBadges from '@/components/AirbnbBadges'
+import { Laurel } from '@/components/Laurel'
 import {
   IconBrandWhatsapp,
+  IconAwardFilled,
   IconStarFilled,
   IconBeach,
   IconMessageCircle,
@@ -138,9 +139,6 @@ export default async function HomePage() {
             </a>
           </div>
 
-          <div className="mt-8">
-            <AirbnbBadges rating={formatRating(AIRBNB_STATS.averageRating)} reviews={AIRBNB_STATS.totalReviews} href={AIRBNB_PROFILE_URL} tone="light" />
-          </div>
         </div>
       </section>
 
@@ -149,21 +147,36 @@ export default async function HomePage() {
         <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-6 py-8 text-center sm:grid-cols-4 lg:px-8">
           {[
             {
-              k: (
-                <span className="inline-flex items-center gap-1.5">
-                  <IconStarFilled className="h-6 w-6 text-gold-400" />
-                  {formatRating(AIRBNB_STATS.averageRating)}
-                </span>
-              ),
+              icon: <IconStarFilled className="h-7 w-7 text-gold-400" />,
+              k: formatRating(AIRBNB_STATS.averageRating),
               v: 'Calificación global',
             },
-            { k: 'Top 10%', v: 'Mejor evaluados en Airbnb' },
-            { k: 'Superanfitriones', v: 'Reconocidos por Airbnb' },
-            { k: String(AIRBNB_STATS.totalReviews), v: 'Reseñas reales' },
+            {
+              icon: (
+                <span className="flex items-center text-gold-500">
+                  <Laurel className="h-8 w-3" />
+                  <span className="px-0.5 text-[11px] font-bold leading-none">10%</span>
+                  <Laurel className="h-8 w-3" flip />
+                </span>
+              ),
+              k: 'Top 10%',
+              v: 'Mejor evaluados en Airbnb',
+            },
+            {
+              icon: <IconAwardFilled className="h-7 w-7 text-[#FF385C]" />,
+              k: 'Superanfitriones',
+              v: 'Reconocidos por Airbnb',
+            },
+            {
+              icon: <IconMessageCircle className="h-7 w-7 text-sea-500" />,
+              k: String(AIRBNB_STATS.totalReviews),
+              v: 'Reseñas reales',
+            },
           ].map(item => (
-            <div key={item.v}>
+            <div key={item.v} className="flex flex-col items-center">
+              <span className="flex h-8 items-center" aria-hidden="true">{item.icon}</span>
               <dt className="sr-only">{item.v}</dt>
-              <dd className="font-display text-2xl font-semibold text-navy-900 dark:text-white sm:text-3xl">{item.k}</dd>
+              <dd className="mt-2 font-display text-xl font-semibold text-navy-900 dark:text-white sm:text-3xl">{item.k}</dd>
               <dd className="mt-1 text-xs font-medium uppercase tracking-wider text-ink-faint dark:text-ink-dark-faint">{item.v}</dd>
             </div>
           ))}
