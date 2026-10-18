@@ -4,6 +4,7 @@ import { Property } from '@/types'
 import { urlFor } from '@/lib/image'
 import { PortableText } from '@portabletext/react'
 import BookingWidget from '@/components/BookingWidget'
+import WhatsAppBooking from '@/components/WhatsAppBooking'
 import Beds24Booking from '@/components/Beds24Booking'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
@@ -311,15 +312,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                     variant="sidebar"
                   />
                 ) : (
-                  <a
-                    href={whatsappLink(bookingText)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sea-500 px-5 py-3.5 text-base font-semibold text-white shadow transition hover:bg-sea-600"
-                  >
-                    <IconBrandWhatsapp className="h-5 w-5" />
-                    Consultar disponibilidad
-                  </a>
+                  <WhatsAppBooking propertyName={property.name} maxGuests={property.capacity || 4} />
                 )}
               </div>
               <p className="mt-4 flex items-center gap-2 rounded-xl bg-gold-50 px-4 py-3 text-sm text-ink dark:bg-gray-700 dark:text-white">
