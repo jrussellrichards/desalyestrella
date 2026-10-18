@@ -7,6 +7,7 @@ import AnalyticsListener from '@/components/AnalyticsListener'
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site'
 import Footer from '@/components/Footer'
 import WhatsAppWidget from '@/components/WhatsAppWidget'
+import SiteChrome from '@/components/SiteChrome'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -46,10 +47,12 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${inter.variable} ${jakarta.variable}`}>
       <body className="font-sans antialiased text-ink dark:text-ink-dark bg-salt dark:bg-gray-900 selection:bg-gold-300/40 selection:text-navy-950">
-        <Header />
+        <SiteChrome><Header /></SiteChrome>
         <main className="flex-grow">{children}</main>
-        <WhatsAppWidget />
-        <Footer />
+        <SiteChrome>
+          <WhatsAppWidget />
+          <Footer />
+        </SiteChrome>
         <AnalyticsListener />
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-84W0J5FR36" strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
