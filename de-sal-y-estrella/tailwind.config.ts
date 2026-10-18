@@ -11,7 +11,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-display)', 'serif']
+        display: ['var(--font-display)', 'system-ui', 'sans-serif']
       },
       fontSize: {
         hero: ['clamp(2.75rem,6vw,4.2rem)', { lineHeight: '1.04', letterSpacing: '-0.025em' }],
@@ -47,6 +47,19 @@ const config: Config = {
           700: '#8d6a3f',
           800: '#6e5232',
           900: '#523d26',
+        },
+        // Acento fresco de mar, para etiquetas e íconos
+        sea: {
+          50: '#eef7f6',
+          100: '#d6ede9',
+          200: '#aedbd4',
+          300: '#7fc1b8',
+          400: '#55a59b',
+          500: '#3b8a80',
+          600: '#2f6f67',
+          700: '#285a54',
+          800: '#234a45',
+          900: '#1f3e3a',
         },
         // Base clara y cálida ("sal"), para que el azul y el dorado del logo destaquen
         salt: '#FBF8F3',

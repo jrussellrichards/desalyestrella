@@ -127,7 +127,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
           {/* CONTENIDO PRINCIPAL */}
           <div className="lg:col-span-2">
             {property.location && (
-              <p className="text-sm font-semibold uppercase tracking-wider text-gold-700">{property.location}</p>
+              <p className="text-sm font-semibold uppercase tracking-wider text-sea-600">{property.location}</p>
             )}
             <h1 className="mt-2 font-display text-h1 font-semibold text-ink dark:text-white">
               {property.name}
