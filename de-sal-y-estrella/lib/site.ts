@@ -33,6 +33,14 @@ export function getRating(p: { name?: string; location?: string; rating?: number
   return RATING_BY_NAME.find(r => r.match.test(haystack))?.info ?? null
 }
 
+// Asistente 24/7 por WhatsApp (recomendaciones, llegada, salida, la zona).
+// Si el asistente usa otro número, cámbialo aquí; los QR impresos apuntan a este mismo número.
+export const ASSISTANT_WHATSAPP_NUMBER = WHATSAPP_NUMBER
+
 export function whatsappLink(text?: string) {
   return `https://wa.me/${WHATSAPP_NUMBER}${text ? `?text=${encodeURIComponent(text)}` : ''}`
+}
+
+export function assistantLink(text?: string) {
+  return `https://wa.me/${ASSISTANT_WHATSAPP_NUMBER}${text ? `?text=${encodeURIComponent(text)}` : ''}`
 }

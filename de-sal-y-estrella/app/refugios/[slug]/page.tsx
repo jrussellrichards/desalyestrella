@@ -13,9 +13,9 @@ import { fetchSettings } from '@/lib/settings'
 import LightboxGallery from '@/components/LightboxGallery'
 import { hasAssetRef } from '@/utils/hasAssetRef'
 import { AmenityIcon } from '@/components/AmenityIcon'
-import { IconUsers, IconBed, IconBath, IconBrandWhatsapp, IconStarFilled } from '@tabler/icons-react'
+import { IconUsers, IconBed, IconBath, IconBrandWhatsapp, IconStarFilled, IconClock24 } from '@tabler/icons-react'
 import type { Metadata } from 'next'
-import { AIRBNB_PROFILE_URL, SITE_URL, getRating, whatsappLink } from '@/lib/site'
+import { AIRBNB_PROFILE_URL, SITE_URL, assistantLink, getRating, whatsappLink } from '@/lib/site'
 import type { Testimonial } from '@/types'
 
 // Revalidación ISR (5 min) para balance entre frescura y rendimiento
@@ -190,7 +190,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                   Pago seguro en nuestro sistema de reservas
                 </li>
                 <li className="rounded-xl bg-sea-50 p-4 dark:bg-gray-800/60">
-                  Te respondemos por WhatsApp antes y durante tu estadía
+                  Te respondemos 24/7 por WhatsApp: llegada, salida y datos de la zona
                 </li>
               </ul>
             </section>
@@ -273,6 +273,15 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                   ¿Dudas? Escríbenos por WhatsApp
                 </a>
               )}
+              <a
+                href={assistantLink(`Hola, tengo una pregunta sobre ${property.name}`)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 flex items-center justify-center gap-2 rounded-xl bg-sea-50 px-4 py-3 text-sm font-medium text-sea-700 ring-1 ring-sea-100 transition hover:bg-sea-100 dark:bg-gray-800 dark:text-sea-300 dark:ring-gray-700"
+              >
+                <IconClock24 className="h-4 w-4" />
+                Pregúntanos lo que quieras, 24/7
+              </a>
 
               {(property.airbnbListingUrl || hostProfileUrl) && (
                 <div className="mt-5 space-y-2">

@@ -11,6 +11,7 @@ import {
   IconStarFilled,
   IconBeach,
   IconMessageCircle,
+  IconClock24,
   IconArrowRight,
   IconChevronDown,
 } from '@tabler/icons-react'
@@ -59,6 +60,11 @@ const reasons = [
     icon: IconMessageCircle,
     title: 'Te atienden sus dueños',
     text: 'Javier te responde por WhatsApp antes y durante tu estadía.',
+  },
+  {
+    icon: IconClock24,
+    title: 'Respuestas 24/7',
+    text: 'Llegada, salida, el departamento y qué hacer en la zona, a cualquier hora por WhatsApp.',
   },
 ]
 

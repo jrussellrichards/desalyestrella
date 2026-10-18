@@ -5,7 +5,8 @@ import { urlFor } from '@/lib/image'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import Image from 'next/image'
-import { IconMapPin, IconInfoCircle, IconStar, IconFlame, IconDroplet, IconWifi, IconTrash, IconMessageCircle, IconHome, IconTools, IconSoup, IconBeach, IconCompass, IconBrandInstagram, IconShoppingBag, IconCoffee, IconDeviceTv, IconToolsKitchen2, IconBrandYoutube, IconCar } from '@tabler/icons-react'
+import { IconMapPin, IconInfoCircle, IconStar, IconFlame, IconDroplet, IconWifi, IconTrash, IconMessageCircle, IconHome, IconTools, IconSoup, IconBeach, IconCompass, IconBrandInstagram, IconShoppingBag, IconCoffee, IconDeviceTv, IconToolsKitchen2, IconBrandYoutube, IconCar, IconBrandWhatsapp } from '@tabler/icons-react'
+import { assistantLink } from '@/lib/site'
 
 // Revalidación ISR (5 min)
 export const revalidate = 300
@@ -164,6 +165,25 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
             En esta guía encontrarás todo lo necesario para aprovechar al máximo tu estadía, desde el uso de las instalaciones hasta nuestras recomendaciones de la zona. 
             ¡Relájate, disfruta y siéntete como en casa! Si necesitas cualquier asistencia, estamos a tu disposición.
           </p>
+        </section>
+
+        {/* Asistente 24/7 */}
+        <section className="rounded-2xl bg-gradient-to-br from-sea-500 to-sea-700 p-6 text-white shadow-sm sm:flex sm:items-center sm:justify-between sm:gap-6 sm:p-8">
+          <div>
+            <h2 className="font-display text-xl font-bold sm:text-2xl">¿Tienes una duda? Escríbenos 24/7</h2>
+            <p className="mt-2 text-sea-50">
+              Llegada, salida, cómo usar algo del alojamiento o qué hacer en la zona: te respondemos por WhatsApp a cualquier hora.
+            </p>
+          </div>
+          <a
+            href={assistantLink(`Hola, estoy en ${property.name}`)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-sea-700 shadow transition hover:bg-sea-50 sm:mt-0"
+          >
+            <IconBrandWhatsapp className="h-5 w-5" />
+            Abrir WhatsApp
+          </a>
         </section>
 
         {/* Guía de Uso de la Casa */}
