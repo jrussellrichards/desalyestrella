@@ -67,29 +67,41 @@ export async function getBlockedDates(ids: Ids): Promise<string[]> {
   }
 }
 
-// Precio por noche más bajo de los próximos 90 días entre las noches libres
-export async function getMinPrice(ids: Ids): Promise<number | null> {
-  if (!ids.propId && !ids.roomId) return null
+export type NightlyRates = { prices: Record<string, number>; minStay: Record<string, number> }
+
+// Precio por noche y estadía mínima de cada fecha del próximo año (YYYY-MM-DD -> valor)
+export async function getNightlyPrices(ids: Ids): Promise<NightlyRates> {
+  const rates: NightlyRates = { prices: {}, minStay: {} }
+  if (!ids.propId && !ids.roomId) return rates
   try {
-    const { startDate } = range()
-    const end = new Date()
-    end.setDate(end.getDate() + 90)
-    const rooms = await beds24Get<{ calendar?: { numAvail?: number; price1?: number }[] }[]>('/inventory/rooms/calendar', {
-      ...target(ids),
-      startDate,
-      endDate: isoDate(end),
-      includePrices: true,
-      includeNumAvail: true,
-    })
-    const prices = (rooms || [])
-      .flatMap(r => r.calendar || [])
-      .filter(c => (c.numAvail ?? 1) > 0 && typeof c.price1 === 'number' && c.price1 > 0)
-      .map(c => c.price1 as number)
-    return prices.length ? Math.min(...prices) : null
+    const rooms = await beds24Get<{ calendar?: { from: string; to: string; price1?: number; minStay?: number }[] }[]>(
+      '/inventory/rooms/calendar',
+      { ...target(ids), ...range(), includePrices: true, includeMinStay: true }
+    )
+    // Beds24 agrupa días seguidos con el mismo precio en rangos (from y to incluidos)
+    for (const c of rooms?.[0]?.calendar || []) {
+      for (let d = new Date(`${c.from}T12:00:00Z`); isoDate(d) <= c.to; d.setUTCDate(d.getUTCDate() + 1)) {
+        if (typeof c.price1 === 'number' && c.price1 > 0) rates.prices[isoDate(d)] = c.price1
+        if (c.minStay && c.minStay > 1) rates.minStay[isoDate(d)] = c.minStay
+      }
+    }
+    return rates
   } catch (err) {
     console.error(err)
-    return null
+    return rates
   }
+}
+
+// Precio por noche más bajo de los próximos 90 días entre las noches libres
+export function minPrice(prices: Record<string, number>, blocked: string[]) {
+  const limit = new Date()
+  limit.setDate(limit.getDate() + 90)
+  const until = isoDate(limit)
+  const taken = new Set(blocked)
+  const values = Object.entries(prices)
+    .filter(([d]) => d <= until && !taken.has(d))
+    .map(([, p]) => p)
+  return values.length ? Math.min(...values) : null
 }
 
 // Para el diagnóstico: propiedades y habitaciones con sus IDs

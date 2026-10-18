@@ -5,7 +5,7 @@ import { urlFor } from '@/lib/image'
 import { PortableText } from '@portabletext/react'
 import BookingWidget from '@/components/BookingWidget'
 import WhatsAppBooking from '@/components/WhatsAppBooking'
-import { getBlockedDates, getMinPrice } from '@/lib/beds24'
+import { getBlockedDates, getNightlyPrices, minPrice } from '@/lib/beds24'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import CrossSell from './CrossSell'
@@ -102,9 +102,10 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
   const hasBeds24 = Boolean(property.beds24RoomId || property.beds24PropId)
   const hasImages = !!(property.gallery && property.gallery.length > 0)
   const beds24Ids = { propId: property.beds24PropId, roomId: property.beds24RoomId }
-  const [blockedDates, beds24Price] = hasBeds24
-    ? await Promise.all([getBlockedDates(beds24Ids), getMinPrice(beds24Ids)])
+  const [blockedDates, rates] = hasBeds24
+    ? await Promise.all([getBlockedDates(beds24Ids), getNightlyPrices(beds24Ids)])
     : [[], null]
+  const beds24Price = rates ? minPrice(rates.prices, blockedDates) : null
   // El precio de Beds24 manda; si no hay, el precio base de Sanity
   const priceInfo = beds24Price ? { display: formatCLP(beds24Price), seasonNote: undefined } : computeDisplayPrice(property)
 
@@ -309,7 +310,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 {property.bookingWidgetCode && !hasBeds24 ? (
                   <BookingWidget htmlCode={property.bookingWidgetCode} />
                 ) : (
-                  <WhatsAppBooking propertyName={property.name} maxGuests={property.capacity || 4} blocked={blockedDates} />
+                  <WhatsAppBooking propertyName={property.name} maxGuests={property.capacity || 4} blocked={blockedDates} rates={rates} />
                 )}
               </div>
               <p className="mt-4 flex items-center gap-2 rounded-xl bg-gold-50 px-4 py-3 text-sm text-ink dark:bg-gray-700 dark:text-white">
