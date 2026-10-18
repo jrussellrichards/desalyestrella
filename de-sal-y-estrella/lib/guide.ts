@@ -88,7 +88,7 @@ const aquaHowTo: HowTo[] = [
 ]
 
 const aquaArrival = (tower: string, unit: string, parking: string) => [
-  `En auto: entra por Avenida Las Higueras, por el acceso al estacionamiento, y estaciona en el N° ${parking}.`,
+  `En auto: entra por Avenida Las Higueras, por el acceso al estacionamiento, y estaciona en el N° ${parking}. El estacionamiento es gratis.`,
   'A pie: entra por Avenida del Mar, directo a conserjería.',
   'Regístrate en conserjería (atiende 24/7). Es obligatorio y te da acceso a las instalaciones.',
   `Sube a la torre ${tower}, departamento ${unit}.`,
@@ -144,12 +144,18 @@ export const STAYS: Record<string, Stay> = {
     arrival: [
       'Antes de llegar, escríbele a don Sergio por WhatsApp para coordinar la hora.',
       'Don Sergio te recibe en la cabaña y te ayuda con la llegada.',
+      'Si vienes en auto, la cabaña tiene estacionamiento gratis.',
     ],
     howTo: [
       {
         id: 'chimenea',
         title: 'Chimenea',
         text: 'El tiraje se abre girándolo a la derecha para prender y se cierra a la izquierda para apagar. Prende primero astillas chicas y después agrega leña seca. No uses líquidos inflamables.',
+      },
+      {
+        id: 'parrilla',
+        title: 'Parrilla',
+        text: 'La cabaña tiene parrilla para que hagas tu asado. Al terminar, deja las brasas bien apagadas y la parrilla limpia.',
       },
       {
         id: 'agua',
