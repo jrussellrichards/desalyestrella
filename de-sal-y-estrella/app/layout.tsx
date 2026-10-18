@@ -45,7 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" className={`${inter.variable} ${fraunces.variable}`}>
-      <body className="font-sans antialiased text-ink dark:text-ink-dark bg-white dark:bg-gray-900 selection:bg-gold-300/40 selection:text-navy-950">
+      <body className="font-sans antialiased text-ink dark:text-ink-dark bg-salt dark:bg-gray-900 selection:bg-gold-300/40 selection:text-navy-950">
         <Header />
         <main className="flex-grow">{children}</main>
         <WhatsAppWidget />

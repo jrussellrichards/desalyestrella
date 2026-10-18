@@ -63,7 +63,7 @@ export default async function RefugiosPage({ searchParams }: Props) {
   )
 
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <div className="bg-salt dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
         <div className="max-w-2xl">
           <p className="text-sm font-semibold uppercase tracking-wider text-gold-700">Nuestros refugios</p>

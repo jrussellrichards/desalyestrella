@@ -6,7 +6,7 @@ import { whatsappLink } from '@/lib/site'
 
 export default function ExperienceGuide({ destination }: { destination: Destination }) {
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <div className="bg-salt dark:bg-gray-900">
       <div className="relative h-[42vh] min-h-[280px] w-full overflow-hidden">
         <Image src={destination.image} alt={destination.name} fill priority sizes="100vw" className="object-cover object-[50%_75%]" />
         <div className="absolute inset-0 bg-gradient-to-t from-navy-950/80 via-navy-950/30 to-transparent" />

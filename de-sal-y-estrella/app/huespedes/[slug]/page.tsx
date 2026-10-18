@@ -109,7 +109,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
             priority
           />
         ) : (
-          <div className="h-full w-full bg-slate-800" />
+          <div className="h-full w-full bg-navy-900" />
         )}
         <div className="absolute inset-0 bg-black/40" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
@@ -189,8 +189,8 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
             {/* Estacionamiento */}
             {parkingNumber && (
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 transition-all hover:shadow-md md:col-span-2">
-                <div className="bg-slate-100 dark:bg-slate-900/30 p-3 rounded-xl h-fit">
-                  <IconCar className="h-6 w-6 text-slate-600 dark:text-slate-400" />
+                <div className="bg-navy-50 dark:bg-navy-900/30 p-3 rounded-xl h-fit">
+                  <IconCar className="h-6 w-6 text-navy-700 dark:text-gold-300" />
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 dark:text-white mb-2">Estacionamiento Privado</h4>
@@ -204,8 +204,8 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
             {/* Elemento Condicional: Chimenea (Pichilemu) vs Laguna (La Serena) */}
             {!isLaSerena ? (
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 transition-all hover:shadow-md">
-                <div className="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-xl h-fit">
-                  <IconFlame className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+                <div className="bg-gold-50 dark:bg-gold-900/30 p-3 rounded-xl h-fit">
+                  <IconFlame className="h-6 w-6 text-gold-700 dark:text-gold-300" />
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 dark:text-white mb-2">Chimenea / Calefacción</h4>
@@ -234,8 +234,8 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
             {/* Calefont / Agua caliente */}
             {!isLaSerena ? (
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 transition-all hover:shadow-md">
-                <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-xl h-fit">
-                  <IconDroplet className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                <div className="bg-navy-50 dark:bg-navy-900/30 p-3 rounded-xl h-fit">
+                  <IconDroplet className="h-6 w-6 text-navy-700 dark:text-gold-300" />
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 dark:text-white mb-2">Agua Caliente (Calefont)</h4>
@@ -246,8 +246,8 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
               </div>
             ) : (
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 transition-all hover:shadow-md">
-                <div className="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-xl h-fit">
-                  <IconDroplet className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                <div className="bg-navy-50 dark:bg-navy-900/30 p-3 rounded-xl h-fit">
+                  <IconDroplet className="h-6 w-6 text-navy-700 dark:text-gold-300" />
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-900 dark:text-white mb-2">Agua Caliente</h4>
@@ -260,13 +260,13 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
 
             {/* WiFi */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 transition-all hover:shadow-md">
-              <div className="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-xl h-fit">
-                <IconWifi className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+              <div className="bg-gold-50 dark:bg-gold-900/30 p-3 rounded-xl h-fit">
+                <IconWifi className="h-6 w-6 text-gold-700 dark:text-gold-300" />
               </div>
               <div className="w-full">
                 <div className="flex flex-wrap items-center gap-2 mb-2">
                   <h4 className="font-bold text-gray-900 dark:text-white">WiFi y Conectividad</h4>
-                  <span className="text-[10px] md:text-xs bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 px-2 py-0.5 rounded-full font-bold border border-purple-200 dark:border-purple-800/50">
+                  <span className="text-[10px] md:text-xs bg-gold-50 dark:bg-gold-900/50 text-gold-700 dark:text-gold-300 px-2 py-0.5 rounded-full font-bold border border-purple-200 dark:border-purple-800/50">
                     🚀 Alta Velocidad 800 Mbps
                   </span>
                 </div>
@@ -289,8 +289,8 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
               <>
                 {/* Cafetera */}
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 transition-all hover:shadow-md">
-                  <div className="bg-orange-100 dark:bg-orange-900/30 p-3 rounded-xl h-fit">
-                    <IconCoffee className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+                  <div className="bg-gold-50 dark:bg-gold-900/30 p-3 rounded-xl h-fit">
+                    <IconCoffee className="h-6 w-6 text-gold-700 dark:text-gold-300" />
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900 dark:text-white mb-2">Cafetera</h4>
@@ -318,8 +318,8 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
 
                 {/* TV */}
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 transition-all hover:shadow-md">
-                  <div className="bg-indigo-100 dark:bg-indigo-900/30 p-3 rounded-xl h-fit">
-                    <IconDeviceTv className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                  <div className="bg-navy-50 dark:bg-navy-900/30 p-3 rounded-xl h-fit">
+                    <IconDeviceTv className="h-6 w-6 text-navy-700 dark:text-gold-300" />
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900 dark:text-white mb-2">Entretenimiento</h4>
@@ -349,8 +349,8 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
 
             {/* Ubicación */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 transition-all hover:shadow-md lg:col-span-1">
-              <div className="bg-slate-100 dark:bg-slate-900/30 p-3 rounded-xl h-fit">
-                <IconMapPin className="h-6 w-6 text-slate-600 dark:text-slate-400" />
+              <div className="bg-navy-50 dark:bg-navy-900/30 p-3 rounded-xl h-fit">
+                <IconMapPin className="h-6 w-6 text-navy-700 dark:text-gold-300" />
               </div>
               <div>
                 <h4 className="font-bold text-gray-900 dark:text-white mb-2">Donde estamos</h4>
@@ -402,7 +402,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     {/* Piscina Temperada */}
                     <div className="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
                       <div className="flex justify-between items-start mb-2">
-                        <span className="p-1.5 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
+                        <span className="p-1.5 bg-navy-50 dark:bg-navy-900/30 rounded-lg text-navy-700 dark:text-gold-300">
                           <IconDroplet className="h-5 w-5" />
                         </span>
                         <span className="text-xs font-bold text-ocean-600 dark:text-gold-500">$3.000 p/p</span>
@@ -414,7 +414,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     {/* Gimnasio */}
                     <div className="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
                       <div className="flex justify-between items-start mb-2">
-                        <span className="p-1.5 bg-slate-50 dark:bg-slate-900/30 rounded-lg text-slate-600 dark:text-slate-400">
+                        <span className="p-1.5 bg-navy-50 dark:bg-navy-900/30 rounded-lg text-navy-700 dark:text-gold-300">
                           <IconTools className="h-5 w-5" />
                         </span>
                         <span className="text-xs font-bold text-ocean-600 dark:text-gold-500">$1.000 p/p</span>
@@ -426,7 +426,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     {/* Sauna */}
                     <div className="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
                       <div className="flex justify-between items-start mb-2">
-                        <span className="p-1.5 bg-orange-50 dark:bg-orange-900/30 rounded-lg text-orange-600 dark:text-orange-400">
+                        <span className="p-1.5 bg-gold-50 dark:bg-gold-900/30 rounded-lg text-gold-700 dark:text-gold-300">
                           <IconFlame className="h-5 w-5" />
                         </span>
                         <span className="text-xs font-bold text-ocean-600 dark:text-gold-500">$5.000</span>
@@ -438,7 +438,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     {/* Jacuzzi */}
                     <div className="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
                       <div className="flex justify-between items-start mb-2">
-                        <span className="p-1.5 bg-teal-50 dark:bg-teal-900/30 rounded-lg text-teal-600 dark:text-teal-400">
+                        <span className="p-1.5 bg-navy-50 dark:bg-navy-900/30 rounded-lg text-navy-700 dark:text-gold-300">
                           <IconDroplet className="h-5 w-5" />
                         </span>
                         <span className="text-xs font-bold text-ocean-600 dark:text-gold-500">$20.000</span>
@@ -450,7 +450,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     {/* Sala de Juegos */}
                     <div className="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
                       <div className="flex justify-between items-start mb-2">
-                        <span className="p-1.5 bg-purple-50 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400">
+                        <span className="p-1.5 bg-gold-50 dark:bg-gold-900/30 rounded-lg text-gold-700 dark:text-gold-300">
                           <IconCompass className="h-5 w-5" />
                         </span>
                         <span className="text-xs font-bold text-green-600">Sin Costo</span>
@@ -463,7 +463,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     {/* Sala de Cine */}
                     <div className="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
                       <div className="flex justify-between items-start mb-2">
-                        <span className="p-1.5 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg text-indigo-600 dark:text-indigo-400">
+                        <span className="p-1.5 bg-navy-50 dark:bg-navy-900/30 rounded-lg text-navy-700 dark:text-gold-300">
                           <IconStar className="h-5 w-5" />
                         </span>
                         <span className="text-xs font-bold text-green-600">Sin Costo</span>
@@ -475,7 +475,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     {/* Sala Multiuso */}
                     <div className="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
                       <div className="flex justify-between items-start mb-2">
-                        <span className="p-1.5 bg-pink-50 dark:bg-pink-900/30 rounded-lg text-pink-600 dark:text-pink-400">
+                        <span className="p-1.5 bg-gold-50 dark:bg-gold-900/30 rounded-lg text-gold-700 dark:text-gold-300">
                           <IconHome className="h-5 w-5" />
                         </span>
                         <span className="text-xs font-bold text-green-600">Sin Costo</span>
@@ -500,7 +500,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     {/* Piscinas Externas */}
                     <div className="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
                       <div className="flex justify-between items-start mb-2">
-                        <span className="p-1.5 bg-cyan-50 dark:bg-cyan-900/30 rounded-lg text-cyan-600 dark:text-cyan-400">
+                        <span className="p-1.5 bg-navy-50 dark:bg-navy-900/30 rounded-lg text-navy-700 dark:text-gold-300">
                           <IconBeach className="h-5 w-5" />
                         </span>
                         <span className="text-xs font-bold text-green-600">Sin Costo</span>
@@ -867,7 +867,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                         <a href="https://www.google.com/maps/search/Caleta+Chañaral+de+Aceituno" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver ubicación
                         </a>
-                        <a href="https://www.instagram.com/turismo_maranata/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-pink-600 hover:text-pink-700 dark:text-pink-500 dark:hover:text-pink-400">
+                        <a href="https://www.instagram.com/turismo_maranata/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-gold-700 hover:text-gold-700 dark:text-gold-700 dark:hover:text-gold-300">
                           <IconBrandInstagram className="h-4 w-4 mr-1" /> Instagram
                         </a>
                       </div>
@@ -879,7 +879,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                         <a href="https://www.google.com/maps?q=-29.9899318,-70.6852942" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver ubicación
                         </a>
-                        <a href="https://www.instagram.com/observatorio_mamalluca/?hl=es" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-pink-600 hover:text-pink-700 dark:text-pink-500 dark:hover:text-pink-400">
+                        <a href="https://www.instagram.com/observatorio_mamalluca/?hl=es" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-gold-700 hover:text-gold-700 dark:text-gold-700 dark:hover:text-gold-300">
                           <IconBrandInstagram className="h-4 w-4 mr-1" /> Instagram
                         </a>
                       </div>
@@ -891,7 +891,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                         <a href="https://www.google.com/maps/search/Escuela+de+Surf+Poisson+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver ubicación
                         </a>
-                        <a href="https://www.instagram.com/escuelasurfpoisson/?hl=es-la" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-pink-600 hover:text-pink-700 dark:text-pink-500 dark:hover:text-pink-400">
+                        <a href="https://www.instagram.com/escuelasurfpoisson/?hl=es-la" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-gold-700 hover:text-gold-700 dark:text-gold-700 dark:hover:text-gold-300">
                           <IconBrandInstagram className="h-4 w-4 mr-1" /> Instagram
                         </a>
                       </div>

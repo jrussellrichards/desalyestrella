@@ -23,7 +23,7 @@ export default async function ContactoPage() {
 
 
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <div className="bg-salt dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="font-display text-h1 font-semibold text-ink dark:text-white">

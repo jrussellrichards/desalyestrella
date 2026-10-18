@@ -106,7 +106,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
   const firstValid = property.gallery?.find(hasAssetRef)
 
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <div className="bg-salt dark:bg-gray-900">
       <header className="relative">
         {hasImages ? (
           <LightboxGallery

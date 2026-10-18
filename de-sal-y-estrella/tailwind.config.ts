@@ -48,10 +48,26 @@ const config: Config = {
           800: '#6e5232',
           900: '#523d26',
         },
+        // Base clara y cálida ("sal"), para que el azul y el dorado del logo destaquen
+        salt: '#FBF8F3',
+        // Grises cálidos: reemplazan los grises fríos de Tailwind en todo el sitio
+        gray: {
+          50: '#faf7f2',
+          100: '#f3eee6',
+          200: '#e7e0d5',
+          300: '#d4cbbd',
+          400: '#a89e90',
+          500: '#7c7366',
+          600: '#5e564c',
+          700: '#474039',
+          800: '#2e2924',
+          900: '#1e1a17',
+          950: '#12100e',
+        },
         ink: {
-          DEFAULT: '#1d1f20',
-          subtle: '#4b4f52',
-          faint: '#6d7276'
+          DEFAULT: '#24211d',
+          subtle: '#4a443c',
+          faint: '#6f665a'
         },
         'ink-dark': {
           DEFAULT: '#e8e9ea',
@@ -71,16 +87,17 @@ const config: Config = {
           900: '#5c4b35',
         },
         ocean: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+          // Alias del azul de marca (antes celeste genérico)
+          50: '#eef0f8',
+          100: '#d9ddef',
+          200: '#b3badf',
+          300: '#8690c7',
+          400: '#5a64a8',
+          500: '#3b4488',
+          600: '#2a3270',
+          700: '#212859',
+          800: '#1c2150',
+          900: '#181b46',
         }
       }
     }

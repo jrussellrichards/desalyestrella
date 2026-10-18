@@ -98,40 +98,33 @@ export default async function HomePage() {
   const pichilemu = properties.filter(p => /pichilemu/i.test(p.location || ''))
 
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <div className="bg-salt dark:bg-gray-900">
       {/* HERO */}
-      <section className="relative isolate overflow-hidden bg-navy-900 text-white">
-        {/* cielo estrellado sutil, como en el logo */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 opacity-60"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 12% 18%, rgba(223,192,147,.55) 0 1.5px, transparent 2px), radial-gradient(circle at 38% 8%, rgba(255,255,255,.45) 0 1px, transparent 1.5px), radial-gradient(circle at 27% 62%, rgba(223,192,147,.4) 0 1px, transparent 1.5px), radial-gradient(circle at 46% 84%, rgba(255,255,255,.35) 0 1px, transparent 1.5px), radial-gradient(circle at 6% 88%, rgba(223,192,147,.45) 0 1.5px, transparent 2px)',
-          }}
-        />
-        <div aria-hidden className="pointer-events-none absolute -left-40 -top-40 -z-10 h-[32rem] w-[32rem] rounded-full bg-gold-500/10 blur-3xl" />
+      <section className="relative isolate overflow-hidden bg-gradient-to-b from-salt via-salt to-sand-100 text-navy-900">
+        {/* luz cálida de playa, sin bloque azul */}
+        <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 -z-10 h-[34rem] w-[34rem] rounded-full bg-gold-200/40 blur-3xl" />
+        <div aria-hidden className="pointer-events-none absolute -bottom-40 -left-40 -z-10 h-[28rem] w-[28rem] rounded-full bg-navy-100/50 blur-3xl" />
 
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 pb-16 pt-12 sm:pb-24 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:px-8 lg:pt-20">
           <div>
             <div className="flex items-center gap-4">
-              <Image src="/brand/isotipo-claro.png" alt="" width={600} height={600} priority className="h-16 w-16 sm:h-20 sm:w-20" />
-              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-300 sm:text-sm">
+              <Image src="/brand/isotipo-oscuro.png" alt="" width={600} height={600} priority className="h-16 w-16 sm:h-20 sm:w-20" />
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-700 sm:text-sm">
                 Frente al mar · La Serena y Pichilemu
               </p>
             </div>
 
             <h1 className="mt-8 font-display text-hero font-semibold">
-              Despierta frente al mar en <span className="italic text-gold-300">La Serena</span> o <span className="italic text-gold-300">Pichilemu</span>
+              Despierta frente al mar en <span className="italic text-gold-600">La Serena</span> o <span className="italic text-gold-600">Pichilemu</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/80 sm:text-xl">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-subtle sm:text-xl">
               Departamentos en Aqua Resort, en el mejor sector de la Avenida del Mar, y una cabaña a pasos de las olas de Pichilemu. Reserva directo con nosotros y ahórrate la comisión de las plataformas.
             </p>
 
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <a
                 href="#refugios"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-gold-500 px-7 py-4 text-base font-semibold text-navy-950 shadow-lg transition hover:bg-gold-300"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-navy-900 px-7 py-4 text-base font-semibold text-white shadow-lg transition hover:bg-navy-700"
               >
                 Ver refugios y precios
                 <IconArrowRight className="h-5 w-5" />
@@ -140,7 +133,7 @@ export default async function HomePage() {
                 href={whatsappLink('Hola, quisiera consultar disponibilidad')}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-white/10 px-7 py-4 text-base font-semibold text-white ring-1 ring-white/30 transition hover:bg-white/20"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-7 py-4 text-base font-semibold text-navy-900 ring-1 ring-gray-300 transition hover:ring-gold-500"
               >
                 <IconBrandWhatsapp className="h-5 w-5" />
                 Consultar por WhatsApp
@@ -151,15 +144,15 @@ export default async function HomePage() {
               href={AIRBNB_PROFILE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-3 text-sm text-white/80 hover:text-white"
+              className="mt-8 inline-flex items-center gap-3 text-sm text-ink-subtle hover:text-navy-900"
             >
-              <span className="flex text-gold-300">
+              <span className="flex text-gold-500">
                 {[0, 1, 2, 3, 4].map(i => (
                   <IconStarFilled key={i} className="h-4 w-4" />
                 ))}
               </span>
               <span>
-                <strong className="font-semibold text-white">{formatRating(AIRBNB_STATS.averageRating)}</strong> en {AIRBNB_STATS.totalReviews} reseñas · Superanfitriones en Airbnb
+                <strong className="font-semibold text-navy-900">{formatRating(AIRBNB_STATS.averageRating)}</strong> en {AIRBNB_STATS.totalReviews} reseñas · Superanfitriones en Airbnb
               </span>
             </a>
           </div>
@@ -176,10 +169,10 @@ export default async function HomePage() {
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy-950/80 to-transparent p-5 pt-16">
                 <p className="text-xs font-semibold uppercase tracking-widest text-gold-300">Aqua Resort La Serena</p>
-                <p className="font-display text-xl font-semibold">Frente al mar, en la Avenida del Mar</p>
+                <p className="font-display text-xl font-semibold text-white">Frente al mar, en la Avenida del Mar</p>
               </div>
             </div>
-            <div className="absolute -left-4 -top-6 hidden w-40 overflow-hidden rounded-2xl shadow-xl ring-4 ring-navy-900 sm:block lg:-left-10 lg:w-48">
+            <div className="absolute -left-4 -top-6 hidden w-40 overflow-hidden rounded-2xl shadow-xl ring-4 ring-white sm:block lg:-left-10 lg:w-48">
               <div className="relative aspect-[4/3]">
                 <Image src="/destinos/pichilemu-cabana.jpg" alt="Cabaña en Pichilemu" fill sizes="200px" className="object-cover" />
               </div>
