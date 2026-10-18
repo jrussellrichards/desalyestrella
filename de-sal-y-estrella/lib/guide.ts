@@ -33,6 +33,9 @@ export type Stay = {
   parking?: string
   // Horarios: si quedan vacíos, la guía dice que los confirmamos por WhatsApp
   checkIn?: string
+  // Hora límite de llegada y qué hacer si se llega después
+  checkInUntil?: string
+  lateArrival?: string
   checkOut?: string
   arrival: string[]
   howTo: HowTo[]
@@ -124,16 +127,18 @@ export const STAYS: Record<string, Stay> = {
     address: "José Miguel Camilo 442, Pichilemu, O'Higgins",
     mapsLink: 'https://maps.app.goo.gl/SoXTBvNNBYsfckck8',
     checkIn: '15:00',
+    checkInUntil: '18:00',
+    lateArrival: 'Si vas a llegar más tarde, consúltalo antes con don Sergio.',
     checkOut: '11:00',
     arrival: [
-      'Toca el panel de la cerradura digital para encenderlo y escribe tu clave. Usa la cerradura de la puerta, no la caja externa.',
-      'Si necesitas algo en persona, Sergio te ayuda (su contacto está más abajo).',
+      'Antes de llegar, escríbele a don Sergio por WhatsApp para coordinar la hora.',
+      'Don Sergio te recibe en la cabaña y te ayuda con la llegada.',
     ],
     howTo: [
       {
-        id: 'salamandra',
-        title: 'Salamandra (estufa a leña)',
-        text: 'Abre el tiraje, prende primero astillas chicas y después agrega leña seca. No uses líquidos inflamables.',
+        id: 'chimenea',
+        title: 'Chimenea',
+        text: 'El tiraje se abre girándolo a la derecha para prender y se cierra a la izquierda para apagar. Prende primero astillas chicas y después agrega leña seca. No uses líquidos inflamables.',
       },
       {
         id: 'agua',
@@ -148,10 +153,10 @@ export const STAYS: Record<string, Stay> = {
     ],
     departure: [
       'Deja la basura en los contenedores de afuera.',
-      'Revisa que la salamandra quede sin fuego y apaga las luces.',
-      'Cierra ventanas y puerta: la cerradura se bloquea sola.',
+      'Revisa que la chimenea quede sin fuego (tiraje a la izquierda) y apaga las luces.',
+      'Cierra ventanas y puerta, y avísale a don Sergio que te vas.',
     ],
-    localContact: { name: 'Sergio', role: 'te ayuda en lo que necesites durante la estadía', phone: '56956605983' },
+    localContact: { name: 'Don Sergio', role: 'te ayuda en lo que necesites durante la estadía', phone: '56956605983' },
     zone: 'pichilemu',
   },
 }

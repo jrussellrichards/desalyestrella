@@ -127,7 +127,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
           <a href="#llegada" className={`${card} flex flex-col gap-1`}>
             <IconKey className="h-6 w-6 text-sea-500" />
             <span className="font-semibold text-ink">Cómo entrar</span>
-            <span className="text-xs text-ink-subtle">{stay.checkIn ? `Desde las ${stay.checkIn}` : 'Paso a paso'}</span>
+            <span className="text-xs text-ink-subtle">{stay.checkIn ? (stay.checkInUntil ? `De ${stay.checkIn} a ${stay.checkInUntil}` : `Desde las ${stay.checkIn}`) : 'Paso a paso'}</span>
           </a>
           <a href="#wifi" className={`${card} flex flex-col gap-1`}>
             <IconWifi className="h-6 w-6 text-sea-500" />
@@ -169,7 +169,12 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
           <div className={`${card} flex items-center gap-3`}>
             <IconClock className="h-6 w-6 shrink-0 text-sea-500" />
             <p className="text-sm text-ink">
-              {stay.checkIn ? <>Check-in desde las <strong>{stay.checkIn}</strong>.</> : 'La hora de llegada te la confirmamos por WhatsApp.'}
+              {!stay.checkIn
+                ? 'La hora de llegada te la confirmamos por WhatsApp.'
+                : stay.checkInUntil
+                  ? <>Check-in de <strong>{stay.checkIn}</strong> a <strong>{stay.checkInUntil}</strong>.</>
+                  : <>Check-in desde las <strong>{stay.checkIn}</strong>.</>}
+              {stay.lateArrival && <> {stay.lateArrival}</>}
             </p>
           </div>
           <ol className={`${card} space-y-4`}>
@@ -180,6 +185,11 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
               </li>
             ))}
           </ol>
+          {stay.localContact && (
+            <a href={`https://wa.me/${stay.localContact.phone}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-2xl bg-sea-500 p-4 font-semibold text-white shadow-sm hover:bg-sea-600">
+              <IconBrandWhatsapp className="h-5 w-5" /> Escribir a {stay.localContact.name}
+            </a>
+          )}
           <div className={card}>
             <p className="text-sm font-semibold text-ink">Dirección</p>
             <p className="mt-1 text-sm text-ink-subtle">{address}</p>
