@@ -103,7 +103,7 @@ export default async function HomePage() {
           sizes="100vw"
           className="-z-10 object-cover object-[50%_60%]"
         />
-        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-navy-950/80 via-navy-950/25 to-transparent" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-gray-950/70 via-gray-950/20 to-transparent" />
 
         <div className="mx-auto w-full max-w-7xl px-6 pb-14 sm:pb-20 lg:px-8">
           <p className="inline-flex items-center rounded-full bg-white/15 px-4 py-1.5 text-sm font-semibold backdrop-blur">
@@ -115,7 +115,7 @@ export default async function HomePage() {
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a
               href="#refugios"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-base font-semibold text-navy-900 shadow-lg transition hover:bg-sand-100"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-4 text-base font-semibold text-navy-900 shadow-lg transition hover:bg-sea-50"
             >
               Ver refugios y precios
               <IconArrowRight className="h-5 w-5" />
@@ -146,7 +146,7 @@ export default async function HomePage() {
       </section>
 
       {/* BARRA DE CONFIANZA */}
-      <section className="border-b border-gray-100 bg-sand-50 dark:border-gray-800 dark:bg-gray-800/50">
+      <section className="border-b border-gray-100 bg-sea-50 dark:border-gray-800 dark:bg-gray-800/50">
         <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-6 py-8 text-center sm:grid-cols-4 lg:px-8">
           {[
             { k: formatRating(AIRBNB_STATS.averageRating), v: 'Promedio en Airbnb' },
@@ -180,24 +180,24 @@ export default async function HomePage() {
       </section>
 
       {/* POR QUÉ NOSOTROS */}
-      <section className="bg-navy-900 py-20 text-white sm:py-28">
+      <section className="bg-sea-50 py-20 text-navy-900 sm:py-28">
         <div className="mx-auto grid max-w-7xl gap-14 px-6 lg:grid-cols-2 lg:items-center lg:px-8">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-wider text-gold-300">Por qué De Sal y Estrella</p>
+            <p className="text-sm font-semibold uppercase tracking-wider text-sea-600">Por qué De Sal y Estrella</p>
             <h2 className="mt-2 font-display text-h2 font-semibold">Refugios que se cuidan con cariño</h2>
-            <p className="mt-5 text-copy-lg text-white/80">
+            <p className="mt-5 text-copy-lg text-ink-subtle">
               Pocos refugios, elegidos y atendidos por nosotros mismos.
             </p>
           </div>
           <ol className="grid gap-5">
             {reasons.map(step => (
-              <li key={step.title} className="flex gap-5 rounded-2xl bg-white/5 p-6 ring-1 ring-white/10">
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sea-300 text-navy-950">
+              <li key={step.title} className="flex gap-5 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-sea-100">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sea-500 text-white">
                   <step.icon className="h-6 w-6" />
                 </span>
                 <div>
                   <p className="font-display text-lg font-semibold">{step.title}</p>
-                  <p className="mt-1 text-sm leading-relaxed text-white/75">{step.text}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-ink-subtle">{step.text}</p>
                 </div>
               </li>
             ))}
@@ -234,7 +234,7 @@ export default async function HomePage() {
               <div key={dest.name} className="group relative overflow-hidden rounded-3xl">
                 <div className="relative aspect-[4/3]">
                   <Image src={dest.image} alt={dest.name} fill sizes="(min-width:1024px) 50vw, 100vw" className="object-cover transition duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-navy-950/25 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-950/75 via-gray-950/20 to-transparent" />
                 </div>
                 <div className="absolute inset-x-0 bottom-0 p-8">
                   <h3 className="font-display text-3xl font-semibold text-white">{dest.name}</h3>
@@ -259,12 +259,12 @@ export default async function HomePage() {
 
       {/* TESTIMONIOS */}
       {testimonials.length > 0 && (
-        <section className="bg-sand-50 py-20 dark:bg-gray-800/50 sm:py-28">
+        <section className="bg-sea-50 py-20 dark:bg-gray-800/50 sm:py-28">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
               <p className="text-sm font-semibold uppercase tracking-wider text-sea-600">Reseñas</p>
               <h2 className="mt-2 font-display text-h2 font-semibold text-ink dark:text-white">Lo que dicen nuestros huéspedes</h2>
-              <a href={AIRBNB_PROFILE_URL} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block text-sm font-medium text-gold-700 hover:underline">
+              <a href={AIRBNB_PROFILE_URL} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block text-sm font-medium text-sea-700 hover:underline">
                 Ver las {AIRBNB_STATS.totalReviews} reseñas en Airbnb
               </a>
             </div>
@@ -295,9 +295,9 @@ export default async function HomePage() {
 
       {/* CTA FINAL */}
       <section className="px-6 pb-20 lg:px-8">
-        <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl bg-navy-900 px-8 py-14 text-center text-white sm:px-16">
+        <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-br from-sea-500 to-sea-700 px-8 py-14 text-center text-white sm:px-16">
           <h2 className="font-display text-h2 font-semibold">¿Tienes fechas en mente?</h2>
-          <p className="mx-auto mt-4 max-w-xl text-white/80">
+          <p className="mx-auto mt-4 max-w-xl text-white/90">
             Escríbenos y te respondemos al tiro.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
@@ -305,12 +305,12 @@ export default async function HomePage() {
               href={whatsappLink('Hola, quisiera consultar disponibilidad para estas fechas: ')}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-7 py-4 font-semibold text-navy-900 hover:bg-sand-100"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-4 font-semibold text-sea-700 hover:bg-sea-50"
             >
               <IconBrandWhatsapp className="h-5 w-5" />
               Escribir por WhatsApp
             </a>
-            <a href="#refugios" className="inline-flex items-center justify-center rounded-xl px-7 py-4 font-semibold text-white ring-1 ring-white/30 hover:bg-white/10">
+            <a href="#refugios" className="inline-flex items-center justify-center rounded-full px-7 py-4 font-semibold text-white ring-1 ring-white/60 hover:bg-white/10">
               Ver refugios
             </a>
           </div>

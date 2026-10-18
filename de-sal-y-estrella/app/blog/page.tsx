@@ -51,7 +51,7 @@ export default async function BlogPage() {
         {posts.length === 0 && (
           <p className="mx-auto mt-10 max-w-xl text-center text-ink-subtle dark:text-ink-dark-subtle">
             Pronto publicaremos nuestras guías. Mientras tanto, revisa{' '}
-            <Link href="/experiencias" className="font-medium text-gold-700 hover:underline">qué hacer en cada destino</Link>.
+            <Link href="/experiencias" className="font-medium text-sea-700 hover:underline">qué hacer en cada destino</Link>.
           </p>
         )}
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
@@ -85,7 +85,7 @@ export default async function BlogPage() {
                       })}
                     </time>
                   </div>
-                  <h3 className="mt-3 font-display text-[1.05rem] font-semibold leading-snug text-ink group-hover:text-gold-700 dark:text-white">
+                  <h3 className="mt-3 font-display text-[1.05rem] font-semibold leading-snug text-ink group-hover:text-sea-700 dark:text-white">
                     {post.title}
                   </h3>
                   <p className="mt-4 line-clamp-3 text-[0.85rem] leading-[1.5] text-ink-subtle dark:text-ink-dark-subtle">
