@@ -83,7 +83,6 @@ const aquaArrival = (tower: string, unit: string, parking: string) => [
 
 const aquaDeparture = [
   'Deja la basura en el ducto del piso.',
-  'Deja la loza lavada o dentro del lavaplatos.',
   'Apaga luces, TV y cocina, y cierra las ventanas y la terraza.',
   'Cierra la puerta: la cerradura se bloquea sola.',
 ]
@@ -149,7 +148,6 @@ export const STAYS: Record<string, Stay> = {
     ],
     departure: [
       'Deja la basura en los contenedores de afuera.',
-      'Deja la loza lavada.',
       'Revisa que la salamandra quede sin fuego y apaga las luces.',
       'Cierra ventanas y puerta: la cerradura se bloquea sola.',
     ],
