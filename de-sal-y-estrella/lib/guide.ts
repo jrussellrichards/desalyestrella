@@ -10,6 +10,8 @@ export type Place = {
   instagram?: string
   // Solo en una época del año (se muestra como aviso)
   season?: string
+  // Tiene bonita vista (se marca con un ícono)
+  view?: boolean
 }
 
 export type PlaceGroup = { id: string; title: string; places: Place[] }
@@ -263,8 +265,9 @@ export const ZONES: Record<Stay['zone'], Zone> = {
         id: 'comer',
         title: 'Dónde comer',
         places: [
-          { name: 'La Sal', text: 'Cocina de autor de pescados y mariscos en Punta de Lobos.', maps: maps('Restaurante La Sal Pichilemu') },
-          { name: 'Costa María', text: 'Reineta, pastel de jaiba y empanadas con vista al mar.', maps: maps('Restaurante Costa Maria Pichilemu') },
+          { name: 'La Sal', text: 'Cocina de autor de pescados y mariscos en Punta de Lobos.', maps: maps('Restaurante La Sal Pichilemu'), view: true },
+          { name: 'Costa María', text: 'Reineta, pastel de jaiba y empanadas con vista al mar.', maps: maps('Restaurante Costa Maria Pichilemu'), view: true },
+          { name: 'Kampai', text: 'Sushi y cocina japonesa con vista al mar.', maps: maps('Kampai Pichilemu'), view: true },
           { name: 'Los Piures Club Social', text: 'Comida chilena frente a la laguna de Cáhuil.', maps: maps('Los Piures Club Social Cahuil') },
           { name: 'Cardumen Café', text: 'Café de especialidad, pastelería y brunch.', maps: maps('Cardumen Cafe Pichilemu') },
           { name: 'Cúrcuma', text: 'Opciones vegetarianas y veganas en el centro.', maps: maps('Curcuma Pichilemu') },
@@ -308,7 +311,7 @@ export const ZONES: Record<Stay['zone'], Zone> = {
         id: 'noche',
         title: 'De noche',
         places: [
-          { name: 'Bar La Virgen', text: 'Coctelería de autor con vista al mar.', maps: maps('Bar La Virgen Pichilemu') },
+          { name: 'Bar La Virgen', text: 'Coctelería de autor con vista al mar.', maps: maps('Bar La Virgen Pichilemu'), view: true },
           { name: 'Nativo Restobar', text: 'Coctelería y buen ambiente en la Av. Ortúzar.', maps: maps('Nativo Restobar Pichilemu') },
           { name: 'Osaka', text: 'Cocina nikkei y mixología frente a la playa.', maps: maps('Osaka Pichilemu') },
           { name: 'Waitara Club', text: 'La discoteca de La Puntilla.', maps: maps('Waitara Club Pichilemu') },

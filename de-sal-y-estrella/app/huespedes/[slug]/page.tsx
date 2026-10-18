@@ -8,7 +8,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import {
   IconBrandInstagram, IconBrandWhatsapp, IconBrandYoutube, IconChevronDown, IconClock, IconCompass,
-  IconDoorExit, IconHome, IconKey, IconMapPin, IconPhone, IconAlertTriangle, IconWifi, IconCar,
+  IconDoorExit, IconHome, IconKey, IconMapPin, IconPhone, IconAlertTriangle, IconWifi, IconCar, IconSunset2,
 } from '@tabler/icons-react'
 import { INSTAGRAM_URL, assistantLink } from '@/lib/site'
 import { AQUA_AMENITIES, AQUA_PAYMENT, EMERGENCY_NUMBERS, ZONES, getStay } from '@/lib/guide'
@@ -345,6 +345,11 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
         {/* LA ZONA */}
         <section className="space-y-4">
           <SectionTitle id="zona" icon={IconCompass} kicker="Nuestras recomendaciones" title={`La zona: ${zone.name}`} />
+          {zone.groups.some(g => g.places.some(p => p.view)) && (
+            <p className="flex items-center gap-1.5 px-1 text-sm text-ink-subtle">
+              <IconSunset2 className="h-4 w-4 text-amber-500" /> Con bonita vista
+            </p>
+          )}
           <div className="space-y-2">
             {zone.groups.map((group, gi) => (
               <details key={group.id} open={gi === 0} className={`${card} group py-4`}>
@@ -355,7 +360,10 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                 <ul className="mt-2 divide-y divide-sea-100">
                   {group.places.map(place => (
                     <li key={place.name} className="py-3">
-                      <p className="font-medium text-ink">{place.name}</p>
+                      <p className="flex items-center gap-1.5 font-medium text-ink">
+                        {place.name}
+                        {place.view && <IconSunset2 className="h-4 w-4 text-amber-500" aria-label="Con bonita vista" />}
+                      </p>
                       <p className="mt-0.5 text-sm text-ink-subtle">{place.text}</p>
                       {place.season && <p className="mt-1 inline-block rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-800">{place.season}</p>}
                       <div className="mt-1.5 flex flex-wrap gap-4">
