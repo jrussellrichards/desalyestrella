@@ -5,6 +5,8 @@ import { IconBrandWhatsapp, IconMinus, IconPlus } from '@tabler/icons-react'
 import DateRangePicker from '@/components/DateRangePicker'
 import { whatsappLink } from '@/lib/site'
 import { trackEvent } from '@/lib/analytics'
+import { formatCLP } from '@/utils/pricing'
+import type { NightlyRates } from '@/lib/beds24'
 
 // "2026-12-24" -> "24 de diciembre"
 function formatDate(iso: string) {
@@ -12,16 +14,20 @@ function formatDate(iso: string) {
 }
 
 // Consulta por WhatsApp con fechas y huéspedes ya escritos, para responder de una vez
-// con disponibilidad y precio. Las noches ocupadas en Beds24 salen tachadas.
+// con disponibilidad y precio. Con Beds24 conectado, las noches ocupadas salen tachadas
+// y al elegir fechas se muestra el total, así el mensaje ya es una reserva.
 export default function WhatsAppBooking({
   propertyName,
   maxGuests = 4,
   blocked,
+  rates,
 }: {
   propertyName: string
   maxGuests?: number
   // Noches ocupadas según Beds24 (YYYY-MM-DD)
   blocked?: string[]
+  // Precio y estadía mínima por fecha según Beds24
+  rates?: NightlyRates | null
 }) {
   const [checkin, setCheckin] = useState('')
   const [checkout, setCheckout] = useState('')
@@ -33,7 +39,26 @@ export default function WhatsAppBooking({
       : checkin
         ? `desde el ${formatDate(checkin)}`
         : 'en las fechas que te indico'
-  const text = `Hola, quisiera reservar ${propertyName.replace(/\s+/g, ' ')} ${dates}, para ${guests} ${guests === 1 ? 'persona' : 'personas'}. ¿Está disponible y cuál sería el precio?`
+  const people = `${guests} ${guests === 1 ? 'persona' : 'personas'}`
+  const name = propertyName.replace(/\s+/g, ' ')
+
+  // Noches del rango elegido con su precio; sin precio para alguna, no se muestra total
+  const nights: string[] = []
+  if (checkin && checkout) {
+    for (let d = new Date(`${checkin}T12:00:00Z`); d.toISOString().slice(0, 10) < checkout; d.setUTCDate(d.getUTCDate() + 1)) {
+      nights.push(d.toISOString().slice(0, 10))
+    }
+  }
+  const priced = rates && nights.length > 0 && nights.every(n => rates.prices[n])
+  const total = priced ? nights.reduce((sum, n) => sum + rates.prices[n], 0) : 0
+  const sameRate = priced && nights.every(n => rates.prices[n] === rates.prices[nights[0]])
+  const minStay = (checkin && rates?.minStay[checkin]) || 1
+  const tooShort = nights.length > 0 && nights.length < minStay
+  const ready = priced && !tooShort
+
+  const text = ready
+    ? `Hola, quiero reservar ${name} ${dates} (${nights.length} ${nights.length === 1 ? 'noche' : 'noches'}), para ${people}. Total en la web: ${formatCLP(total)}.`
+    : `Hola, quisiera reservar ${name} ${dates}, para ${people}. ¿Está disponible y cuál sería el precio?`
   const step = 'flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-ink transition hover:border-ink disabled:opacity-30 dark:border-gray-600 dark:text-white'
 
   return (
@@ -63,15 +88,35 @@ export default function WhatsAppBooking({
           </button>
         </span>
       </div>
+      {ready && (
+        <dl className="mt-4 space-y-1.5 text-sm text-ink dark:text-white">
+          <div className="flex justify-between">
+            <dt className="text-ink-subtle dark:text-ink-dark-subtle">
+              {sameRate ? `${formatCLP(rates.prices[nights[0]])} × ` : ''}
+              {nights.length} {nights.length === 1 ? 'noche' : 'noches'}
+            </dt>
+            <dd>{formatCLP(total)}</dd>
+          </div>
+          <div className="flex justify-between border-t border-gray-200 pt-2 text-base font-semibold dark:border-gray-700">
+            <dt>Total</dt>
+            <dd>{formatCLP(total)}</dd>
+          </div>
+        </dl>
+      )}
+      {tooShort && (
+        <p className="mt-4 text-sm text-ink-subtle dark:text-ink-dark-subtle">
+          Para esas fechas la estadía mínima es de {minStay} noches.
+        </p>
+      )}
       <a
         href={whatsappLink(text)}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => trackEvent('begin_checkout', { item_name: propertyName, adults: guests })}
+        onClick={() => trackEvent('begin_checkout', { item_name: propertyName, adults: guests, ...(ready ? { value: total, currency: 'CLP' } : {}) })}
         className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sea-500 px-5 py-3.5 text-base font-semibold text-white shadow transition hover:bg-sea-600"
       >
         <IconBrandWhatsapp className="h-5 w-5" />
-        Consultar disponibilidad
+        {ready ? 'Reservar por WhatsApp' : rates ? 'Escríbenos por WhatsApp' : 'Consultar disponibilidad'}
       </a>
     </div>
   )
