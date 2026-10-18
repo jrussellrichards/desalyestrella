@@ -142,45 +142,44 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* BARRA DE CONFIANZA */}
+      {/* BARRA DE CONFIANZA: una línea, al estilo de la ficha de Airbnb */}
       <section className="border-b border-gray-100 bg-sea-50 dark:border-gray-800 dark:bg-gray-800/50">
-        <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-6 py-8 text-center sm:grid-cols-4 lg:px-8">
-          {[
-            {
-              icon: <IconStarFilled className="h-7 w-7 text-gold-400" />,
-              k: formatRating(AIRBNB_STATS.averageRating),
-              v: 'Calificación global',
-            },
-            {
-              icon: (
-                <span className="flex items-center text-gold-500">
-                  <Laurel className="h-8 w-3" />
-                  <span className="px-0.5 text-[11px] font-bold leading-none">10%</span>
-                  <Laurel className="h-8 w-3" flip />
-                </span>
-              ),
-              k: 'Top 10%',
-              v: 'Mejor evaluados en Airbnb',
-            },
-            {
-              icon: <IconAwardFilled className="h-7 w-7 text-[#FF385C]" />,
-              k: 'Superanfitriones',
-              v: 'Reconocidos por Airbnb',
-            },
-            {
-              icon: <IconMessageCircle className="h-7 w-7 text-sea-500" />,
-              k: String(AIRBNB_STATS.totalReviews),
-              v: 'Reseñas reales',
-            },
-          ].map(item => (
-            <div key={item.v} className="flex flex-col items-center">
-              <span className="flex h-8 items-center" aria-hidden="true">{item.icon}</span>
-              <dt className="sr-only">{item.v}</dt>
-              <dd className="mt-2 font-display text-xl font-semibold text-navy-900 dark:text-white sm:text-3xl">{item.k}</dd>
-              <dd className="mt-1 text-xs font-medium uppercase tracking-wider text-ink-faint dark:text-ink-dark-faint">{item.v}</dd>
+        <a
+          href={AIRBNB_PROFILE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mx-auto flex max-w-3xl flex-col items-center px-4 py-7 text-navy-900 dark:text-white"
+        >
+          <dl className="flex w-full items-center justify-center">
+            <div className="flex flex-col items-center px-3 sm:px-8">
+              <dt className="sr-only">Calificación global</dt>
+              <dd className="font-display text-xl font-semibold leading-none sm:text-2xl">{formatRating(AIRBNB_STATS.averageRating)}</dd>
+              <dd className="mt-1 flex text-gold-500" aria-hidden="true">
+                {[0, 1, 2, 3, 4].map(i => (
+                  <IconStarFilled key={i} className="h-3 w-3" />
+                ))}
+              </dd>
             </div>
-          ))}
-        </dl>
+            <div className="flex items-center gap-1.5 border-x border-navy-900/15 px-3 dark:border-white/20 sm:px-8">
+              <Laurel className="h-10 w-4 shrink-0 text-gold-500" />
+              <div className="text-center leading-tight">
+                <dt className="sr-only">Distinción</dt>
+                <dd className="font-display text-sm font-semibold sm:text-lg">Favorito entre huéspedes</dd>
+                <dd className="text-[11px] text-ink-faint dark:text-ink-dark-faint sm:text-xs">Top 10% en Airbnb</dd>
+              </div>
+              <Laurel className="h-10 w-4 shrink-0 text-gold-500" flip />
+            </div>
+            <div className="flex flex-col items-center px-3 sm:px-8">
+              <dt className="sr-only">Reseñas</dt>
+              <dd className="font-display text-xl font-semibold leading-none sm:text-2xl">{AIRBNB_STATS.totalReviews}</dd>
+              <dd className="mt-1 text-xs text-ink-faint dark:text-ink-dark-faint">Reseñas</dd>
+            </div>
+          </dl>
+          <p className="mt-4 flex items-center gap-1.5 text-sm text-ink-subtle dark:text-ink-dark-subtle">
+            <IconAwardFilled className="h-4 w-4 text-[#FF385C]" />
+            Superanfitriones en Airbnb
+          </p>
+        </a>
       </section>
 
       {/* REFUGIOS */}
