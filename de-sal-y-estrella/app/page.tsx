@@ -148,10 +148,18 @@ export default async function HomePage() {
       <section className="border-b border-gray-100 bg-sea-50 dark:border-gray-800 dark:bg-gray-800/50">
         <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-6 py-8 text-center sm:grid-cols-4 lg:px-8">
           {[
-            { k: formatRating(AIRBNB_STATS.averageRating), v: 'Promedio en Airbnb' },
-            { k: String(AIRBNB_STATS.totalReviews), v: 'Reseñas reales' },
+            {
+              k: (
+                <span className="inline-flex items-center gap-1.5">
+                  <IconStarFilled className="h-6 w-6 text-gold-400" />
+                  {formatRating(AIRBNB_STATS.averageRating)}
+                </span>
+              ),
+              v: 'Calificación global',
+            },
+            { k: 'Top 10%', v: 'Mejor evaluados en Airbnb' },
             { k: 'Superanfitriones', v: 'Reconocidos por Airbnb' },
-            { k: String(properties.length), v: 'Refugios frente al mar' },
+            { k: String(AIRBNB_STATS.totalReviews), v: 'Reseñas reales' },
           ].map(item => (
             <div key={item.v}>
               <dt className="sr-only">{item.v}</dt>

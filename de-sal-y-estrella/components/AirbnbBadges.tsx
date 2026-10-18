@@ -35,14 +35,16 @@ export default function AirbnbBadges({
       <span className="flex items-center gap-2">
         <span className="flex items-center">
           <Laurel className="h-10 w-4" />
-          <span className="px-1 font-display text-2xl font-bold leading-none">{rating}</span>
+          <span className="flex items-center gap-1 px-1 font-display text-2xl font-bold leading-none">
+            <IconStarFilled className="h-5 w-5 text-gold-400" />
+            {rating}
+          </span>
           <Laurel className="h-10 w-4" flip />
         </span>
         <span className="text-sm leading-tight">
           <strong className="block font-semibold">Favorito de los huéspedes</strong>
           <span className={`flex items-center gap-1 ${sub}`}>
-            <IconStarFilled className="h-3.5 w-3.5 text-gold-300" />
-            Top 10% en Airbnb · {reviews} reseñas
+            Top 10% mejor evaluados · {reviews} reseñas
           </span>
         </span>
       </span>
