@@ -1,9 +1,19 @@
 import Image from 'next/image'
+import { notFound } from 'next/navigation'
 import { client } from '@/lib/sanity.client'
 import { groq } from 'next-sanity'
 import StyledPortableText from '@/components/StyledPortableText' // <-- CORRECCIÓN: Importamos sin llaves
 import { urlFor } from '@/lib/image'
 import type { Image as SanityImage, PortableTextBlock } from 'sanity'
+import type { Metadata } from 'next'
+
+export const revalidate = 300
+
+export const metadata: Metadata = {
+  title: 'Nuestra historia',
+  description: 'Quiénes somos y por qué creamos De Sal y Estrella.',
+  alternates: { canonical: '/historia' },
+}
 
 // Definimos la interfaz para el contenido de la página con tipos específicos
 interface PageContent {
@@ -18,9 +28,7 @@ const query = groq`*[_type == "page" && slug.current == "nuestra-historia"][0]`
 export default async function HistoriaPage() {
   const pageContent: PageContent = await client.fetch(query)
 
-  if (!pageContent) {
-    return <div>Contenido no encontrado.</div>
-  }
+  if (!pageContent) notFound()
 
   return (
     <div className="bg-white dark:bg-gray-900">
@@ -38,9 +46,10 @@ export default async function HistoriaPage() {
           </div>
           <div className="relative aspect-video h-full w-full lg:aspect-auto">
             <Image
-              src={urlFor(pageContent.mainImage).url()}
+              src={urlFor(pageContent.mainImage).width(1400).auto('format').url()}
               alt={`Imagen principal de ${pageContent.title}`}
               fill
+              sizes="(min-width:1024px) 50vw, 100vw"
               className="object-cover"
             />
           </div>

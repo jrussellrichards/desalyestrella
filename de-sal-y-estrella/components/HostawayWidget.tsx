@@ -169,7 +169,7 @@ export default function HostawayWidget(props: HostawayOptions) {
           --ha-surface: rgba(255,255,255,0.9);
           --ha-text: #0f1724; /* slate-900 */
           --ha-muted: #6b7280; /* gray-500 */
-          --ha-accent: #f59e0b; /* amber-500 */
+          --ha-accent: #f59e0b; /* gold-500 */
           --ha-danger: #ef4444; /* red-500 */
           --ha-border: rgba(15,23,36,0.08);
           background: linear-gradient(180deg, rgba(255,255,255,0.5), rgba(250,250,252,0.85));
@@ -346,7 +346,7 @@ export default function HostawayWidget(props: HostawayOptions) {
               href={fallbackUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded bg-amber-600 px-3 py-1 text-xs font-semibold text-white hover:bg-amber-500"
+              className="rounded bg-navy-900 px-3 py-1 text-xs font-semibold text-white hover:bg-navy-800"
             >
               Abrir página de reservas
             </a>

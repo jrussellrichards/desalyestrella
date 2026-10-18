@@ -4,6 +4,15 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { urlFor } from '@/lib/image'
 import { Image as SanityImage } from 'sanity'
+import type { Metadata } from 'next'
+
+export const revalidate = 300
+
+export const metadata: Metadata = {
+  title: 'Guías de viaje',
+  description: 'Consejos y guías para tu viaje a La Serena, el Valle del Elqui y Pichilemu.',
+  alternates: { canonical: '/blog' },
+}
 
 // Definimos una interfaz para los datos de un post en la lista
 interface BlogPost {
@@ -71,7 +80,7 @@ export default async function BlogPage() {
                       })}
                     </time>
                   </div>
-                  <h3 className="mt-3 font-display text-[1.05rem] font-semibold leading-snug text-ink group-hover:text-amber-600 dark:text-white">
+                  <h3 className="mt-3 font-display text-[1.05rem] font-semibold leading-snug text-ink group-hover:text-gold-700 dark:text-white">
                     {post.title}
                   </h3>
                   <p className="mt-4 line-clamp-3 text-[0.85rem] leading-[1.5] text-ink-subtle dark:text-ink-dark-subtle">

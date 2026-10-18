@@ -104,7 +104,7 @@ export default function TestimonialCarousel({ testimonials, autoAdvanceMs = 6000
                   {Array.from({ length: 5 }).map((_, i) => (
                     <svg
                       key={i}
-                      className={`h-4 w-4 ${i < Math.round(t.rating!) ? 'text-amber-500' : 'text-gray-300 dark:text-gray-600'}`}
+                      className={`h-4 w-4 ${i < Math.round(t.rating!) ? 'text-gold-500' : 'text-gray-300 dark:text-gray-600'}`}
                       viewBox="0 0 20 20"
                       fill="currentColor"
                       aria-hidden="true"
@@ -121,7 +121,7 @@ export default function TestimonialCarousel({ testimonials, autoAdvanceMs = 6000
                   <span className="ml-1 text-gray-500 dark:text-gray-400">· {t.location}</span>
                 )}
               </figcaption>
-              <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-transparent group-hover:ring-amber-500/40" />
+              <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-transparent group-hover:ring-gold-500/40" />
             </figure>
           ))}
         </div>
@@ -155,7 +155,7 @@ export default function TestimonialCarousel({ testimonials, autoAdvanceMs = 6000
                 aria-label={`Ir al testimonio ${i + 1}`}
                 onClick={() => goTo(i)}
                 className={`h-2.5 w-2.5 rounded-full transition ${
-                  i === index ? 'bg-amber-600' : 'bg-gray-300 dark:bg-gray-600'
+                  i === index ? 'bg-gold-600' : 'bg-gray-300 dark:bg-gray-600'
                 }`}
               />
             ))}

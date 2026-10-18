@@ -78,7 +78,7 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
             <button
               key={img._key || i}
               onClick={() => openAt(i)}
-              className={`group relative overflow-hidden rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 ${
+              className={`group relative overflow-hidden rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 ${
                 isHero
                   ? 'col-span-4 row-span-2 aspect-[16/9] md:col-span-2'
                   : 'aspect-video'
@@ -116,7 +116,7 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
           <button
             onClick={close}
             aria-label="Cerrar"
-            className="absolute right-4 top-4 rounded-md bg-black/60 p-2 text-white hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="absolute right-4 top-4 rounded-md bg-black/60 p-2 text-white hover:bg-black/80 focus:outline-none focus:ring-2 focus:ring-gold-500"
           >
             <svg width="20" height="20" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -182,7 +182,7 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
             <button
               onClick={prev}
               aria-label="Anterior"
-              className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-3 text-white hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-3 text-white hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-gold-500"
             >
               <svg width="22" height="22" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
@@ -191,7 +191,7 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
             <button
               onClick={next}
               aria-label="Siguiente"
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-3 text-white hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-3 text-white hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-gold-500"
             >
               <svg width="22" height="22" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -214,8 +214,8 @@ export default function LightboxGallery({ images, propertyName, max = 5 }: Props
                     data-active={i === index || undefined}
                     className={`relative h-16 w-24 flex-shrink-0 overflow-hidden rounded-md ring-2 transition ${
                       i === index
-                        ? 'ring-amber-500'
-                        : 'ring-transparent hover:ring-amber-300'
+                        ? 'ring-gold-500'
+                        : 'ring-transparent hover:ring-gold-300'
                     }`}
                     aria-label={`Ir a imagen ${i + 1}`}
                   >

@@ -21,6 +21,32 @@ const config: Config = {
         'copy-sm': ['0.82rem', { lineHeight: '1.45', letterSpacing: '0.006em' }]
       },
       colors: {
+        // Marca (logo navy + dorado, octubre 2026)
+        navy: {
+          50: '#eef0f8',
+          100: '#d9ddef',
+          200: '#b3badf',
+          300: '#8690c7',
+          400: '#5a64a8',
+          500: '#3b4488',
+          600: '#2a3270',
+          700: '#212859',
+          800: '#1c2150',
+          900: '#181b46',
+          950: '#10122f',
+        },
+        gold: {
+          50: '#fbf7f0',
+          100: '#f5ecdc',
+          200: '#ebd8b8',
+          300: '#dfc093',
+          400: '#d4ac78',
+          500: '#c9a06a',
+          600: '#b08550',
+          700: '#8d6a3f',
+          800: '#6e5232',
+          900: '#523d26',
+        },
         ink: {
           DEFAULT: '#1d1f20',
           subtle: '#4b4f52',

@@ -149,6 +149,48 @@ export default defineType({
       validation: (Rule) => Rule.min(0).max(20),
     }),
 
+    defineField({
+      name: 'basePrice',
+      title: 'Precio desde (CLP por noche)',
+      type: 'number',
+      group: 'content',
+      description: 'Se muestra como "Desde $X/noche" en la ficha. Déjalo vacío para no mostrar precio.',
+      validation: (Rule) => Rule.min(0),
+    }),
+    defineField({
+      name: 'seasonalAdjustments',
+      title: 'Ajustes por temporada',
+      type: 'array',
+      group: 'content',
+      description: 'Multiplica el precio desde en ciertas fechas (ej: 1.3 en verano).',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'season', title: 'Temporada', type: 'string' },
+            { name: 'multiplier', title: 'Multiplicador', type: 'number' },
+            { name: 'start', title: 'Desde', type: 'date' },
+            { name: 'end', title: 'Hasta', type: 'date' },
+          ],
+        },
+      ],
+    }),
+    defineField({
+      name: 'rating',
+      title: 'Calificación en Airbnb',
+      type: 'number',
+      group: 'distribution',
+      description: 'Ej: 4.93. Se muestra en la tarjeta y la ficha.',
+      validation: (Rule) => Rule.min(0).max(5),
+    }),
+    defineField({
+      name: 'reviewCount',
+      title: 'Número de reseñas en Airbnb',
+      type: 'number',
+      group: 'distribution',
+      validation: (Rule) => Rule.min(0),
+    }),
+
     // --- Campos de SEO ---
     defineField({
       name: 'metaTitle',

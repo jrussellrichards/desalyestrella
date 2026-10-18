@@ -1,4 +1,5 @@
 import { client } from '@/lib/sanity.client'
+import { notFound } from 'next/navigation'
 import { groq } from 'next-sanity'
 import Image from 'next/image'
 import { urlFor } from '@/lib/image'
@@ -24,6 +25,24 @@ const query = groq`*[_type == "blogPost" && slug.current == $slug][0]{
   body
 }`
 
+export const revalidate = 300
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const post = await client.fetch<{ title: string; excerpt?: string; mainImage?: SanityImage } | null>(
+    groq`*[_type == "blogPost" && slug.current == $slug][0]{ title, excerpt, mainImage }`,
+    { slug }
+  )
+  if (!post) return {}
+  const image = post.mainImage ? urlFor(post.mainImage).width(1200).height(630).fit('crop').url() : '/og.jpg'
+  return {
+    title: post.title,
+    description: post.excerpt,
+    alternates: { canonical: `/blog/${slug}` },
+    openGraph: { title: post.title, description: post.excerpt, type: 'article', images: [{ url: image, width: 1200, height: 630 }] },
+  }
+}
+
 // Generamos las páginas estáticas para cada post
 export async function generateStaticParams() {
   const slugs: { slug: { current: string } }[] = await client.fetch(
@@ -42,9 +61,7 @@ export default async function BlogPostPage({
   const { slug } = await params
   const post: BlogPost = await client.fetch(query, { slug })
 
-  if (!post) {
-    return <div>Artículo no encontrado</div>
-  }
+  if (!post) notFound()
 
   return (
     <article className="bg-white dark:bg-gray-900">
@@ -67,9 +84,10 @@ export default async function BlogPostPage({
 
         <div className="relative mx-auto mt-12 aspect-video max-w-2xl overflow-hidden rounded-lg shadow-lg">
           <Image
-            src={urlFor(post.mainImage).url()}
+            src={urlFor(post.mainImage).width(1600).auto('format').url()}
             alt={`Imagen principal de ${post.title}`}
             fill
+            sizes="100vw"
             className="object-cover"
           />
         </div>

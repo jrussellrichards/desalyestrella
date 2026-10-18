@@ -41,7 +41,7 @@ export default async function CrossSell({ currentId }: CrossSellProps) {
         </h2>
         <Link
           href="/refugios"
-          className="text-sm font-medium text-amber-600 hover:text-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-600"
+          className="text-sm font-medium text-gold-700 hover:text-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-600"
         >
           Ver todos
         </Link>
@@ -74,7 +74,7 @@ export default async function CrossSell({ currentId }: CrossSellProps) {
                 {p.tagline && (
                   <p className="mt-1 line-clamp-2 text-sm text-gray-600 dark:text-gray-400">{p.tagline}</p>
                 )}
-                <span className="mt-3 inline-block text-xs font-medium text-amber-600">Ver refugio →</span>
+                <span className="mt-3 inline-block text-xs font-medium text-gold-700">Ver refugio →</span>
               </div>
             </Link>
           )

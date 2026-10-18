@@ -3,15 +3,17 @@ import { urlFor } from '@/lib/image'
 import Link from 'next/link'
 import { Property } from '@/types'
 import { hasAssetRef } from '@/utils/hasAssetRef'
-import { IconUsers, IconBed, IconBath } from '@tabler/icons-react'
+import { IconUsers, IconBed, IconBath, IconStarFilled } from '@tabler/icons-react'
+import { getRating } from '@/lib/site'
 
 export default function PropertyCard({ property }: { property: Property }) {
   const cover = property.gallery?.find(hasAssetRef)
   const imgUrl = cover ? urlFor(cover).width(800).height(600).fit('crop').auto('format').url() : null
+  const rating = getRating(property)
   return (
     <Link
       href={`/refugios/${property.slug.current || property.slug}`}
-      className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:border-amber-300 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:hover:border-amber-400"
+      className="group flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:border-gold-300 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gold-400"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100 dark:bg-gray-700">
         {imgUrl && (
@@ -26,7 +28,7 @@ export default function PropertyCard({ property }: { property: Property }) {
         )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-black/5 to-transparent opacity-0 transition group-hover:opacity-100" />
         {property.tagline && (
-          <span className="absolute left-2 top-2 rounded-md bg-black/55 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-amber-200 backdrop-blur-sm">
+          <span className="absolute left-2 top-2 rounded-md bg-black/55 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-gold-200 backdrop-blur-sm">
             {property.tagline.length > 26 ? property.tagline.slice(0, 24) + '…' : property.tagline}
           </span>
         )}
@@ -40,22 +42,28 @@ export default function PropertyCard({ property }: { property: Property }) {
             {property.location}
           </p>
         )}
+        {rating && (
+          <p className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-ink dark:text-white">
+            <IconStarFilled className="h-3.5 w-3.5 text-gold-500" />
+            {rating.rating.toFixed(2).replace('.', ',')} · {rating.reviewCount} reseñas
+          </p>
+        )}
         <div className="mt-3 flex flex-wrap gap-2">
           {typeof property.capacity === 'number' && (
             <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-[11px] font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-200">
-              <IconUsers className="mr-1 h-4 w-4 text-amber-500" stroke={1.8} />
+              <IconUsers className="mr-1 h-4 w-4 text-gold-500" stroke={1.8} />
               {property.capacity} huésp.
             </span>
           )}
           {typeof property.bedrooms === 'number' && (
             <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-[11px] font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-200">
-              <IconBed className="mr-1 h-4 w-4 text-amber-500" stroke={1.8} />
+              <IconBed className="mr-1 h-4 w-4 text-gold-500" stroke={1.8} />
               {property.bedrooms} dorm.
             </span>
           )}
           {typeof property.bathrooms === 'number' && (
             <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-[11px] font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-200">
-              <IconBath className="mr-1 h-4 w-4 text-amber-500" stroke={1.8} />
+              <IconBath className="mr-1 h-4 w-4 text-gold-500" stroke={1.8} />
               {property.bathrooms} baño{property.bathrooms === 1 ? '' : 's'}
             </span>
           )}
@@ -66,8 +74,8 @@ export default function PropertyCard({ property }: { property: Property }) {
           </p>
         )}
         <div className="mt-auto pt-4">
-          <span className="inline-flex items-center text-[11px] font-semibold uppercase tracking-wide text-amber-600 transition group-hover:text-amber-500 dark:text-amber-400">
-            Ver detalles
+          <span className="inline-flex items-center text-[11px] font-semibold uppercase tracking-wide text-gold-700 transition group-hover:text-gold-500 dark:text-gold-400">
+            Ver fotos y disponibilidad
             <svg className="ml-1 h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>

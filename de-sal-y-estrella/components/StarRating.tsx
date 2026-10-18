@@ -35,7 +35,7 @@ export default function StarRating({ rating, max = 5, sizeClass = 'h-5 w-5' }: S
               {/* Relleno (entera o media) */}
               {(isFull || isHalf) && (
                 <svg
-                  className={`${sizeClass} absolute inset-0 text-amber-400`}
+                  className={`${sizeClass} absolute inset-0 text-gold-400`}
                   viewBox="0 0 20 20"
                   fill="currentColor"
                   aria-hidden="true"

@@ -13,7 +13,10 @@ import { fetchSettings } from '@/lib/settings'
 import LightboxGallery from '@/components/LightboxGallery'
 import { hasAssetRef } from '@/utils/hasAssetRef'
 import { AmenityIcon } from '@/components/AmenityIcon'
-import { IconUsers, IconBed, IconBath } from '@tabler/icons-react'
+import { IconUsers, IconBed, IconBath, IconBrandWhatsapp, IconStarFilled } from '@tabler/icons-react'
+import type { Metadata } from 'next'
+import { AIRBNB_PROFILE_URL, SITE_URL, getRating, whatsappLink } from '@/lib/site'
+import type { Testimonial } from '@/types'
 
 // Revalidación ISR (5 min) para balance entre frescura y rendimiento
 export const revalidate = 300
@@ -35,7 +38,19 @@ const propertyQuery = groq`*[_type == "property" && slug.current == $slug][0]{
   airbnbListingUrl,
   airbnbProfileUrl,
   bedrooms,
-  bathrooms
+  bathrooms,
+  metaTitle,
+  metaDescription,
+  rating,
+  reviewCount
+}`
+
+const reviewsQuery = groq`*[_type == "testimonial" && property._ref == $id] | order(_createdAt desc)[0...3]{
+  _id,
+  quote,
+  author,
+  location,
+  rating
 }`
 
 export async function generateStaticParams() {
@@ -45,24 +60,31 @@ export async function generateStaticParams() {
   return slugs.map(({ slug }) => ({ slug: slug.current }))
 }
 
-// Metadata básica dinámica
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
-  const baseTitle = 'Refugio'
-  return {
-    title: `${baseTitle} ${slug} | Sal & Estrella`,
-    openGraph: {
-      title: `${baseTitle} ${slug} | Sal & Estrella`,
-      type: 'article'
-    }
-  }
-}
-
 // Optimización: memorizamos la consulta en build/runtime (cache React)
 const fetchProperty = cache(async (slug: string) => {
   if (!slug) return null
   return client.fetch<Property | null>(propertyQuery, { slug })
 })
+
+// Título y descripción desde los campos SEO del CMS (con respaldo en nombre y tagline)
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const property = await fetchProperty(slug)
+  if (!property) return {}
+  const title = property.metaTitle || [property.name, property.location].filter(Boolean).join(' · ')
+  const description =
+    property.metaDescription ||
+    property.tagline ||
+    `${property.name}${property.location ? ` en ${property.location}` : ''}. Reserva directo con De Sal y Estrella.`
+  const cover = property.gallery?.find(hasAssetRef)
+  const image = cover ? urlFor(cover).width(1200).height(630).fit('crop').auto('format').url() : '/og.jpg'
+  return {
+    title,
+    description,
+    alternates: { canonical: `/refugios/${slug}` },
+    openGraph: { title, description, type: 'website', url: `/refugios/${slug}`, images: [{ url: image, width: 1200, height: 630 }] },
+  }
+}
 
 export default async function PropertyPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -71,10 +93,13 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
     fetchSettings()
   ])
   if (!property) notFound()
+  const reviews = await client.fetch<Testimonial[]>(reviewsQuery, { id: property._id }).catch(() => [])
+  const rating = getRating(property)
+  const bookingText = `Hola, quisiera reservar ${property.name}. Mis fechas son: `
   const hasImages = !!(property.gallery && property.gallery.length > 0)
   const priceInfo = computeDisplayPrice(property)
 
-  const hostProfileUrl = property.airbnbProfileUrl || settings.airbnbProfileUrl
+  const hostProfileUrl = property.airbnbProfileUrl || settings.airbnbProfileUrl || AIRBNB_PROFILE_URL
 
   const firstValid = property.gallery?.find(hasAssetRef)
 
@@ -105,8 +130,14 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             {property.location && (
               <p className="mt-2 text-lg text-gray-600 dark:text-gray-300">{property.location}</p>
             )}
+            {rating && (
+              <p className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-gray-800 dark:text-gray-200">
+                <IconStarFilled className="h-4 w-4 text-gold-500" />
+                {rating.rating.toFixed(2).replace('.', ',')} · {rating.reviewCount} reseñas en Airbnb · Superanfitrión
+              </p>
+            )}
             {property.tagline && (
-              <p className="mt-2 inline-flex items-center rounded bg-amber-50 px-3 py-1 text-sm font-medium text-amber-800 dark:bg-amber-900/30 dark:text-amber-200">
+              <p className="mt-2 inline-flex items-center rounded bg-gold-50 px-3 py-1 text-sm font-medium text-gold-800 dark:bg-gold-900/30 dark:text-gold-200">
                 {property.tagline}
               </p>
             )}
@@ -116,13 +147,13 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
               <ul className="mt-4 flex flex-wrap gap-6 text-sm text-gray-600 dark:text-gray-300">
                 {typeof property.capacity === 'number' && (
                   <li className="flex items-center">
-                    <IconUsers className="h-5 w-5 text-amber-500" stroke={1.8} />
+                    <IconUsers className="h-5 w-5 text-gold-500" stroke={1.8} />
                     <span className="ml-2">{property.capacity} huéspedes</span>
                   </li>
                 )}
                 {typeof property.bedrooms === 'number' && (
                   <li className="flex items-center">
-                    <IconBed className="h-5 w-5 text-amber-500" stroke={1.8} />
+                    <IconBed className="h-5 w-5 text-gold-500" stroke={1.8} />
                     <span className="ml-2">
                       {property.bedrooms} {property.bedrooms === 1 ? 'dormitorio' : 'dormitorios'}
                     </span>
@@ -130,7 +161,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 )}
                 {typeof property.bathrooms === 'number' && (
                   <li className="flex items-center">
-                    <IconBath className="h-5 w-5 text-amber-500" stroke={1.8} />
+                    <IconBath className="h-5 w-5 text-gold-500" stroke={1.8} />
                     <span className="ml-2">
                       {property.bathrooms} {property.bathrooms === 1 ? 'baño' : 'baños'}
                     </span>
@@ -153,13 +184,15 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
               </h2>
               <ul className="mt-4 grid gap-3 text-sm text-gray-600 dark:text-gray-300 sm:grid-cols-3">
                 <li className="rounded-md bg-gray-50 p-3 dark:bg-gray-800/60">
-                  Cuidado único en cada detalle
+                  {rating
+                    ? `Huéspedes lo califican con ${rating.rating.toFixed(2).replace('.', ',')} en ${rating.reviewCount} reseñas`
+                    : 'Atendido personalmente por sus dueños, Superanfitriones en Airbnb'}
                 </li>
                 <li className="rounded-md bg-gray-50 p-3 dark:bg-gray-800/60">
-                  Conexión naturaleza + descanso profundo
+                  Reservando directo te ahorras la comisión de la plataforma
                 </li>
                 <li className="rounded-md bg-gray-50 p-3 dark:bg-gray-800/60">
-                  Ecosistema de experiencias locales
+                  Te respondemos por WhatsApp antes y durante tu estadía
                 </li>
               </ul>
             </section>
@@ -173,32 +206,60 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
               </div>
             </section>
 
-            {/* Sección del calendario mejorada */}
-            <div className="mt-10 lg:mt-12">
+            {reviews.length > 0 && (
+              <section aria-labelledby="resenas" className="mt-10">
+                <h2 id="resenas" className="text-lg font-semibold text-gray-900 dark:text-white">Lo que dicen los huéspedes</h2>
+                <ul className="mt-4 grid gap-4 sm:grid-cols-2">
+                  {reviews.map(r => (
+                    <li key={r._id} className="rounded-lg border border-gray-200 p-4 text-sm dark:border-gray-700">
+                      <p className="text-gray-700 dark:text-gray-300">“{r.quote}”</p>
+                      <p className="mt-2 font-medium text-gray-900 dark:text-white">
+                        {r.author}{r.location ? <span className="font-normal text-gray-500"> · {r.location}</span> : null}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Calendario y reserva directa */}
+            <div id="calendario" className="mt-10 scroll-mt-28 lg:mt-12">
               <div className="mb-6">
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                   Fechas y disponibilidad
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Selecciona las fechas para tu estadía y verifica la disponibilidad en tiempo real
+                  Elige tus fechas para ver disponibilidad y precio, y reserva directo.
                 </p>
               </div>
-              
-              <HostawayWidget
-                baseUrl="https://desalyestrella.holidayfuture.com/"
-                listingId={property.idHostaway}
-                numberOfMonths={2}
-                openInNewTab={true}
-                font="Inter"
-                rounded={true}
-                button={{ action: 'checkout', text: 'Reservar ahora' }}
-                clearButtonText="Limpiar fechas"
-                color={{ 
-                  mainColor: '#f59e0b', 
-                  frameColor: '#e5e7eb', 
-                  textColor: '#1f2937' 
-                }}
-              />
+
+              {property.idHostaway ? (
+                <HostawayWidget
+                  baseUrl="https://desalyestrella.holidayfuture.com/"
+                  listingId={property.idHostaway}
+                  numberOfMonths={2}
+                  openInNewTab={true}
+                  font="Inter"
+                  rounded={true}
+                  button={{ action: 'checkout', text: 'Reservar ahora' }}
+                  clearButtonText="Limpiar fechas"
+                  color={{
+                    mainColor: '#181b46',
+                    frameColor: '#e5e7eb',
+                    textColor: '#1f2937'
+                  }}
+                />
+              ) : (
+                <a
+                  href={whatsappLink(bookingText)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-md bg-navy-900 px-5 py-3 text-sm font-semibold text-white hover:bg-navy-800"
+                >
+                  <IconBrandWhatsapp className="h-5 w-5" />
+                  Consultar disponibilidad por WhatsApp
+                </a>
+              )}
             </div>
           </div>
 
@@ -214,9 +275,35 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                   Desde <span className="font-semibold text-gray-900 dark:text-white">{priceInfo.display}</span> / noche
                 </p>
               )}
-              <div className="mt-4">
-                <BookingWidget htmlCode={property.bookingWidgetCode || ''} />
-              </div>
+              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                Reserva directo y ahórrate la comisión de las plataformas.
+              </p>
+              {property.bookingWidgetCode ? (
+                <div className="mt-4">
+                  <BookingWidget htmlCode={property.bookingWidgetCode} />
+                </div>
+              ) : (
+                <div className="mt-4 flex flex-col gap-3">
+                  {property.idHostaway ? (
+                    <a
+                      href="#calendario"
+                      data-track="click_ver_calendario"
+                      className="inline-flex items-center justify-center rounded-md bg-navy-900 px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-navy-800"
+                    >
+                      Ver fechas y reservar
+                    </a>
+                  ) : null}
+                  <a
+                    href={whatsappLink(bookingText)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 hover:border-navy-900 dark:border-gray-600 dark:bg-gray-900 dark:text-white"
+                  >
+                    <IconBrandWhatsapp className="h-5 w-5 text-green-600" />
+                    Consultar por WhatsApp
+                  </a>
+                </div>
+              )}
 
               {(property.airbnbListingUrl || hostProfileUrl) && (
                 <div className="mt-5 space-y-2">
@@ -229,7 +316,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                         href={property.airbnbListingUrl}
                         target="_blank"
                         rel="nofollow noopener"
-                        className="inline-flex items-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm transition hover:border-amber-300 hover:text-amber-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-amber-500"
+                        className="inline-flex items-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm transition hover:border-gold-300 hover:text-gold-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-gold-500"
                       >
                         <svg
                           role="img"
@@ -248,9 +335,9 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                         href={hostProfileUrl}
                         target="_blank"
                         rel="nofollow noopener"
-                        className="inline-flex items-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm transition hover:border-amber-300 hover:text-amber-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-amber-500"
+                        className="inline-flex items-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm transition hover:border-gold-300 hover:text-gold-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-gold-500"
                       >
-                        Perfil Superhost
+                        Perfil de Superanfitrión
                       </a>
                     )}
                   </div>
@@ -266,7 +353,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
         <ul className="mt-6 grid grid-cols-1 gap-y-3 text-sm sm:grid-cols-2">
                 {(property.amenities || []).map(a => (
           <li key={a} className="grid grid-cols-[1.75rem_1fr] items-start gap-x-2">
-                    <span className="flex h-5 w-5 items-center justify-center text-amber-600 dark:text-amber-400" aria-hidden="true">
+                    <span className="flex h-5 w-5 items-center justify-center text-gold-700 dark:text-gold-400" aria-hidden="true">
                       <AmenityIcon amenity={a} />
                     </span>
                     <span className="leading-snug text-ink-subtle dark:text-ink-dark-subtle">{a}</span>
@@ -288,7 +375,11 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
               '@context': 'https://schema.org',
               '@type': 'LodgingBusiness',
               name: property.name,
-              address: { '@type': 'PostalAddress', addressCountry: 'CL' },
+              url: `${SITE_URL}/refugios/${slug}`,
+              address: { '@type': 'PostalAddress', addressLocality: property.location || undefined, addressCountry: 'CL' },
+              ...(rating
+                ? { aggregateRating: { '@type': 'AggregateRating', ratingValue: rating.rating, reviewCount: rating.reviewCount, bestRating: 5 } }
+                : {}),
               image: firstValid ? urlFor(firstValid)?.width(1200).height(800).quality(80).url() : undefined,
               description: property.tagline || '',
               amenityFeature: (property.amenities || []).map(a => ({
@@ -303,12 +394,15 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
       {/* CTA FLOTANTE MOBILE */}
       <div className="fixed inset-x-0 bottom-0 z-50 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70 dark:bg-gray-900/90 md:hidden">
         <div className="mx-auto flex max-w-md items-center justify-between px-4 py-3">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-200">¿Listo para reservar?</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+            {priceInfo ? `Desde ${priceInfo.display}/noche` : '¿Listo para reservar?'}
+          </span>
           <a
-            href="#reservar"
-            className="rounded-md bg-amber-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            href={property.idHostaway ? '#calendario' : whatsappLink(bookingText)}
+            {...(property.idHostaway ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
+            className="rounded-md bg-navy-900 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-navy-800 focus:outline-none focus:ring-2 focus:ring-gold-500"
           >
-            Consultar fechas
+            Reservar
           </a>
         </div>
       </div>

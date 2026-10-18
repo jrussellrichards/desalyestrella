@@ -5,7 +5,7 @@ import { urlFor } from '@/lib/image'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import Image from 'next/image'
-import { IconMapPin, IconInfoCircle, IconCurrencyDollar, IconStar, IconFlame, IconDroplet, IconWifi, IconTrash, IconMessageCircle, IconHome, IconTools, IconSoup, IconBeach, IconCompass, IconBrandInstagram, IconShoppingBag, IconCoffee, IconDeviceTv, IconToolsKitchen2, IconBrandYoutube, IconCar } from '@tabler/icons-react'
+import { IconMapPin, IconInfoCircle, IconStar, IconFlame, IconDroplet, IconWifi, IconTrash, IconMessageCircle, IconHome, IconTools, IconSoup, IconBeach, IconCompass, IconBrandInstagram, IconShoppingBag, IconCoffee, IconDeviceTv, IconToolsKitchen2, IconBrandYoutube, IconCar } from '@tabler/icons-react'
 
 // Revalidación ISR (5 min)
 export const revalidate = 300
@@ -30,17 +30,21 @@ export async function generateStaticParams() {
   return slugs.map(({ slug }) => ({ slug: slug.current }))
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
-  return {
-    title: `Guía del Huésped - ${slug} | Sal & Estrella`,
-  }
-}
-
 const fetchProperty = cache(async (slug: string) => {
   if (!slug) return null
   return client.fetch<Property | null>(propertyQuery, { slug })
 })
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const property = await fetchProperty(slug)
+  return {
+    title: `Guía del huésped${property?.name ? ` · ${property.name}` : ''}`,
+    // Página privada para huéspedes: fuera de Google
+    robots: { index: false, follow: false, nocache: true },
+  }
+}
+
 
 export default async function GuestGuidePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
@@ -54,20 +58,9 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
   const is308 = property.slug.current.includes('308') || property.name.includes('308');
   const is403 = property.slug.current.includes('403') || property.name.includes('403');
   
-  let wifiName = property.wifiName;
-  let wifiPassword = property.wifiPassword;
-  if (!wifiName || !wifiPassword) {
-      if (is308) {
-          wifiName = 'Aqua 308-2';
-          wifiPassword = 'A951096594.';
-      } else if (is403) {
-          wifiName = 'Aqua 403-3';
-          wifiPassword = 'A951096594.';
-      } else {
-          wifiName = isLaSerena ? 'Aqua-Resort' : 'Richards';
-          wifiPassword = isLaSerena ? 'laserena2024' : '951096594';
-      }
-  }
+  // Las claves de WiFi se cargan solo en Sanity (campos wifiName / wifiPassword), nunca en el código.
+  const wifiName = property.wifiName
+  const wifiPassword = property.wifiPassword
 
   let displayAddress = property.address;
   if (!displayAddress) {
@@ -80,7 +73,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
       }
   }
   
-  let extraLocationInfo = [];
+  const extraLocationInfo = [];
   if (property.tower) extraLocationInfo.push(`Torre: ${property.tower}`);
   else if (is308) extraLocationInfo.push('Torre: 2');
   else if (is403) extraLocationInfo.push('Torre: 3');
@@ -111,6 +104,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
             src={mainImage}
             alt={property.name}
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />
@@ -119,14 +113,14 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
         )}
         <div className="absolute inset-0 bg-black/40" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <span className="text-amber-400 font-semibold tracking-widest uppercase text-sm mb-2 drop-shadow-md">
+          <span className="text-gold-400 font-semibold tracking-widest uppercase text-sm mb-2 drop-shadow-md">
             Guía del Huésped
           </span>
           <h1 className="text-3xl md:text-5xl font-bold text-white drop-shadow-lg">
             Bienvenido a {property.name}
           </h1>
           <p className="mt-2 text-gray-200 text-lg flex items-center justify-center gap-2 drop-shadow">
-            <IconMapPin className="h-5 w-5 text-amber-500" />
+            <IconMapPin className="h-5 w-5 text-gold-500" />
             {property.location}
           </p>
         </div>
@@ -135,7 +129,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
       {/* Sticky Navigation Bar */}
       <nav className="sticky top-0 z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 shadow-sm overflow-x-auto no-scrollbar">
         <div className="mx-auto max-w-4xl flex items-center justify-start md:justify-center gap-2 p-3 whitespace-nowrap">
-          <a href="#inicio" className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-ocean-50 dark:bg-amber-900/20 text-ocean-700 dark:text-amber-500 text-sm font-semibold transition-colors">
+          <a href="#inicio" className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-ocean-50 dark:bg-gold-900/20 text-ocean-700 dark:text-gold-500 text-sm font-semibold transition-colors">
             <IconHome className="h-4 w-4" /> Inicio
           </a>
           <a href="#guia" className="flex items-center gap-1.5 px-4 py-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400 text-sm font-medium transition-colors">
@@ -175,7 +169,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
         {/* Guía de Uso de la Casa */}
         <section id="guia" className="space-y-8 scroll-mt-24">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 flex items-center gap-2 px-1">
-            <IconInfoCircle className="h-6 w-6 text-ocean-600 dark:text-amber-500" />
+            <IconInfoCircle className="h-6 w-6 text-ocean-600 dark:text-gold-500" />
             Guía de Uso {isLaSerena ? 'del Departamento' : 'de la Casa'}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -230,7 +224,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                   <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
                     Por tu completa seguridad y para garantizar una experiencia de primer nivel, es indispensable registrarse al llegar en conserjería (disponible 24/7). Una vez registrado, tendrás pleno acceso para disfrutar de las increíbles instalaciones del complejo.
                   </p>
-                  <a href="#amenidades" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                  <a href="#amenidades" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                     <IconStar className="h-4 w-4 mr-1" /> Ver instalaciones
                   </a>
                 </div>
@@ -277,11 +271,14 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                   </span>
                 </div>
                 <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                  <p><strong>Red:</strong> {wifiName}</p>
-                  <p>
-                    <strong>Clave:</strong> {wifiPassword}
-                    {isLaSerena && <span className="text-[11px] md:text-xs text-ocean-600 dark:text-amber-500 ml-2 font-medium">*(Incluye mayúscula y punto final)*</span>}
-                  </p>
+                  {wifiName && wifiPassword ? (
+                    <>
+                      <p><strong>Red:</strong> {wifiName}</p>
+                      <p><strong>Clave:</strong> {wifiPassword}</p>
+                    </>
+                  ) : (
+                    <p>Te enviamos el nombre de la red y la clave por WhatsApp antes de tu llegada.</p>
+                  )}
                   <span className="text-xs text-gray-400 mt-2 block italic">Conexión estable ideal para streaming en 4K tanto en interior como terraza.</span>
                 </div>
               </div>
@@ -314,7 +311,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                   <div>
                     <h4 className="font-bold text-gray-900 dark:text-white mb-2">Cocina de Inducción</h4>
                     <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
-                      El espacio cuenta con una moderna cocina de inducción táctil. Para usarla, presiona el botón de encendido y luego toca el nivel de temperatura del quemador deseado. Por seguridad, mantén presionada la "llave" por 5 segundos para bloquear o desbloquear el panel táctil.
+                      El espacio cuenta con una moderna cocina de inducción táctil. Para usarla, presiona el botón de encendido y luego toca el nivel de temperatura del quemador deseado. Por seguridad, mantén presionada la “llave” por 5 segundos para bloquear o desbloquear el panel táctil.
                     </p>
                   </div>
                 </div>
@@ -360,10 +357,10 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                 <div className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-3 space-y-1">
                   <p>{displayAddress}</p>
                   {extraLocationInfo.map((info, idx) => (
-                    <p key={idx} className="font-medium text-ocean-700 dark:text-amber-400">{info}</p>
+                    <p key={idx} className="font-medium text-ocean-700 dark:text-gold-400">{info}</p>
                   ))}
                 </div>
-                <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                   <IconMapPin className="h-3 w-3 mr-1" /> Ver en Google Maps
                 </a>
               </div>
@@ -390,9 +387,9 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
             {/* Áreas Comunes y Amenidades (Solo La Serena) */}
             {isLaSerena && (
               <div id="amenidades" className="md:col-span-2 space-y-8 mt-4 scroll-mt-24">
-                <div className="bg-ocean-50 dark:bg-amber-900/10 rounded-2xl p-6 border border-ocean-100 dark:border-amber-900/30">
+                <div className="bg-ocean-50 dark:bg-gold-900/10 rounded-2xl p-6 border border-ocean-100 dark:border-gold-900/30">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="bg-ocean-600 dark:bg-amber-500 p-2 rounded-lg text-white dark:text-gray-900">
+                    <div className="bg-ocean-600 dark:bg-gold-500 p-2 rounded-lg text-white dark:text-gray-900">
                       <IconStar className="h-6 w-6" />
                     </div>
                     <div>
@@ -408,7 +405,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                         <span className="p-1.5 bg-blue-50 dark:bg-blue-900/30 rounded-lg text-blue-600 dark:text-blue-400">
                           <IconDroplet className="h-5 w-5" />
                         </span>
-                        <span className="text-xs font-bold text-ocean-600 dark:text-amber-500">$3.000 p/p</span>
+                        <span className="text-xs font-bold text-ocean-600 dark:text-gold-500">$3.000 p/p</span>
                       </div>
                       <h5 className="font-bold text-gray-900 dark:text-white text-sm">Piscina Temperada</h5>
                       <p className="text-xs text-gray-500 mt-1">Bloques 1h: 08:00 - 22:00.</p>
@@ -420,7 +417,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                         <span className="p-1.5 bg-slate-50 dark:bg-slate-900/30 rounded-lg text-slate-600 dark:text-slate-400">
                           <IconTools className="h-5 w-5" />
                         </span>
-                        <span className="text-xs font-bold text-ocean-600 dark:text-amber-500">$1.000 p/p</span>
+                        <span className="text-xs font-bold text-ocean-600 dark:text-gold-500">$1.000 p/p</span>
                       </div>
                       <h5 className="font-bold text-gray-900 dark:text-white text-sm">Gimnasio Full Equipado</h5>
                       <p className="text-xs text-gray-500 mt-1">L-D: 05:00 - 21:00</p>
@@ -432,7 +429,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                         <span className="p-1.5 bg-orange-50 dark:bg-orange-900/30 rounded-lg text-orange-600 dark:text-orange-400">
                           <IconFlame className="h-5 w-5" />
                         </span>
-                        <span className="text-xs font-bold text-ocean-600 dark:text-amber-500">$5.000</span>
+                        <span className="text-xs font-bold text-ocean-600 dark:text-gold-500">$5.000</span>
                       </div>
                       <h5 className="font-bold text-gray-900 dark:text-white text-sm">Sauna</h5>
                       <p className="text-xs text-gray-500 mt-1">Bloques 1/2h: 09:00 - 21:30.</p>
@@ -444,7 +441,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                         <span className="p-1.5 bg-teal-50 dark:bg-teal-900/30 rounded-lg text-teal-600 dark:text-teal-400">
                           <IconDroplet className="h-5 w-5" />
                         </span>
-                        <span className="text-xs font-bold text-ocean-600 dark:text-amber-500">$20.000</span>
+                        <span className="text-xs font-bold text-ocean-600 dark:text-gold-500">$20.000</span>
                       </div>
                       <h5 className="font-bold text-gray-900 dark:text-white text-sm">Jacuzzi</h5>
                       <p className="text-xs text-gray-500 mt-1">Bloques 1h: 10:00 - 21:00.</p>
@@ -513,7 +510,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     </div>
                   </div>
 
-                  <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 items-center border-t border-ocean-100 dark:border-amber-900/30 pt-6">
+                  <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 items-center border-t border-ocean-100 dark:border-gold-900/30 pt-6">
                     <div>
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">¿Cómo reservar?</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -522,11 +519,11 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                       </p>
                     </div>
                     <div className="bg-white/50 dark:bg-black/20 p-4 rounded-xl border border-white dark:border-gray-800">
-                      <span className="text-[10px] font-bold text-ocean-700 dark:text-amber-500 uppercase tracking-widest block mb-2">Datos para el pago</span>
+                      <span className="text-[10px] font-bold text-ocean-700 dark:text-gold-500 uppercase tracking-widest block mb-2">Datos para el pago</span>
                       <div className="text-xs text-gray-500 dark:text-gray-400 space-y-0.5">
                         <p><strong>Condominio Aqua La Serena</strong> | RUT 53.323.974-9</p>
                         <p>Banco Santander | Cta Cte: 7843849</p>
-                        <p className="text-ocean-600 dark:text-amber-600 font-medium pt-1">Envía tu comprobante a: conserje@aquaserena.cl</p>
+                        <p className="text-ocean-600 dark:text-gold-700 font-medium pt-1">Envía tu comprobante a: conserje@aquaserena.cl</p>
                       </div>
                     </div>
                   </div>
@@ -542,7 +539,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
         {/* Recomendaciones Locales (Generales para todos, pero adaptadas a la ubicación) */}
         <section id="gastronomia" className="bg-white dark:bg-gray-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 dark:border-gray-700 scroll-mt-24">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-            <IconStar className="h-6 w-6 text-amber-500" />
+            <IconStar className="h-6 w-6 text-gold-500" />
             Nuestras Recomendaciones en {property.location}
           </h2>
 
@@ -555,14 +552,14 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
 
               {/* Restaurantes y Cafeterías */}
               <div>
-                <h4 className="font-semibold text-lg text-ocean-600 dark:text-amber-500 mb-4 px-1">{isLaSerena ? 'Imperdibles frente al Mar' : 'Restaurantes y Cafeterías'}</h4>
+                <h4 className="font-semibold text-lg text-ocean-600 dark:text-gold-500 mb-4 px-1">{isLaSerena ? 'Imperdibles frente al Mar' : 'Restaurantes y Cafeterías'}</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {isLaSerena ? (
                     <>
                       <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                         <h5 className="font-bold text-gray-900 dark:text-white mb-2">Taikin Sushi Bar</h5>
                         <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Asian Fusion en plena Av. del Mar. Exquisita combinación de sushi japonés con toques sudamericanos en un ambiente moderno.</p>
-                        <a href="https://www.google.com/maps/search/Taikin+Sushi+Bar+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                        <a href="https://www.google.com/maps/search/Taikin+Sushi+Bar+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                         </a>
                       </div>
@@ -570,7 +567,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                       <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                         <h5 className="font-bold text-gray-900 dark:text-white mb-2">Bendito Completo / Entre Tacos</h5>
                         <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Lo mejor de dos mundos: auténticos completos chilenos y tacos mexicanos en un solo lugar. Ideal para un almuerzo rápido y sabroso.</p>
-                        <a href="https://maps.app.goo.gl/3N3Wv1qV8C6u9m9X9" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                        <a href="https://maps.app.goo.gl/3N3Wv1qV8C6u9m9X9" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                         </a>
                       </div>
@@ -578,7 +575,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                       <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                         <h5 className="font-bold text-gray-900 dark:text-white mb-2">Mare by Bombo</h5>
                         <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Gastronomía de autor especializada en productos del mar, ceviches y cortes a la parrilla. Destaca por su ambiente premium y platos como el Arrisotado de Mariscos.</p>
-                        <a href="https://www.google.com/maps/search/Mare+by+Bombo+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                        <a href="https://www.google.com/maps/search/Mare+by+Bombo+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                         </a>
                       </div>
@@ -586,7 +583,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                       <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                         <h5 className="font-bold text-gray-900 dark:text-white mb-2">Cafetería La Trinidad</h5>
                         <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Acogedora cafetería cerca de la playa ideal para desayunos y onces. Excelente selección de café y pastelería para comenzar el día de la mejor forma.</p>
-                        <a href="https://www.google.com/maps/search/Cafeteria+La+Trinidad+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                        <a href="https://www.google.com/maps/search/Cafeteria+La+Trinidad+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                         </a>
                       </div>
@@ -594,7 +591,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                       <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                         <h5 className="font-bold text-gray-900 dark:text-white mb-2">Bakulic</h5>
                         <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Un clásico de la Av. del Mar para disfrutar de pescados y mariscos de alta calidad con la mejor vista al Faro.</p>
-                        <a href="https://www.google.com/maps/search/Bakulic+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                        <a href="https://www.google.com/maps/search/Bakulic+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                         </a>
                       </div>
@@ -604,7 +601,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                       <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                         <h5 className="font-bold text-gray-900 dark:text-white mb-2">La Sal</h5>
                         <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Cocina de autor especializada en pescados y mariscos. Un ambiente sofisticado y premium ubicado en el sector de Punta de Lobos.</p>
-                        <a href="https://www.google.com/maps/search/Restaurante+La+Sal+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                        <a href="https://www.google.com/maps/search/Restaurante+La+Sal+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                         </a>
                       </div>
@@ -612,7 +609,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                       <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                         <h5 className="font-bold text-gray-900 dark:text-white mb-2">Cardumen Café</h5>
                         <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Cafetería de especialidad en la zona centro. Imperdible su pastelería de autor y excelentes opciones de brunch.</p>
-                        <a href="https://www.google.com/maps/search/Cardumen+Cafe+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                        <a href="https://www.google.com/maps/search/Cardumen+Cafe+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                         </a>
                       </div>
@@ -620,7 +617,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                       <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                         <h5 className="font-bold text-gray-900 dark:text-white mb-2">Cúrcuma</h5>
                         <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">La mejor alternativa céntrica para cuidarse con comida inteligente, que brinda creativas y sabrosas opciones vegetarianas y veganas.</p>
-                        <a href="https://www.google.com/maps/search/Curcuma+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                        <a href="https://www.google.com/maps/search/Curcuma+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                         </a>
                       </div>
@@ -628,7 +625,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                       <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                         <h5 className="font-bold text-gray-900 dark:text-white mb-2">Costa Maria</h5>
                         <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Un clásico absoluto para la hora de almuerzo. Perfecto para probar reineta fresca, pastel de jaiba y deliciosas empanadas con vista directa al mar.</p>
-                        <a href="https://www.google.com/maps/search/Restaurante+Costa+Maria+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                        <a href="https://www.google.com/maps/search/Restaurante+Costa+Maria+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                         </a>
                       </div>
@@ -636,7 +633,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                       <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                         <h5 className="font-bold text-gray-900 dark:text-white mb-2">Los Piures Club Social</h5>
                         <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Comida típica chilena en un entorno rústico único. Muy reconocidos por sus contundentes empanadas y mariscos maridados con gran compañía local, frente a la laguna de Cáhuil.</p>
-                        <a href="https://www.google.com/maps/search/Los+Piures+Club+Social+Cahuil" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                        <a href="https://www.google.com/maps/search/Los+Piures+Club+Social+Cahuil" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                         </a>
                       </div>
@@ -648,12 +645,12 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
               {/* Picadas Tradicionales (Solo Pichilemu) */}
               {!isLaSerena && (
                 <div>
-                  <h4 className="font-semibold text-lg text-ocean-600 dark:text-amber-500 mb-4 px-1 mt-8">Picadas Tradicionales</h4>
+                  <h4 className="font-semibold text-lg text-ocean-600 dark:text-gold-500 mb-4 px-1 mt-8">Picadas Tradicionales</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Sanguchería La Casa Verde</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Generosos sándwiches gourmet, crudos, y un menú con opciones deliciosamente veganas. Es una parada estratégica ideal tras un día de surf.</p>
-                      <a href="https://www.google.com/maps/search/Sangucheria+La+Casa+Verde+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Sangucheria+La+Casa+Verde+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
@@ -661,7 +658,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Nativo Restobar</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Situado en plena Avenida Ortúzar. Destaca por su impecable coctelería de autor y atmósfera vibrante, convirtiéndose en una excelente opción de precio moderado.</p>
-                      <a href="https://www.google.com/maps/search/Nativo+Restobar+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Nativo+Restobar+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
@@ -669,7 +666,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Sandwichería Mi Tercer Tiempo</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">El lugar definitivo para un sandwich contundente. Famosos por su rapidez y sabor urbano chileno, son la parada obligatoria después de un día intenso o una larga noche.</p>
-                      <a href="https://www.google.com/maps/search/Sandwicheria+Mi+Tercer+Tiempo+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Sandwicheria+Mi+Tercer+Tiempo+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
@@ -677,7 +674,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Sushi Tsumare</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Sushi de alta calidad con ingredientes frescos y preparaciones creativas. Una de las mejores opciones en Pichilemu para disfrutar de sabores japoneses bien ejecutados.</p>
-                      <a href="https://www.google.com/maps/search/Sushi+Tsumare+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Sushi+Tsumare+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
@@ -685,7 +682,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Empanadas El Diablito</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Favoritas del sector de Playa Hermosa por sus contundentes empanadas fritas. Un local auténtico con rellenos abundantes; imperdibles las de pino y las de mariscos.</p>
-                      <a href="https://maps.app.goo.gl/J8CXywh7ncku9Kzy6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://maps.app.goo.gl/J8CXywh7ncku9Kzy6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
@@ -705,28 +702,28 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">OVO Nightclub</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">La discoteca más exclusiva de la zona, ubicada en Enjoy Coquimbo. El lugar preferido para eventos masivos y noches de fiesta inolvidables.</p>
-                      <a href="https://www.google.com/maps/search/OVO+Nightclub+Coquimbo" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/OVO+Nightclub+Coquimbo" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">New City</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Bar y discoteca con dos niveles: ritmos urbanos abajo y electrónica arriba. Un imperdible en el sector de El Santo.</p>
-                      <a href="https://www.google.com/maps/search/New+City+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/New+City+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">El Muelle</h5>
-                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Pub clásico frente al mar. Famoso por sus "Poncherazos" y su ambiente relajado para disfrutar del atardecer con amigos.</p>
-                      <a href="https://www.google.com/maps/search/El+Muelle+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Pub clásico frente al mar. Famoso por sus “Poncherazos” y su ambiente relajado para disfrutar del atardecer con amigos.</p>
+                      <a href="https://www.google.com/maps/search/El+Muelle+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Huentelauquen</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Restobar de estilo rústico en plena Av. del Mar. Mezcla perfecta de sabores del mar, tragos de autor y música en vivo.</p>
-                      <a href="https://www.google.com/maps/search/Huentelauquen+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Huentelauquen+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
@@ -736,15 +733,15 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Waitara Club</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">El gran epicentro de la fiesta en La Puntilla. Discoteca completa con dos pistas de baile muy activas y grandes eventos a poquísimos pasos de las olas.</p>
-                      <a href="https://www.google.com/maps/search/Waitara+Club+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Waitara+Club+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
 
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Bar La Virgen</h5>
-                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">El spot más "trendy" de Pichilemu. Ofrece una mezcla perfecta de coctelería de autor y ambiente relajado con una vista privilegiada al mar.</p>
-                      <a href="https://maps.app.goo.gl/vY2N6oGgD2z6Vv7V6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">El spot más “trendy” de Pichilemu. Ofrece una mezcla perfecta de coctelería de autor y ambiente relajado con una vista privilegiada al mar.</p>
+                      <a href="https://maps.app.goo.gl/vY2N6oGgD2z6Vv7V6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
@@ -752,7 +749,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Osaka</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Propuesta exclusiva de cocina Nikkei (fusión peruano-japonesa). Mixología de alto nivel frente a la playa en un entorno muy sofisticado.</p>
-                      <a href="https://maps.app.goo.gl/vY2N6oGgD2z6Vv7V6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://maps.app.goo.gl/vY2N6oGgD2z6Vv7V6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
@@ -772,21 +769,21 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Totoralillo</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Una de las mejores playas de la región, famosa por sus aguas turquesas y su arena blanca. El lugar perfecto para el surf y el descanso total.</p>
-                      <a href="https://www.google.com/maps/search/Totoralillo+beach,+Coquimbo,+Chile" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Totoralillo+beach,+Coquimbo,+Chile" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Cuatro Esquinas</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Punto de encuentro clásico en plena Avenida del Mar. Excelente ambiente, amplia oferta gastronómica y actividades perfectas para pasear.</p>
-                      <a href="https://www.google.com/maps/search/Avenida+Cuatro+Esquinas+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Avenida+Cuatro+Esquinas+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Guanaqueros</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Extensa bahía de aguas tranquilas y cálidas ideales para el baño y windsurf. Un destino insuperable por su variada gastronomía marina.</p>
-                      <a href="https://www.google.com/maps/search/Playa+Guanaqueros" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Playa+Guanaqueros" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
@@ -796,7 +793,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">La Puntilla (Playa Principal)</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Ideal para familias y principiantes del surf. Cuenta con servicios, restaurantes cercanos y una caminata agradable por la costanera.</p>
-                      <a href="https://www.google.com/maps/search/La+Puntilla+Pichilemu+playa" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/La+Puntilla+Pichilemu+playa" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
@@ -804,7 +801,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Playa Hermosa</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Extensa playa de arenas grises, perfecta para largas caminatas y disfrutar de atardeceres tranquilos lejos del centro.</p>
-                      <a href="https://www.google.com/maps/search/Playa+Hermosa+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Playa+Hermosa+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
@@ -812,7 +809,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Punta de Lobos</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Santuario de la Naturaleza y Capital Mundial del Surf. Un spot impresionante con sus icónicos morros y olas de clase mundial.</p>
-                      <a href="https://www.google.com/maps/search/Punta+de+Lobos+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Punta+de+Lobos+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
@@ -831,7 +828,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                   <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                     <h5 className="font-bold text-gray-900 dark:text-white mb-2">Mall Plaza La Serena</h5>
                     <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">El principal centro comercial de la zona. Encontrarás tiendas, supermercado, cine y un buen patio de comidas para todas las necesidades.</p>
-                    <a href="https://www.google.com/maps/search/Mall+Plaza+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                    <a href="https://www.google.com/maps/search/Mall+Plaza+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                       <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                     </a>
                   </div>
@@ -839,7 +836,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                   <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                     <h5 className="font-bold text-gray-900 dark:text-white mb-2">Supermercado Jumbo</h5>
                     <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Ubicado junto al Mall Plaza, es la opción más completa para abastecerte con gran variedad de productos frescos, carnes y panadería.</p>
-                    <a href="https://www.google.com/maps/search/Jumbo+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                    <a href="https://www.google.com/maps/search/Jumbo+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                       <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                     </a>
                   </div>
@@ -847,7 +844,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                   <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow">
                     <h5 className="font-bold text-gray-900 dark:text-white mb-2">Pueblito Peñuelas</h5>
                     <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Un agradable lugar al aire libre para vitrinear artesanías locales, tiendas de emprendedores, food trucks y a veces música en vivo.</p>
-                    <a href="https://www.google.com/maps/search/Pueblito+Pe%C3%B1uelas+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                    <a href="https://www.google.com/maps/search/Pueblito+Pe%C3%B1uelas+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                       <IconMapPin className="h-4 w-4 mr-1" /> Ver en Google Maps
                     </a>
                   </div>
@@ -867,7 +864,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Maranatha Tour (Ballenas)</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Vive la experiencia inolvidable de ver ballenas y delfines en su hábitat natural en Caleta Chañaral de Aceituno. Un tour imperdible de vida silvestre.</p>
                       <div className="flex flex-wrap gap-4">
-                        <a href="https://www.google.com/maps/search/Caleta+Chañaral+de+Aceituno" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                        <a href="https://www.google.com/maps/search/Caleta+Chañaral+de+Aceituno" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver ubicación
                         </a>
                         <a href="https://www.instagram.com/turismo_maranata/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-pink-600 hover:text-pink-700 dark:text-pink-500 dark:hover:text-pink-400">
@@ -879,7 +876,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Valle del Elqui (Observatorio Mamalluca)</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Explora la magia del Valle del Elqui y maravíllate con los cielos más limpios del mundo en el Observatorio Mamalluca. Turismo astronómico de primer nivel.</p>
                       <div className="flex flex-wrap gap-4">
-                        <a href="https://www.google.com/maps?q=-29.9899318,-70.6852942" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                        <a href="https://www.google.com/maps?q=-29.9899318,-70.6852942" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver ubicación
                         </a>
                         <a href="https://www.instagram.com/observatorio_mamalluca/?hl=es" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-pink-600 hover:text-pink-700 dark:text-pink-500 dark:hover:text-pink-400">
@@ -891,7 +888,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                       <h5 className="font-bold text-gray-900 dark:text-white mb-2">Clases de Surf (Escuela Poisson)</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">Ubicada a pasos del Faro en plena Avenida del Mar. Ideal para tomar clases de surf, arrendar equipos y disfrutar de las olas con instructores certificados.</p>
                       <div className="flex flex-wrap gap-4">
-                        <a href="https://www.google.com/maps/search/Escuela+de+Surf+Poisson+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                        <a href="https://www.google.com/maps/search/Escuela+de+Surf+Poisson+La+Serena" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                           <IconMapPin className="h-4 w-4 mr-1" /> Ver ubicación
                         </a>
                         <a href="https://www.instagram.com/escuelasurfpoisson/?hl=es-la" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm font-medium text-pink-600 hover:text-pink-700 dark:text-pink-500 dark:hover:text-pink-400">
@@ -903,46 +900,46 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                 ) : (
                   <>
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:-translate-y-1 transition-transform">
-                      <h5 className="font-bold text-ocean-700 dark:text-amber-500 mb-1">Clases de Surf</h5>
+                      <h5 className="font-bold text-ocean-700 dark:text-gold-500 mb-1">Clases de Surf</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Actividad emblema local. Toma clases de iniciación pura en La Puntilla o escala al nivel avanzado y contemplativo que exige Punta de Lobos.</p>
-                      <a href="https://www.google.com/maps/search/Clases+de+Surf+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Clases+de+Surf+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-3 w-3 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:-translate-y-1 transition-transform">
                       <div className="flex justify-between items-center mb-1">
-                        <h5 className="font-bold text-ocean-700 dark:text-amber-500">Ruta de la Sal (Cáhuil)</h5>
+                        <h5 className="font-bold text-ocean-700 dark:text-gold-500">Ruta de la Sal (Cáhuil)</h5>
                       </div>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Sumérgete a solo 15 km en la paciencia ancestral chilena. Observa y adquiere maravillosa sal de mar directamente en las pozas artesanales de extracción.</p>
-                      <a href="https://www.google.com/maps/search/Ruta+de+la+Sal+Cahuil" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Ruta+de+la+Sal+Cahuil" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-3 w-3 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:-translate-y-1 transition-transform">
-                      <h5 className="font-bold text-ocean-700 dark:text-amber-500 mb-1">Deportes Acuáticos</h5>
+                      <h5 className="font-bold text-ocean-700 dark:text-gold-500 mb-1">Deportes Acuáticos</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Un ecosistema ideal sin fuertes olas; permite un tranquilo pero desafiante recorrido en Stand Up Paddle o hermosos paseos en bote en la Laguna de Cáhuil.</p>
-                      <a href="https://www.google.com/maps/search/Deportes+Acuaticos+Laguna+Cahuil" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Deportes+Acuaticos+Laguna+Cahuil" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-3 w-3 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:-translate-y-1 transition-transform">
-                      <h5 className="font-bold text-ocean-700 dark:text-amber-500 mb-1">Parque Agustín Ross</h5>
+                      <h5 className="font-bold text-ocean-700 dark:text-gold-500 mb-1">Parque Agustín Ross</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Pasea reflexivamente en el imponente Monumento Nacional repleto de centenarias palmeras, jardines simétricos y la gran fachada del icónico casino francés.</p>
-                      <a href="https://www.google.com/maps/search/Parque+Agustin+Ross+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Parque+Agustin+Ross+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-3 w-3 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:-translate-y-1 transition-transform">
-                      <h5 className="font-bold text-ocean-700 dark:text-amber-500 mb-1">Arte en Arcilla de Pañul</h5>
+                      <h5 className="font-bold text-ocean-700 dark:text-gold-500 mb-1">Arte en Arcilla de Pañul</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Camino al sur, podrás acercarte a los tornos antiguos de maestros artesanos para llevar a casa la famosa artesanía noble en arcilla blanca.</p>
-                      <a href="https://www.google.com/maps/search/Artesania+Pa%C3%B1ul+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Artesania+Pa%C3%B1ul+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-3 w-3 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
                     <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-5 border border-gray-100 dark:border-gray-800 hover:-translate-y-1 transition-transform">
-                      <h5 className="font-bold text-ocean-700 dark:text-amber-500 mb-1">Iglesia San Andrés</h5>
+                      <h5 className="font-bold text-ocean-700 dark:text-gold-500 mb-1">Iglesia San Andrés</h5>
                       <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Enclavada en el valle interior (Ciruelos), es un viaje en el tiempo patrimonial descubriendo su gruesa estructura colonial original levantada en 1778.</p>
-                      <a href="https://www.google.com/maps/search/Iglesia+San+Andres+Ciruelos+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-amber-500 dark:hover:text-amber-400">
+                      <a href="https://www.google.com/maps/search/Iglesia+San+Andres+Ciruelos+Pichilemu" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-xs font-medium text-ocean-600 hover:text-ocean-700 dark:text-gold-500 dark:hover:text-gold-400">
                         <IconMapPin className="h-3 w-3 mr-1" /> Ver en Google Maps
                       </a>
                     </div>
