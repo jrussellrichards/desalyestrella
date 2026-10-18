@@ -8,10 +8,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import {
   IconBrandInstagram, IconBrandWhatsapp, IconBrandYoutube, IconChevronDown, IconClock, IconCompass,
-  IconDoorExit, IconHome, IconKey, IconMapPin, IconPhone, IconAlertTriangle, IconWifi, IconCar, IconSunset2,
+  IconDoorExit, IconHome, IconKey, IconMapPin, IconPhone, IconAlertTriangle, IconWifi, IconCar, IconSunset2, IconDiscount,
 } from '@tabler/icons-react'
 import { INSTAGRAM_URL, assistantLink } from '@/lib/site'
-import { AQUA_AMENITIES, AQUA_PAYMENT, EMERGENCY_NUMBERS, ZONES, getStay } from '@/lib/guide'
+import { AQUA_AMENITIES, AQUA_PAYMENT, DISCOUNTS, EMERGENCY_NUMBERS, ZONES, getStay } from '@/lib/guide'
 import CopyButton from '@/components/CopyButton'
 
 // Revalidación ISR (5 min)
@@ -357,6 +357,14 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
                   <span>{group.title} <span className="font-normal text-ink-faint">({group.places.length})</span></span>
                   <IconChevronDown className="h-5 w-5 shrink-0 text-sea-500 transition group-open:rotate-180" />
                 </summary>
+                {group.id === 'comer' && (
+                  <div className="mt-3 rounded-xl bg-sea-50 p-4 text-sm">
+                    <p className="flex items-center gap-1.5 font-semibold text-ink"><IconDiscount className="h-4 w-4 text-sea-600" /> {DISCOUNTS.title}</p>
+                    <p className="mt-1 text-ink-subtle">{DISCOUNTS.text}</p>
+                    <p className="mt-1 font-medium text-ink">{DISCOUNTS.perk}</p>
+                    <a href={DISCOUNTS.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center rounded-full bg-sea-600 px-4 py-2 font-semibold text-white">Ir a {DISCOUNTS.label}</a>
+                  </div>
+                )}
                 <ul className="mt-2 divide-y divide-sea-100">
                   {group.places.map(place => (
                     <li key={place.name} className="py-3">

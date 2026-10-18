@@ -16,6 +16,15 @@ export type Place = {
 
 export type PlaceGroup = { id: string; title: string; places: Place[] }
 
+// Aviso de descuentos que se muestra en "Dónde comer" de cada zona
+export const DISCOUNTS = {
+  url: 'https://buzka.cl',
+  label: 'buzka.cl',
+  title: '¿Tienes alguna tarjeta o descuento?',
+  text: 'Revisa en buzka.cl los descuentos que hay cada día en los restaurantes de la zona con las tarjetas que tienes.',
+  perk: 'Por ser visitante, pide tu membresía premium gratis.',
+}
+
 export type HowTo = { id: string; title: string; text: string; video?: string }
 
 export type Zone = {
@@ -268,6 +277,7 @@ export const ZONES: Record<Stay['zone'], Zone> = {
           { name: 'La Sal', text: 'Cocina de autor de pescados y mariscos en Punta de Lobos.', maps: maps('Restaurante La Sal Pichilemu'), view: true },
           { name: 'Costa María', text: 'Reineta, pastel de jaiba y empanadas con vista al mar.', maps: maps('Restaurante Costa Maria Pichilemu'), view: true },
           { name: 'Kampai', text: 'Sushi y cocina japonesa con vista al mar.', maps: maps('Kampai Pichilemu'), view: true },
+          { name: 'Bocas del Mar', text: 'Cocina peruana: ceviches, causas y pescados.', maps: maps('Bocas del Mar Pichilemu') },
           { name: 'Los Piures Club Social', text: 'Comida chilena frente a la laguna de Cáhuil.', maps: maps('Los Piures Club Social Cahuil') },
           { name: 'Cardumen Café', text: 'Café de especialidad, pastelería y brunch.', maps: maps('Cardumen Cafe Pichilemu') },
           { name: 'Cúrcuma', text: 'Opciones vegetarianas y veganas en el centro.', maps: maps('Curcuma Pichilemu') },
