@@ -1,15 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { IconBrandWhatsapp } from '@tabler/icons-react'
+import { IconBrandWhatsapp, IconMinus, IconPlus } from '@tabler/icons-react'
+import DateRangePicker from '@/components/DateRangePicker'
 import { whatsappLink } from '@/lib/site'
 import { trackEvent } from '@/lib/analytics'
-
-function todayPlus(days: number) {
-  const d = new Date()
-  d.setDate(d.getDate() + days)
-  return d.toISOString().slice(0, 10)
-}
 
 // "2026-12-24" -> "24 de diciembre"
 function formatDate(iso: string) {
@@ -30,45 +25,33 @@ export default function WhatsAppBooking({ propertyName, maxGuests = 4 }: { prope
         ? `desde el ${formatDate(checkin)}`
         : 'en las fechas que te indico'
   const text = `Hola, quisiera reservar ${propertyName.replace(/\s+/g, ' ')} ${dates}, para ${guests} ${guests === 1 ? 'persona' : 'personas'}. ¿Está disponible y cuál sería el precio?`
-  const field =
-    'mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-sea-500 focus:outline-none focus:ring-2 focus:ring-sea-500/30 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100'
+  const step = 'flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-ink transition hover:border-ink disabled:opacity-30 dark:border-gray-600 dark:text-white'
 
   return (
     <div>
-      <div className="grid grid-cols-2 gap-3">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-          Llegada
-          <input
-            type="date"
-            min={todayPlus(0)}
-            value={checkin}
-            onChange={e => {
-              setCheckin(e.target.value)
-              if (checkout && checkout <= e.target.value) setCheckout('')
-            }}
-            className={field}
-          />
-        </label>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-          Salida
-          <input
-            type="date"
-            min={checkin || todayPlus(1)}
-            value={checkout}
-            onChange={e => setCheckout(e.target.value)}
-            className={field}
-          />
-        </label>
-        <label className="col-span-2 block text-sm font-medium text-gray-700 dark:text-gray-300">
-          Personas
-          <select value={guests} onChange={e => setGuests(Number(e.target.value))} className={field}>
-            {Array.from({ length: maxGuests }, (_, i) => i + 1).map(n => (
-              <option key={n} value={n}>
-                {n} {n === 1 ? 'persona' : 'personas'}
-              </option>
-            ))}
-          </select>
-        </label>
+      <DateRangePicker
+        checkin={checkin}
+        checkout={checkout}
+        onChange={(a, b) => {
+          setCheckin(a)
+          setCheckout(b)
+        }}
+      />
+      <div className="mt-3 flex items-center justify-between rounded-xl border border-gray-300 px-3 py-2.5 dark:border-gray-600">
+        <span>
+          <span className="block text-[10px] font-bold uppercase tracking-wider text-ink dark:text-white">Personas</span>
+          <span className="block text-sm text-ink dark:text-white">
+            {guests} {guests === 1 ? 'persona' : 'personas'}
+          </span>
+        </span>
+        <span className="flex items-center gap-3">
+          <button type="button" className={step} onClick={() => setGuests(g => g - 1)} disabled={guests <= 1} aria-label="Una persona menos">
+            <IconMinus className="h-4 w-4" />
+          </button>
+          <button type="button" className={step} onClick={() => setGuests(g => g + 1)} disabled={guests >= maxGuests} aria-label="Una persona más">
+            <IconPlus className="h-4 w-4" />
+          </button>
+        </span>
       </div>
       <a
         href={whatsappLink(text)}

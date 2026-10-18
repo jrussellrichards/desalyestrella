@@ -42,3 +42,9 @@ body {
 .hide-scrollbar {
   scrollbar-width: none;
 }
+
+/* Aparición suave (cambio de mes en el calendario) */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
