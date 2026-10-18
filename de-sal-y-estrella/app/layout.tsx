@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Fraunces } from 'next/font/google'
+import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import Header from '@/components/Header'
@@ -13,11 +13,11 @@ const inter = Inter({
   display: 'swap',
   variable: '--font-sans'
 })
-const fraunces = Fraunces({
+const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-display',
-  axes: ['SOFT', 'WONK'], // ignorado si no soportado
+  weight: ['600', '700', '800'],
 })
 
 export const metadata: Metadata = {
@@ -44,8 +44,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es" className={`${inter.variable} ${fraunces.variable}`}>
-      <body className="font-sans antialiased text-ink dark:text-ink-dark bg-white dark:bg-gray-900 selection:bg-gold-300/40 selection:text-navy-950">
+    <html lang="es" className={`${inter.variable} ${jakarta.variable}`}>
+      <body className="font-sans antialiased text-ink dark:text-ink-dark bg-salt dark:bg-gray-900 selection:bg-gold-300/40 selection:text-navy-950">
         <Header />
         <main className="flex-grow">{children}</main>
         <WhatsAppWidget />

@@ -12,7 +12,7 @@ export default function ErrorBoundary({ error, reset }: { error: Error; reset: (
       <p className="mt-4 text-gray-600 dark:text-gray-400">No pudimos cargar este refugio. Intenta de nuevo.</p>
       <button
         onClick={() => reset()}
-        className="mt-6 rounded-md bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        className="mt-6 rounded-md bg-navy-900 px-5 py-2 text-sm font-medium text-white hover:bg-navy-700 focus:outline-none focus:ring-2 focus:ring-gold-400"
       >
         Reintentar
       </button>

@@ -31,7 +31,7 @@ export default async function HistoriaPage() {
   if (!pageContent) notFound()
 
   return (
-    <div className="bg-white dark:bg-gray-900">
+    <div className="bg-salt dark:bg-gray-900">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="overflow-hidden rounded-lg bg-gray-50 shadow-sm dark:bg-gray-800 lg:grid lg:grid-cols-2 lg:gap-4">
           <div className="px-6 pb-12 pt-10 sm:px-16 sm:pt-16 lg:py-16 lg:pr-0 xl:py-20 xl:px-20">

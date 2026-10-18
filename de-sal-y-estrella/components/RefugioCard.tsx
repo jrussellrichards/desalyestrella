@@ -53,13 +53,13 @@ export default function RefugioCard({ property }: { property: Property }) {
         )}
         <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-ink-subtle dark:text-ink-dark-subtle">
           {typeof property.capacity === 'number' && (
-            <li className="inline-flex items-center gap-1.5"><IconUsers className="h-4 w-4 text-gold-600" />{property.capacity} huéspedes</li>
+            <li className="inline-flex items-center gap-1.5"><IconUsers className="h-4 w-4 text-sea-500" />{property.capacity} huéspedes</li>
           )}
           {typeof property.bedrooms === 'number' && (
-            <li className="inline-flex items-center gap-1.5"><IconBed className="h-4 w-4 text-gold-600" />{property.bedrooms} dorm.</li>
+            <li className="inline-flex items-center gap-1.5"><IconBed className="h-4 w-4 text-sea-500" />{property.bedrooms} dorm.</li>
           )}
           {typeof property.bathrooms === 'number' && (
-            <li className="inline-flex items-center gap-1.5"><IconBath className="h-4 w-4 text-gold-600" />{property.bathrooms} {property.bathrooms === 1 ? 'baño' : 'baños'}</li>
+            <li className="inline-flex items-center gap-1.5"><IconBath className="h-4 w-4 text-sea-500" />{property.bathrooms} {property.bathrooms === 1 ? 'baño' : 'baños'}</li>
           )}
         </ul>
         <div className="mt-auto flex items-center justify-between border-t border-gray-100 pt-5 dark:border-gray-700">
