@@ -90,8 +90,8 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
   const nav = [
     { href: '#llegada', label: 'Llegada', icon: IconKey },
     { href: '#estadia', label: 'Estadía', icon: IconHome },
-    { href: '#salida', label: 'Salida', icon: IconDoorExit },
     { href: '#zona', label: 'La zona', icon: IconCompass },
+    { href: '#salida', label: 'Salida', icon: IconDoorExit },
   ]
 
   return (
@@ -309,39 +309,6 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
           </div>
         </section>
 
-        {/* SALIDA */}
-        <section className="space-y-4">
-          <SectionTitle id="salida" icon={IconDoorExit} kicker="El último día" title="Salida" />
-          <div className={`${card} flex items-center gap-3`}>
-            <IconClock className="h-6 w-6 shrink-0 text-sea-500" />
-            <p className="text-sm text-ink dark:text-white">
-              {stay.checkOut ? <>Check-out hasta las <strong>{stay.checkOut}</strong>.</> : 'La hora de salida te la confirmamos por WhatsApp.'}
-            </p>
-          </div>
-          <ul className={`${card} space-y-3`}>
-            {stay.departure.map((item, i) => (
-              <li key={i} className="flex gap-3 text-sm text-ink dark:text-ink-dark">
-                <span className="mt-0.5 h-5 w-5 shrink-0 rounded-md border-2 border-sea-300" aria-hidden />
-                {item}
-              </li>
-            ))}
-          </ul>
-          <div className="rounded-2xl bg-white p-5 text-center shadow-sm ring-1 ring-sea-100 dark:bg-gray-800 dark:ring-gray-700">
-            <Image src="/brand/isotipo-oscuro.png" alt="" width={56} height={56} className="mx-auto dark:hidden" />
-            <Image src="/brand/isotipo-claro.png" alt="" width={56} height={56} className="mx-auto hidden dark:block" />
-            <p className="mt-3 font-display text-lg font-bold text-ink dark:text-white">¡Gracias por quedarte con nosotros!</p>
-            <p className="mt-1 text-sm text-ink-subtle dark:text-ink-dark-subtle">Nos encantaría saber cómo te fue y recibirte de nuevo.</p>
-            <div className="mt-4 flex flex-wrap justify-center gap-2">
-              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full bg-sea-50 px-4 py-2 text-sm font-semibold text-sea-700 hover:bg-sea-100 dark:bg-gray-900 dark:text-sea-300">
-                <IconBrandInstagram className="h-4 w-4" /> @de_sal_y_estrella
-              </a>
-              <Link href="/refugios" className="inline-flex items-center gap-1.5 rounded-full bg-sea-500 px-4 py-2 text-sm font-semibold text-white hover:bg-sea-600">
-                Volver a De Sal y Estrella
-              </Link>
-            </div>
-          </div>
-        </section>
-
         {/* LA ZONA */}
         <section className="space-y-4">
           <SectionTitle id="zona" icon={IconCompass} kicker="Nuestras recomendaciones" title={`La zona: ${zone.name}`} />
@@ -389,6 +356,41 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
           <p className="px-1 text-sm text-ink-subtle dark:text-ink-dark-subtle">
             ¿Buscas algo más? Pregúntale a nuestro asistente 24/7 por WhatsApp.
           </p>
+        </section>
+
+        {/* SALIDA */}
+        <section className="space-y-4">
+          <SectionTitle id="salida" icon={IconDoorExit} kicker="El último día" title="Salida" />
+          <div className={`${card} flex items-center gap-3`}>
+            <IconClock className="h-6 w-6 shrink-0 text-sea-500" />
+            <p className="text-sm text-ink dark:text-white">
+              {stay.checkOut ? <>Check-out hasta las <strong>{stay.checkOut}</strong>.</> : 'La hora de salida te la confirmamos por WhatsApp.'}
+            </p>
+          </div>
+          <ul className={`${card} space-y-3`}>
+            {stay.departure.map((item, i) => (
+              <li key={i} className="flex gap-3 text-sm text-ink dark:text-ink-dark">
+                <span className="mt-0.5 h-5 w-5 shrink-0 rounded-md border-2 border-sea-300" aria-hidden />
+                {item}
+              </li>
+            ))}
+          </ul>
+          <div className="rounded-2xl bg-white p-5 text-center shadow-sm ring-1 ring-sea-100 dark:bg-gray-800 dark:ring-gray-700">
+            <Image src="/brand/isotipo-oscuro.png" alt="" width={56} height={56} className="mx-auto dark:hidden" />
+            <Image src="/brand/isotipo-claro.png" alt="" width={56} height={56} className="mx-auto hidden dark:block" />
+            <p className="mt-3 font-display text-lg font-bold text-ink dark:text-white">¡Gracias por quedarte con nosotros!</p>
+            <p className="mt-1 text-sm text-ink-subtle dark:text-ink-dark-subtle">Nos encantaría saber cómo te fue y recibirte de nuevo.</p>
+            <div className="mt-4 rounded-xl bg-sea-50 p-4 dark:bg-gray-900">
+              <p className="font-semibold text-ink dark:text-white">Síguenos en Instagram y te regalamos un cupón de 15% de descuento para tu próxima visita</p>
+              <p className="mt-1 text-xs text-ink-subtle dark:text-ink-dark-subtle">Escríbenos por WhatsApp para recibirlo. No aplica en temporada alta.</p>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-sea-500 px-4 py-2 text-sm font-semibold text-white hover:bg-sea-600">
+                <IconBrandInstagram className="h-4 w-4" /> Seguir a @de_sal_y_estrella
+              </a>
+            </div>
+            <Link href="/refugios" className={`${linkCls} mt-4`}>
+              Volver a De Sal y Estrella
+            </Link>
+          </div>
         </section>
       </main>
 
