@@ -50,7 +50,9 @@ export default function WhatsAppBooking({
     }
   }
   const priced = rates && nights.length > 0 && nights.every(n => rates.prices[n])
-  const total = priced ? nights.reduce((sum, n) => sum + rates.prices[n], 0) : 0
+  const nightsTotal = priced ? nights.reduce((sum, n) => sum + rates.prices[n], 0) : 0
+  const cleaning = priced ? rates.cleaningFee : 0
+  const total = nightsTotal + cleaning
   const sameRate = priced && nights.every(n => rates.prices[n] === rates.prices[nights[0]])
   const minStay = (checkin && rates?.minStay[checkin]) || 1
   const tooShort = nights.length > 0 && nights.length < minStay
@@ -95,8 +97,14 @@ export default function WhatsAppBooking({
               {sameRate ? `${formatCLP(rates.prices[nights[0]])} × ` : ''}
               {nights.length} {nights.length === 1 ? 'noche' : 'noches'}
             </dt>
-            <dd>{formatCLP(total)}</dd>
+            <dd>{formatCLP(nightsTotal)}</dd>
           </div>
+          {cleaning > 0 && (
+            <div className="flex justify-between">
+              <dt className="text-ink-subtle dark:text-ink-dark-subtle">Aseo</dt>
+              <dd>{formatCLP(cleaning)}</dd>
+            </div>
+          )}
           <div className="flex justify-between border-t border-gray-200 pt-2 text-base font-semibold dark:border-gray-700">
             <dt>Total</dt>
             <dd>{formatCLP(total)}</dd>

@@ -67,12 +67,47 @@ export async function getBlockedDates(ids: Ids): Promise<string[]> {
   }
 }
 
-export type NightlyRates = { prices: Record<string, number>; minStay: Record<string, number> }
+export type NightlyRates = {
+  prices: Record<string, number>
+  minStay: Record<string, number>
+  // Aseo que se cobra una vez por reserva
+  cleaningFee: number
+}
+
+type Upsell = { index?: number; enable?: boolean; type?: string; amount?: number; per?: string; period?: string }
+type Beds24Property = {
+  id: number
+  name: string
+  roomTypes?: { id: number; name: string; cleaningFee?: number; securityDeposit?: number; taxPercentage?: number }[]
+  upsellItems?: Upsell[]
+}
+
+function getProperties(params: Record<string, string | number | boolean | undefined>, revalidate = 3600) {
+  return beds24Get<Beds24Property[]>('/properties', { includeAllRooms: true, includeUpsellItems: true, ...params }, revalidate)
+}
+
+// Aseo de la unidad (campo cleaningFee) más los cargos obligatorios de aseo por reserva de la propiedad
+async function getCleaningFee(ids: Ids): Promise<number> {
+  try {
+    const props = await getProperties(ids.propId ? { id: ids.propId } : { roomId: ids.roomId })
+    const prop = props?.[0]
+    if (!prop) return 0
+    const room = prop.roomTypes?.find(r => r.id === ids.roomId) ?? prop.roomTypes?.[0]
+    const extras = (prop.upsellItems || [])
+      .filter(u => u.enable && u.type === 'obligatoryCleaning' && (u.period ?? 'oneTime') === 'oneTime' && ['booking', 'room', undefined].includes(u.per))
+      .reduce((sum, u) => sum + (u.amount || 0), 0)
+    return (room?.cleaningFee || 0) + extras
+  } catch (err) {
+    console.error(err)
+    return 0
+  }
+}
 
 // Precio por noche y estadía mínima de cada fecha del próximo año (YYYY-MM-DD -> valor)
 export async function getNightlyPrices(ids: Ids): Promise<NightlyRates> {
-  const rates: NightlyRates = { prices: {}, minStay: {} }
+  const rates: NightlyRates = { prices: {}, minStay: {}, cleaningFee: 0 }
   if (!ids.propId && !ids.roomId) return rates
+  rates.cleaningFee = await getCleaningFee(ids)
   try {
     const rooms = await beds24Get<{ calendar?: { from: string; to: string; price1?: number; minStay?: number }[] }[]>(
       '/inventory/rooms/calendar',
@@ -104,16 +139,24 @@ export function minPrice(prices: Record<string, number>, blocked: string[]) {
   return values.length ? Math.min(...values) : null
 }
 
-// Para el diagnóstico: propiedades y habitaciones con sus IDs
+// Para el diagnóstico: propiedades, habitaciones con sus IDs y cargos configurados
 export async function listProperties() {
-  const props = await beds24Get<{ id: number; name: string; roomTypes?: { id: number; name: string }[] }[]>(
-    '/properties',
-    { includeAllRooms: true },
-    0
-  )
+  const props = await getProperties({}, 0)
   return (props || []).map(p => ({
     id: p.id,
     name: p.name,
-    rooms: (p.roomTypes || []).map(r => ({ id: r.id, name: r.name })),
+    rooms: (p.roomTypes || []).map(r => ({
+      id: r.id,
+      name: r.name,
+      cleaningFee: r.cleaningFee,
+      securityDeposit: r.securityDeposit,
+      taxPercentage: r.taxPercentage,
+    })),
+    cargosActivos: (p.upsellItems || []).filter(u => u.enable),
   }))
+}
+
+// Para el diagnóstico: lo que Beds24 cotiza para una estadía
+export async function getOffers(roomId: number, arrival: string, departure: string, numAdults: number) {
+  return beds24Get<unknown[]>('/inventory/rooms/offers', { roomId, arrival, departure, numAdults }, 0)
 }
