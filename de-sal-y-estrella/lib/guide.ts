@@ -143,7 +143,7 @@ export const STAYS: Record<string, Stay> = {
       {
         id: 'agua',
         title: 'Agua caliente',
-        text: 'El calefont se enciende solo. Ajusta la temperatura en su panel digital.',
+        text: 'El calefont se enciende solo. Ajusta la temperatura en su panel digital: recomendamos entre 38 y 40 grados.',
       },
       {
         id: 'basura',
