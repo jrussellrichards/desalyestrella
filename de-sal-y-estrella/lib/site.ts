@@ -46,7 +46,7 @@ export function assistantLink(text?: string) {
 }
 
 // Beneficio de la casa para quien reserva en la página (se muestra junto al botón de reservar).
-export const DIRECT_BOOKING_PERK = 'Late check-out sin costo, según disponibilidad'
+export const DIRECT_BOOKING_PERK = 'Un detalle de bienvenida esperándote'
 
 // Ubicación de cada refugio: dirección para el mapa y tiempos aproximados.
 type LocationInfo = { mapQuery: string; area: string; nearby: { place: string; time: string }[] }
