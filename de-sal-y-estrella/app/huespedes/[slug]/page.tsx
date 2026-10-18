@@ -384,7 +384,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
               <p className="font-semibold text-ink dark:text-white">Un descuento para tu próxima visita</p>
               <ul className="mx-auto mt-2 max-w-xs space-y-1 text-sm text-ink dark:text-white">
                 <li><strong>10%</strong> si nos sigues en Instagram</li>
-                <li><strong>20%</strong> si subes una historia y nos etiquetas</li>
+                <li><strong>20%</strong> si subes una historia disfrutando la zona (la playa, un paseo, lo que sea) y nos etiquetas</li>
               </ul>
               <p className="mt-2 text-xs text-ink-subtle dark:text-ink-dark-subtle">Escríbenos por WhatsApp para recibir tu cupón. No aplica en temporada alta.</p>
               <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-sea-500 px-4 py-2 text-sm font-semibold text-white hover:bg-sea-600">
