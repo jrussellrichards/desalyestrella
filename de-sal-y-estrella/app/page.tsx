@@ -73,15 +73,19 @@ const reasons = [
 const faqs = [
   {
     q: '¿Es seguro reservar aquí?',
-    a: `Sí. Somos Superanfitriones en Airbnb, con ${AIRBNB_STATS.totalReviews} reseñas y un promedio de ${formatRating(AIRBNB_STATS.averageRating)}. Pagas en un sistema de reservas seguro y hablas directamente con nosotros.`,
+    a: `Sí. Somos Superanfitriones en Airbnb, con ${AIRBNB_STATS.totalReviews} reseñas y un promedio de ${formatRating(AIRBNB_STATS.averageRating)}. Reservas hablando directamente con nosotros por WhatsApp.`,
+  },
+  {
+    q: '¿Cómo reservo y pago?',
+    a: 'Escríbenos por WhatsApp con tus fechas y te confirmamos disponibilidad y precio. Puedes pagar por transferencia directa o reservar a través de Airbnb.',
   },
   {
     q: '¿Cómo funciona el check-in?',
-    a: 'Es autónomo o asistido, según prefieras. Antes de tu llegada te enviamos instrucciones precisas y el código de acceso.',
+    a: 'Antes de tu llegada te enviamos por WhatsApp instrucciones claras para entrar, y te acompañamos si lo necesitas.',
   },
   {
     q: '¿Cuál es la política de cancelación?',
-    a: 'Flexible: reembolso completo hasta 7 días antes de la llegada, salvo fechas peak indicadas al reservar.',
+    a: 'Flexible: reembolso completo hasta 7 días antes de la llegada, salvo fechas peak, que te avisamos al reservar.',
   },
   {
     q: '¿Aceptan mascotas?',

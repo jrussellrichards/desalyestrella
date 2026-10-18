@@ -52,10 +52,11 @@ const reasons = [
 const faqs = [
   {
     q: 'Is it safe to book here?',
-    a: `Yes. We are Airbnb Superhosts with ${AIRBNB_STATS.totalReviews} reviews and a ${formatRating(AIRBNB_STATS.averageRating)} average. You pay through a secure booking system and talk to us directly.`,
+    a: `Yes. We are Airbnb Superhosts with ${AIRBNB_STATS.totalReviews} reviews and a ${formatRating(AIRBNB_STATS.averageRating)} average. You book by talking to us directly on WhatsApp.`,
   },
-  { q: 'How does check-in work?', a: 'Self check-in or assisted, as you prefer. Before you arrive we send you clear instructions and your access code.' },
-  { q: 'What is the cancellation policy?', a: 'Flexible: full refund up to 7 days before arrival, except peak dates shown when booking.' },
+  { q: 'How do I book and pay?', a: 'Message us on WhatsApp with your dates and we confirm availability and price. You can pay by direct bank transfer or book through Airbnb.' },
+  { q: 'How does check-in work?', a: 'Before you arrive we send you clear instructions on WhatsApp, and we are there if you need help.' },
+  { q: 'What is the cancellation policy?', a: 'Flexible: full refund up to 7 days before arrival, except peak dates, which we tell you about when you book.' },
   { q: 'Can I write to you in English?', a: 'Of course. Message us on WhatsApp in English at any time and we will reply.' },
 ]
 
