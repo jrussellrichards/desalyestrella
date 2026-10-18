@@ -8,12 +8,13 @@ const DAYS_AHEAD = 365
 type Ids = { propId?: number; roomId?: number }
 
 async function getToken(): Promise<string | null> {
-  const refreshToken = process.env.BEDS24_REFRESH_TOKEN
+  // Tolera comillas o espacios pegados por error al copiar la llave
+  const refreshToken = process.env.BEDS24_REFRESH_TOKEN?.trim().replace(/^"|"$/g, '')
   if (!refreshToken) return null
-  // El token dura 24 h; se reutiliza por una hora desde la caché de datos de Next
+  // El token dura poco (expiresIn); se reutiliza media hora desde la caché de datos de Next
   const res = await fetch(`${API}/authentication/token`, {
     headers: { refreshToken },
-    next: { revalidate: 3600, tags: ['beds24-token'] },
+    next: { revalidate: 1800, tags: ['beds24-token'] },
   })
   if (!res.ok) throw new Error(`Beds24 token: HTTP ${res.status}`)
   const json = await res.json()
