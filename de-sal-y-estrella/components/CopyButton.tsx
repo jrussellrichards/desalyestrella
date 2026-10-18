@@ -18,7 +18,7 @@ export default function CopyButton({ value, label = 'Copiar' }: { value: string;
           () => {},
         )
       }}
-      className="inline-flex items-center gap-1.5 rounded-full bg-sea-50 px-3 py-1.5 text-sm font-semibold text-sea-700 transition hover:bg-sea-100"
+      className="inline-flex items-center gap-1.5 rounded-full bg-sea-50 px-3 py-1.5 text-sm font-semibold text-sea-700 transition hover:bg-sea-100 dark:bg-gray-900 dark:text-sea-300"
     >
       {copied ? <IconCheck className="h-4 w-4" /> : <IconCopy className="h-4 w-4" />}
       {copied ? 'Copiada' : label}

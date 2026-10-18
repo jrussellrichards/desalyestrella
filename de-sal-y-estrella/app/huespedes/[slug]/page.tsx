@@ -8,10 +8,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import {
   IconBrandInstagram, IconBrandWhatsapp, IconBrandYoutube, IconChevronDown, IconClock, IconCompass,
-  IconDoorExit, IconHome, IconKey, IconMapPin, IconPhone, IconAlertTriangle, IconWifi, IconCar,
+  IconDoorExit, IconHome, IconKey, IconMapPin, IconPhone, IconAlertTriangle, IconWifi, IconCar, IconSunset2, IconDiscount,
 } from '@tabler/icons-react'
 import { INSTAGRAM_URL, assistantLink } from '@/lib/site'
-import { AQUA_AMENITIES, AQUA_PAYMENT, EMERGENCY_NUMBERS, ZONES, getStay } from '@/lib/guide'
+import { AQUA_AMENITIES, AQUA_PAYMENT, DISCOUNTS, EMERGENCY_NUMBERS, ZONES, getStay } from '@/lib/guide'
 import CopyButton from '@/components/CopyButton'
 
 // Revalidación ISR (5 min)
@@ -53,14 +53,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
-const card = 'rounded-2xl bg-white p-5 shadow-sm ring-1 ring-sea-100'
-const linkCls = 'inline-flex items-center gap-1 text-sm font-semibold text-sea-700 hover:text-sea-800'
+const card = 'rounded-2xl bg-white p-5 shadow-sm ring-1 ring-sea-100 dark:bg-gray-800 dark:ring-gray-700'
+const linkCls = 'inline-flex items-center gap-1 text-sm font-semibold text-sea-700 hover:text-sea-800 dark:text-sea-300'
 
 function SectionTitle({ id, icon: Icon, title, kicker }: { id: string; icon: typeof IconHome; title: string; kicker: string }) {
   return (
     <div id={id} className="scroll-mt-20 pt-4">
       <p className="text-xs font-semibold uppercase tracking-wider text-sea-600">{kicker}</p>
-      <h2 className="mt-1 flex items-center gap-2 font-display text-2xl font-bold text-ink">
+      <h2 className="mt-1 flex items-center gap-2 font-display text-2xl font-bold text-ink dark:text-white">
         <Icon className="h-6 w-6 text-sea-500" />
         {title}
       </h2>
@@ -94,13 +94,14 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
   ]
 
   return (
-    <div className="min-h-screen bg-white pb-28">
+    <div className="min-h-screen bg-white pb-28 dark:bg-gray-900">
       {/* Encabezado propio de la guía */}
-      <header className="sticky top-0 z-40 border-b border-sea-100 bg-white/95 backdrop-blur">
+      <header className="sticky top-0 z-40 border-b border-sea-100 bg-white/95 backdrop-blur dark:border-gray-800 dark:bg-gray-900/95">
         <div className="mx-auto flex max-w-2xl items-center justify-between gap-3 px-4 py-2.5">
           <Link href="/" className="flex min-w-0 items-center gap-2.5">
-            <Image src="/brand/isotipo-oscuro.png" alt="De Sal y Estrella" width={36} height={36} className="shrink-0" />
-            <span className="truncate text-sm font-semibold text-ink">{stay.shortName}</span>
+            <Image src="/brand/isotipo-oscuro.png" alt="De Sal y Estrella" width={36} height={36} className="shrink-0 dark:hidden" />
+            <Image src="/brand/isotipo-claro.png" alt="De Sal y Estrella" width={36} height={36} className="hidden shrink-0 dark:block" />
+            <span className="truncate text-sm font-semibold text-ink dark:text-white">{stay.shortName}</span>
           </Link>
           <a href={help} target="_blank" rel="noopener noreferrer" className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-sea-500 px-3.5 py-1.5 text-sm font-semibold text-white hover:bg-sea-600">
             <IconBrandWhatsapp className="h-4 w-4" /> Ayuda 24/7
@@ -126,31 +127,23 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
         <section className="grid grid-cols-2 gap-3">
           <a href="#llegada" className={`${card} flex flex-col gap-1`}>
             <IconKey className="h-6 w-6 text-sea-500" />
-            <span className="font-semibold text-ink">Cómo entrar</span>
-            <span className="text-xs text-ink-subtle">{stay.checkIn ? `Desde las ${stay.checkIn}` : 'Paso a paso'}</span>
+            <span className="font-semibold text-ink dark:text-white">Cómo entrar</span>
+            <span className="text-xs text-ink-subtle dark:text-ink-dark-subtle">{stay.checkIn ? (stay.checkInUntil ? `De ${stay.checkIn} a ${stay.checkInUntil}` : `Desde las ${stay.checkIn}`) : 'Paso a paso'}</span>
           </a>
           <a href="#wifi" className={`${card} flex flex-col gap-1`}>
             <IconWifi className="h-6 w-6 text-sea-500" />
-            <span className="font-semibold text-ink">WiFi</span>
-            <span className="text-xs text-ink-subtle">{wifiName ? wifiName : '800 Mbps'}</span>
+            <span className="font-semibold text-ink dark:text-white">WiFi</span>
+            <span className="text-xs text-ink-subtle dark:text-ink-dark-subtle">{wifiPassword ? 'Ver clave' : '800 Mbps'}</span>
           </a>
-          {parking ? (
-            <a href="#llegada" className={`${card} flex flex-col gap-1`}>
-              <IconCar className="h-6 w-6 text-sea-500" />
-              <span className="font-semibold text-ink">Estacionamiento</span>
-              <span className="text-xs text-ink-subtle">N° {parking}</span>
-            </a>
-          ) : (
-            <a href="#emergencias" className={`${card} flex flex-col gap-1`}>
-              <IconPhone className="h-6 w-6 text-sea-500" />
-              <span className="font-semibold text-ink">Emergencias</span>
-              <span className="text-xs text-ink-subtle">Números y contactos</span>
-            </a>
-          )}
+          <a href="#llegada" className={`${card} flex flex-col gap-1`}>
+            <IconCar className="h-6 w-6 text-sea-500" />
+            <span className="font-semibold text-ink dark:text-white">Estacionamiento</span>
+            <span className="text-xs text-ink-subtle dark:text-ink-dark-subtle">{parking ? `N° ${parking} · Gratis` : 'Gratis'}</span>
+          </a>
           <a href="#salida" className={`${card} flex flex-col gap-1`}>
             <IconDoorExit className="h-6 w-6 text-sea-500" />
-            <span className="font-semibold text-ink">Salida</span>
-            <span className="text-xs text-ink-subtle">{stay.checkOut ? `Hasta las ${stay.checkOut}` : 'Antes de irte'}</span>
+            <span className="font-semibold text-ink dark:text-white">Salida</span>
+            <span className="text-xs text-ink-subtle dark:text-ink-dark-subtle">{stay.checkOut ? `Hasta las ${stay.checkOut}` : 'Antes de irte'}</span>
           </a>
         </section>
 
@@ -168,23 +161,33 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
           <SectionTitle id="llegada" icon={IconKey} kicker="Al llegar" title="Llegada" />
           <div className={`${card} flex items-center gap-3`}>
             <IconClock className="h-6 w-6 shrink-0 text-sea-500" />
-            <p className="text-sm text-ink">
-              {stay.checkIn ? <>Check-in desde las <strong>{stay.checkIn}</strong>.</> : 'La hora de llegada te la confirmamos por WhatsApp.'}
+            <p className="text-sm text-ink dark:text-white">
+              {!stay.checkIn
+                ? 'La hora de llegada te la confirmamos por WhatsApp.'
+                : stay.checkInUntil
+                  ? <>Check-in de <strong>{stay.checkIn}</strong> a <strong>{stay.checkInUntil}</strong>.</>
+                  : <>Check-in desde las <strong>{stay.checkIn}</strong>.</>}
+              {stay.lateArrival && <> {stay.lateArrival}</>}
             </p>
           </div>
           <ol className={`${card} space-y-4`}>
             {stay.arrival.map((step, i) => (
               <li key={i} className="flex gap-3">
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sea-500 text-sm font-bold text-white">{i + 1}</span>
-                <span className="pt-0.5 text-sm leading-relaxed text-ink">{step}</span>
+                <span className="pt-0.5 text-sm leading-relaxed text-ink dark:text-ink-dark">{step}</span>
               </li>
             ))}
           </ol>
+          {stay.localContact && (
+            <a href={`https://wa.me/${stay.localContact.phone}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-2xl bg-sea-500 p-4 font-semibold text-white shadow-sm hover:bg-sea-600">
+              <IconBrandWhatsapp className="h-5 w-5" /> Escribir a {stay.localContact.name}
+            </a>
+          )}
           <div className={card}>
-            <p className="text-sm font-semibold text-ink">Dirección</p>
-            <p className="mt-1 text-sm text-ink-subtle">{address}</p>
+            <p className="text-sm font-semibold text-ink dark:text-white">Dirección</p>
+            <p className="mt-1 text-sm text-ink-subtle dark:text-ink-dark-subtle">{address}</p>
             {(tower || stay.unit) && (
-              <p className="mt-1 text-sm text-ink-subtle">
+              <p className="mt-1 text-sm text-ink-subtle dark:text-ink-dark-subtle">
                 {[tower && `Torre ${tower}`, stay.unit && `Depto ${stay.unit}`, parking && `Estacionamiento ${parking}`].filter(Boolean).join(' · ')}
               </p>
             )}
@@ -201,30 +204,33 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
           <div id="wifi" className={`${card} scroll-mt-20`}>
             <div className="flex items-center gap-2">
               <IconWifi className="h-5 w-5 text-sea-500" />
-              <p className="font-semibold text-ink">WiFi</p>
-              <span className="rounded-full bg-sea-50 px-2 py-0.5 text-xs font-semibold text-sea-700">Alta velocidad 800 Mbps</span>
+              <p className="font-semibold text-ink dark:text-white">WiFi</p>
+              <span className="rounded-full bg-sea-50 px-2 py-0.5 text-xs font-semibold text-sea-700 dark:bg-gray-900 dark:text-sea-300">Alta velocidad 800 Mbps</span>
             </div>
-            {wifiName && wifiPassword ? (
+            {wifiPassword ? (
               <div className="mt-3 space-y-2 text-sm">
-                <p className="text-ink-subtle">Red: <strong className="text-ink">{wifiName}</strong></p>
+                {wifiName && <p className="text-ink-subtle dark:text-ink-dark-subtle">Red: <strong className="text-ink dark:text-white">{wifiName}</strong></p>}
                 <div className="flex flex-wrap items-center gap-3">
-                  <p className="text-ink-subtle">Clave: <strong className="text-ink">{wifiPassword}</strong></p>
+                  <p className="text-ink-subtle dark:text-ink-dark-subtle">Clave: <strong className="font-mono text-base text-ink dark:text-white">{wifiPassword}</strong></p>
                   <CopyButton value={wifiPassword} label="Copiar clave" />
                 </div>
+                {wifiPassword.endsWith('.') && (
+                  <p className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-900 dark:bg-amber-900/20 dark:text-amber-200">Ojo: la clave termina con un punto (.) y la primera letra es mayúscula.</p>
+                )}
               </div>
             ) : (
-              <p className="mt-2 text-sm text-ink-subtle">Te enviamos la red y la clave por WhatsApp antes de tu llegada.</p>
+              <p className="mt-2 text-sm text-ink-subtle dark:text-ink-dark-subtle">Te enviamos la red y la clave por WhatsApp antes de tu llegada.</p>
             )}
           </div>
 
           <div className="space-y-2">
             {stay.howTo.map(item => (
               <details key={item.id} className={`${card} group py-4`}>
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold text-ink">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold text-ink dark:text-white">
                   {item.title}
                   <IconChevronDown className="h-5 w-5 shrink-0 text-sea-500 transition group-open:rotate-180" />
                 </summary>
-                <p className="mt-2 text-sm leading-relaxed text-ink-subtle">{item.text}</p>
+                <p className="mt-2 text-sm leading-relaxed text-ink-subtle dark:text-ink-dark-subtle">{item.text}</p>
                 {item.video && (
                   <a href={item.video} target="_blank" rel="noopener noreferrer" className={`${linkCls} mt-2`}>
                     <IconBrandYoutube className="h-4 w-4" /> Ver video
@@ -235,24 +241,24 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
 
             {isDepto && (
               <details className={`${card} group py-4`}>
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold text-ink">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold text-ink dark:text-white">
                   Instalaciones del condominio
                   <IconChevronDown className="h-5 w-5 shrink-0 text-sea-500 transition group-open:rotate-180" />
                 </summary>
-                <p className="mt-2 text-sm text-ink-subtle">Se reservan en conserjería. Para el cine y los quinchos conviene reservar con anticipación.</p>
-                <ul className="mt-3 divide-y divide-sea-100">
+                <p className="mt-2 text-sm text-ink-subtle dark:text-ink-dark-subtle">Se reservan en conserjería. Para el cine y los quinchos conviene reservar con anticipación.</p>
+                <ul className="mt-3 divide-y divide-sea-100 dark:divide-gray-700">
                   {AQUA_AMENITIES.map(a => (
                     <li key={a.name} className="flex items-start justify-between gap-3 py-2.5 text-sm">
                       <span className="min-w-0">
-                        <span className="block font-medium text-ink">{a.name}</span>
-                        <span className="block text-xs text-ink-subtle">{a.hours}</span>
+                        <span className="block font-medium text-ink dark:text-white">{a.name}</span>
+                        <span className="block text-xs text-ink-subtle dark:text-ink-dark-subtle">{a.hours}</span>
                       </span>
-                      <span className="shrink-0 text-right text-xs font-semibold text-sea-700">{a.price}</span>
+                      <span className="shrink-0 text-right text-xs font-semibold text-sea-700 dark:text-sea-300">{a.price}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-3 rounded-xl bg-sea-50 p-3 text-xs text-ink-subtle">
-                  <p className="font-semibold text-ink">Pago de instalaciones</p>
+                <div className="mt-3 rounded-xl bg-sea-50 p-3 text-xs text-ink-subtle dark:bg-gray-900 dark:text-ink-dark-subtle">
+                  <p className="font-semibold text-ink dark:text-white">Pago de instalaciones</p>
                   <p className="mt-1">{AQUA_PAYMENT.holder} · RUT {AQUA_PAYMENT.rut}</p>
                   <p>{AQUA_PAYMENT.bank}</p>
                   <p>Envía el comprobante a {AQUA_PAYMENT.email}</p>
@@ -265,13 +271,13 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
           <div id="emergencias" className={`${card} scroll-mt-20 space-y-4`}>
             <div className="flex items-center gap-2">
               <IconPhone className="h-5 w-5 text-sea-500" />
-              <p className="font-semibold text-ink">Emergencias</p>
+              <p className="font-semibold text-ink dark:text-white">Emergencias</p>
             </div>
             <div className="grid grid-cols-3 gap-2">
               {EMERGENCY_NUMBERS.map(n => (
-                <a key={n.number} href={`tel:${n.number}`} className="rounded-xl bg-sea-50 p-3 text-center">
-                  <span className="block font-display text-xl font-bold text-ink">{n.number}</span>
-                  <span className="block text-xs text-ink-subtle">{n.label}</span>
+                <a key={n.number} href={`tel:${n.number}`} className="rounded-xl bg-sea-50 p-3 text-center dark:bg-gray-900">
+                  <span className="block font-display text-xl font-bold text-ink dark:text-white">{n.number}</span>
+                  <span className="block text-xs text-ink-subtle dark:text-ink-dark-subtle">{n.label}</span>
                 </a>
               ))}
             </div>
@@ -285,12 +291,12 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
               ))}
             </ul>
             {stay.localContact && (
-              <p className="text-sm text-ink-subtle">
-                <strong className="text-ink">{stay.localContact.name}</strong> {stay.localContact.role}:{' '}
-                <a href={`https://wa.me/${stay.localContact.phone}`} target="_blank" rel="noopener noreferrer" className="font-semibold text-sea-700">WhatsApp</a>
+              <p className="text-sm text-ink-subtle dark:text-ink-dark-subtle">
+                <strong className="text-ink dark:text-white">{stay.localContact.name}</strong> {stay.localContact.role}:{' '}
+                <a href={`https://wa.me/${stay.localContact.phone}`} target="_blank" rel="noopener noreferrer" className="font-semibold text-sea-700 dark:text-sea-300">WhatsApp</a>
               </p>
             )}
-            <div className="flex gap-3 rounded-xl bg-amber-50 p-3 text-sm text-amber-900">
+            <div className="flex gap-3 rounded-xl bg-amber-50 p-3 text-sm text-amber-900 dark:bg-amber-900/20 dark:text-amber-200">
               <IconAlertTriangle className="h-5 w-5 shrink-0" />
               <p><strong>Tsunami.</strong> {zone.tsunami}</p>
             </div>
@@ -302,25 +308,25 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
           <SectionTitle id="salida" icon={IconDoorExit} kicker="El último día" title="Salida" />
           <div className={`${card} flex items-center gap-3`}>
             <IconClock className="h-6 w-6 shrink-0 text-sea-500" />
-            <p className="text-sm text-ink">
-              {stay.checkOut ? <>Check-out hasta las <strong>{stay.checkOut}</strong>.</> : 'La hora de salida te la confirmamos por WhatsApp.'}{' '}
-              ¿Necesitas salir más tarde? Pregúntanos.
+            <p className="text-sm text-ink dark:text-white">
+              {stay.checkOut ? <>Check-out hasta las <strong>{stay.checkOut}</strong>.</> : 'La hora de salida te la confirmamos por WhatsApp.'}
             </p>
           </div>
           <ul className={`${card} space-y-3`}>
             {stay.departure.map((item, i) => (
-              <li key={i} className="flex gap-3 text-sm text-ink">
+              <li key={i} className="flex gap-3 text-sm text-ink dark:text-ink-dark">
                 <span className="mt-0.5 h-5 w-5 shrink-0 rounded-md border-2 border-sea-300" aria-hidden />
                 {item}
               </li>
             ))}
           </ul>
-          <div className="rounded-2xl bg-white p-5 text-center shadow-sm ring-1 ring-sea-100">
-            <Image src="/brand/isotipo-oscuro.png" alt="" width={56} height={56} className="mx-auto" />
-            <p className="mt-3 font-display text-lg font-bold text-ink">¡Gracias por quedarte con nosotros!</p>
-            <p className="mt-1 text-sm text-ink-subtle">Nos encantaría saber cómo te fue y recibirte de nuevo.</p>
+          <div className="rounded-2xl bg-white p-5 text-center shadow-sm ring-1 ring-sea-100 dark:bg-gray-800 dark:ring-gray-700">
+            <Image src="/brand/isotipo-oscuro.png" alt="" width={56} height={56} className="mx-auto dark:hidden" />
+            <Image src="/brand/isotipo-claro.png" alt="" width={56} height={56} className="mx-auto hidden dark:block" />
+            <p className="mt-3 font-display text-lg font-bold text-ink dark:text-white">¡Gracias por quedarte con nosotros!</p>
+            <p className="mt-1 text-sm text-ink-subtle dark:text-ink-dark-subtle">Nos encantaría saber cómo te fue y recibirte de nuevo.</p>
             <div className="mt-4 flex flex-wrap justify-center gap-2">
-              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full bg-sea-50 px-4 py-2 text-sm font-semibold text-sea-700 hover:bg-sea-100">
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full bg-sea-50 px-4 py-2 text-sm font-semibold text-sea-700 hover:bg-sea-100 dark:bg-gray-900 dark:text-sea-300">
                 <IconBrandInstagram className="h-4 w-4" /> @de_sal_y_estrella
               </a>
               <Link href="/refugios" className="inline-flex items-center gap-1.5 rounded-full bg-sea-500 px-4 py-2 text-sm font-semibold text-white hover:bg-sea-600">
@@ -333,19 +339,35 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
         {/* LA ZONA */}
         <section className="space-y-4">
           <SectionTitle id="zona" icon={IconCompass} kicker="Nuestras recomendaciones" title={`La zona: ${zone.name}`} />
+          {zone.groups.some(g => g.places.some(p => p.view)) && (
+            <p className="flex items-center gap-1.5 px-1 text-sm text-ink-subtle dark:text-ink-dark-subtle">
+              <IconSunset2 className="h-4 w-4 text-amber-500" /> Con bonita vista
+            </p>
+          )}
           <div className="space-y-2">
             {zone.groups.map((group, gi) => (
               <details key={group.id} open={gi === 0} className={`${card} group py-4`}>
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold text-ink">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold text-ink dark:text-white">
                   <span>{group.title} <span className="font-normal text-ink-faint">({group.places.length})</span></span>
                   <IconChevronDown className="h-5 w-5 shrink-0 text-sea-500 transition group-open:rotate-180" />
                 </summary>
-                <ul className="mt-2 divide-y divide-sea-100">
+                {group.id === 'comer' && (
+                  <div className="mt-3 rounded-xl bg-sea-50 p-4 text-sm dark:bg-gray-900">
+                    <p className="flex items-center gap-1.5 font-semibold text-ink dark:text-white"><IconDiscount className="h-4 w-4 text-sea-600" /> {DISCOUNTS.title}</p>
+                    <p className="mt-1 text-ink-subtle dark:text-ink-dark-subtle">{DISCOUNTS.text}</p>
+                    <p className="mt-1 font-medium text-ink dark:text-white">{DISCOUNTS.perk}</p>
+                    <a href={DISCOUNTS.url} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center rounded-full bg-sea-600 px-4 py-2 font-semibold text-white">Ir a {DISCOUNTS.label}</a>
+                  </div>
+                )}
+                <ul className="mt-2 divide-y divide-sea-100 dark:divide-gray-700">
                   {group.places.map(place => (
                     <li key={place.name} className="py-3">
-                      <p className="font-medium text-ink">{place.name}</p>
-                      <p className="mt-0.5 text-sm text-ink-subtle">{place.text}</p>
-                      {place.season && <p className="mt-1 inline-block rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-800">{place.season}</p>}
+                      <p className="flex items-center gap-1.5 font-medium text-ink dark:text-white">
+                        {place.name}
+                        {place.view && <IconSunset2 className="h-4 w-4 text-amber-500" aria-label="Con bonita vista" />}
+                      </p>
+                      <p className="mt-0.5 text-sm text-ink-subtle dark:text-ink-dark-subtle">{place.text}</p>
+                      {place.season && <p className="mt-1 inline-block rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-800 dark:bg-amber-900/20 dark:text-amber-200">{place.season}</p>}
                       <div className="mt-1.5 flex flex-wrap gap-4">
                         <a href={place.maps} target="_blank" rel="noopener noreferrer" className={linkCls}><IconMapPin className="h-4 w-4" /> Mapa</a>
                         {place.instagram && (
@@ -358,22 +380,22 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
               </details>
             ))}
           </div>
-          <p className="px-1 text-sm text-ink-subtle">
+          <p className="px-1 text-sm text-ink-subtle dark:text-ink-dark-subtle">
             ¿Buscas algo más? Pregúntale a nuestro asistente 24/7 por WhatsApp.
           </p>
         </section>
       </main>
 
       {/* Menú fijo abajo, siempre visible en el celular */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-sea-100 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur">
+      <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-sea-100 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur dark:border-gray-800 dark:bg-gray-900/95">
         <div className="mx-auto grid max-w-2xl grid-cols-5">
           {nav.map(item => (
-            <a key={item.href} href={item.href} className="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-medium text-ink-subtle hover:text-sea-700">
+            <a key={item.href} href={item.href} className="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-medium text-ink-subtle dark:text-ink-dark-subtle hover:text-sea-700 dark:text-ink-dark-subtle">
               <item.icon className="h-5 w-5" />
               {item.label}
             </a>
           ))}
-          <a href={help} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-semibold text-sea-700">
+          <a href={help} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-semibold text-sea-700 dark:text-sea-300">
             <IconBrandWhatsapp className="h-5 w-5" />
             Ayuda
           </a>

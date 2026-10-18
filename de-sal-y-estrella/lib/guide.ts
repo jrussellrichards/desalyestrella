@@ -10,9 +10,20 @@ export type Place = {
   instagram?: string
   // Solo en una época del año (se muestra como aviso)
   season?: string
+  // Tiene bonita vista (se marca con un ícono)
+  view?: boolean
 }
 
 export type PlaceGroup = { id: string; title: string; places: Place[] }
+
+// Aviso de descuentos que se muestra en "Dónde comer" de cada zona
+export const DISCOUNTS = {
+  url: 'https://buzka.cl',
+  label: 'buzka.cl',
+  title: '¿Tienes alguna tarjeta o descuento?',
+  text: 'Revisa en buzka.cl los descuentos que hay cada día en los restaurantes de la zona con las tarjetas que tienes.',
+  perk: 'Por ser visitante, pide tu membresía premium gratis.',
+}
 
 export type HowTo = { id: string; title: string; text: string; video?: string }
 
@@ -33,6 +44,9 @@ export type Stay = {
   parking?: string
   // Horarios: si quedan vacíos, la guía dice que los confirmamos por WhatsApp
   checkIn?: string
+  // Hora límite de llegada y qué hacer si se llega después
+  checkInUntil?: string
+  lateArrival?: string
   checkOut?: string
   arrival: string[]
   howTo: HowTo[]
@@ -74,7 +88,7 @@ const aquaHowTo: HowTo[] = [
 ]
 
 const aquaArrival = (tower: string, unit: string, parking: string) => [
-  `En auto: entra por Avenida Las Higueras, por el acceso al estacionamiento, y estaciona en el N° ${parking}.`,
+  `En auto: entra por Avenida Las Higueras, por el acceso al estacionamiento, y estaciona en el N° ${parking}. El estacionamiento es gratis.`,
   'A pie: entra por Avenida del Mar, directo a conserjería.',
   'Regístrate en conserjería (atiende 24/7). Es obligatorio y te da acceso a las instalaciones.',
   `Sube a la torre ${tower}, departamento ${unit}.`,
@@ -124,21 +138,29 @@ export const STAYS: Record<string, Stay> = {
     address: "José Miguel Camilo 442, Pichilemu, O'Higgins",
     mapsLink: 'https://maps.app.goo.gl/SoXTBvNNBYsfckck8',
     checkIn: '15:00',
+    checkInUntil: '18:00',
+    lateArrival: 'Si vas a llegar más tarde, consúltalo antes con don Sergio.',
     checkOut: '11:00',
     arrival: [
-      'Toca el panel de la cerradura digital para encenderlo y escribe tu clave. Usa la cerradura de la puerta, no la caja externa.',
-      'Si necesitas algo en persona, Sergio te ayuda (su contacto está más abajo).',
+      'Antes de llegar, escríbele a don Sergio por WhatsApp para coordinar la hora.',
+      'Don Sergio te recibe en la cabaña y te ayuda con la llegada.',
+      'Si vienes en auto, la cabaña tiene estacionamiento gratis.',
     ],
     howTo: [
       {
-        id: 'salamandra',
-        title: 'Salamandra (estufa a leña)',
-        text: 'Abre el tiraje, prende primero astillas chicas y después agrega leña seca. No uses líquidos inflamables.',
+        id: 'chimenea',
+        title: 'Chimenea',
+        text: 'El tiraje se abre girándolo a la derecha para prender y se cierra a la izquierda para apagar. Prende primero astillas chicas y después agrega leña seca. No uses líquidos inflamables.',
+      },
+      {
+        id: 'parrilla',
+        title: 'Parrilla',
+        text: 'La cabaña tiene parrilla para que hagas tu asado. Al terminar, deja las brasas bien apagadas y la parrilla limpia.',
       },
       {
         id: 'agua',
         title: 'Agua caliente',
-        text: 'El calefont se enciende solo. Ajusta la temperatura en su panel digital.',
+        text: 'El calefont se enciende solo. Ajusta la temperatura en su panel digital: recomendamos entre 38 y 40 grados.',
       },
       {
         id: 'basura',
@@ -148,10 +170,10 @@ export const STAYS: Record<string, Stay> = {
     ],
     departure: [
       'Deja la basura en los contenedores de afuera.',
-      'Revisa que la salamandra quede sin fuego y apaga las luces.',
-      'Cierra ventanas y puerta: la cerradura se bloquea sola.',
+      'Revisa que la chimenea quede sin fuego (tiraje a la izquierda) y apaga las luces.',
+      'Cierra ventanas y puerta, y avísale a don Sergio que te vas.',
     ],
-    localContact: { name: 'Sergio', role: 'te ayuda en lo que necesites durante la estadía', phone: '56956605983' },
+    localContact: { name: 'Don Sergio', role: 'te ayuda en lo que necesites durante la estadía', phone: '56956605983' },
     zone: 'pichilemu',
   },
 }
@@ -258,8 +280,10 @@ export const ZONES: Record<Stay['zone'], Zone> = {
         id: 'comer',
         title: 'Dónde comer',
         places: [
-          { name: 'La Sal', text: 'Cocina de autor de pescados y mariscos en Punta de Lobos.', maps: maps('Restaurante La Sal Pichilemu') },
-          { name: 'Costa María', text: 'Reineta, pastel de jaiba y empanadas con vista al mar.', maps: maps('Restaurante Costa Maria Pichilemu') },
+          { name: 'La Sal', text: 'Cocina de autor de pescados y mariscos en Punta de Lobos.', maps: maps('Restaurante La Sal Pichilemu'), view: true },
+          { name: 'Costa María', text: 'Reineta, pastel de jaiba y empanadas con vista al mar.', maps: maps('Restaurante Costa Maria Pichilemu'), view: true },
+          { name: 'Kampai', text: 'Sushi y cocina japonesa con vista al mar.', maps: maps('Kampai Pichilemu'), view: true },
+          { name: 'Bocas del Mar', text: 'Cocina peruana: ceviches, causas y pescados.', maps: maps('Bocas del Mar Pichilemu') },
           { name: 'Los Piures Club Social', text: 'Comida chilena frente a la laguna de Cáhuil.', maps: maps('Los Piures Club Social Cahuil') },
           { name: 'Cardumen Café', text: 'Café de especialidad, pastelería y brunch.', maps: maps('Cardumen Cafe Pichilemu') },
           { name: 'Cúrcuma', text: 'Opciones vegetarianas y veganas en el centro.', maps: maps('Curcuma Pichilemu') },
@@ -303,7 +327,7 @@ export const ZONES: Record<Stay['zone'], Zone> = {
         id: 'noche',
         title: 'De noche',
         places: [
-          { name: 'Bar La Virgen', text: 'Coctelería de autor con vista al mar.', maps: maps('Bar La Virgen Pichilemu') },
+          { name: 'Bar La Virgen', text: 'Coctelería de autor con vista al mar.', maps: maps('Bar La Virgen Pichilemu'), view: true },
           { name: 'Nativo Restobar', text: 'Coctelería y buen ambiente en la Av. Ortúzar.', maps: maps('Nativo Restobar Pichilemu') },
           { name: 'Osaka', text: 'Cocina nikkei y mixología frente a la playa.', maps: maps('Osaka Pichilemu') },
           { name: 'Waitara Club', text: 'La discoteca de La Puntilla.', maps: maps('Waitara Club Pichilemu') },
