@@ -39,7 +39,7 @@ export default function Header() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-navy-900 text-white shadow-md">
+    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 text-navy-900 backdrop-blur">
       <div className="mx-auto flex max-w-[1920px] items-center justify-between py-4 px-6 sm:px-8 lg:px-8">
         <Link
           href="/"
@@ -47,7 +47,7 @@ export default function Header() {
           onClick={() => setIsMenuOpen(false)}
         >
           <Image
-            src="/brand/logo-horizontal-claro.png"
+            src="/brand/logo-horizontal-oscuro.png"
             alt="De Sal y Estrella"
             width={1160}
             height={356}
@@ -61,12 +61,12 @@ export default function Header() {
               key={l.href}
               href={l.href}
               aria-current={isActive(l.href) ? 'page' : undefined}
-              className={`text-sm font-medium transition-colors duration-200 hover:text-gold-300 ${isActive(l.href) ? 'text-gold-300' : ''}`}
+              className={`text-sm font-medium transition-colors duration-200 hover:text-sea-600 ${isActive(l.href) ? 'text-sea-600' : ''}`}
             >
               {l.label}
             </Link>
           ))}
-          <div className="flex items-center gap-3 pl-4 border-l border-navy-700">
+          <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
             {socialLinks.map(s => (
               <a
                 key={s.name}
@@ -74,7 +74,7 @@ export default function Header() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.name}
-                className="rounded-md p-1.5 text-gray-300 hover:text-white hover:bg-navy-800 transition"
+                className="rounded-md p-1.5 text-navy-700 hover:text-sea-600 hover:bg-sea-50 transition"
               >
                 {s.icon}
               </a>
@@ -83,7 +83,7 @@ export default function Header() {
           <Link
             href="/refugios"
             data-track="click_reservar_header"
-            className="rounded-xl bg-gold-500 px-5 py-2.5 text-sm font-semibold text-navy-950 shadow transition hover:bg-gold-300"
+            className="rounded-full bg-sea-500 px-5 py-2.5 text-sm font-semibold text-white shadow transition hover:bg-sea-600"
           >
             Reservar
           </Link>
@@ -93,13 +93,13 @@ export default function Header() {
             href="/refugios"
             data-track="click_reservar_header"
             onClick={() => setIsMenuOpen(false)}
-            className="rounded-xl bg-gold-500 px-4 py-2 text-sm font-semibold text-navy-950 shadow"
+            className="rounded-full bg-sea-500 px-4 py-2 text-sm font-semibold text-white shadow"
           >
             Reservar
           </Link>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="rounded-md p-2 text-gray-300 hover:bg-navy-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+            className="rounded-md p-2 text-navy-900 hover:bg-sea-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sea-500"
             aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={isMenuOpen}
           >
@@ -121,12 +121,12 @@ export default function Header() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 transition-colors duration-200 hover:bg-navy-800 hover:text-white"
+                className="block rounded-md px-3 py-2 text-base font-medium text-navy-900 transition-colors duration-200 hover:bg-sea-50 hover:text-sea-700"
               >
                 {l.label}
               </Link>
             ))}
-            <div className="mt-4 flex items-center gap-4 border-t border-navy-800 pt-4">
+            <div className="mt-4 flex items-center gap-4 border-t border-gray-200 pt-4">
               {socialLinks.map(s => (
                 <a
                   key={s.name}
@@ -134,7 +134,7 @@ export default function Header() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.name}
-                  className="inline-flex items-center justify-center rounded-md p-2 text-gray-300 hover:bg-navy-800 hover:text-white transition"
+                  className="inline-flex items-center justify-center rounded-md p-2 text-navy-700 hover:bg-sea-50 hover:text-sea-700 transition"
                 >
                   {s.icon}
                 </a>

@@ -79,8 +79,8 @@ export default async function RefugiosPage({ searchParams }: Props) {
               aria-current={c.active ? 'page' : undefined}
               className={`inline-flex items-center rounded-full border px-4 py-2 text-sm font-medium transition ${
                 c.active
-                  ? 'border-navy-900 bg-navy-900 text-white shadow'
-                  : 'border-gray-300 bg-white text-ink-subtle hover:border-gold-500 hover:text-navy-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200'
+                  ? 'border-sea-500 bg-sea-500 text-white shadow'
+                  : 'border-gray-300 bg-white text-ink-subtle hover:border-sea-500 hover:text-sea-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200'
               }`}
             >
               {c.title}
@@ -95,7 +95,7 @@ export default async function RefugiosPage({ searchParams }: Props) {
         </div>
         {filtered.length === 0 && (
           <p className="mt-10 text-sm text-ink-subtle">
-            No hay refugios en esa ubicación. <Link href="/refugios" className="font-medium text-gold-700 hover:underline">Ver todos</Link>
+            No hay refugios en esa ubicación. <Link href="/refugios" className="font-medium text-sea-700 hover:underline">Ver todos</Link>
           </p>
         )}
 

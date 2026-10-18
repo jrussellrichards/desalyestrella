@@ -70,7 +70,7 @@ export default function RefugioCard({ property }: { property: Property }) {
               'Precio según fechas'
             )}
           </span>
-          <span className="inline-flex items-center gap-1 text-sm font-semibold text-navy-900 group-hover:text-gold-700 dark:text-gold-300">
+          <span className="inline-flex items-center gap-1 text-sm font-semibold text-navy-900 group-hover:text-sea-700 dark:text-gold-300">
             Reservar <IconArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
           </span>
         </div>

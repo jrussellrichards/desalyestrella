@@ -140,7 +140,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 href={property.airbnbListingUrl || hostProfileUrl}
                 target="_blank"
                 rel="nofollow noopener"
-                className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-gold-700 dark:text-gray-200"
+                className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-sea-700 dark:text-gray-200"
               >
                 <IconStarFilled className="h-4 w-4 text-gold-500" />
                 <strong>{rating.rating.toFixed(2).replace('.', ',')}</strong>
@@ -181,15 +181,15 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                 ¿Por qué este refugio?
               </h2>
               <ul className="mt-4 grid gap-3 text-sm text-gray-600 dark:text-gray-300 sm:grid-cols-3">
-                <li className="rounded-xl bg-sand-50 p-4 dark:bg-gray-800/60">
+                <li className="rounded-xl bg-sea-50 p-4 dark:bg-gray-800/60">
                   {rating
                     ? `Huéspedes lo califican con ${rating.rating.toFixed(2).replace('.', ',')} en ${rating.reviewCount} reseñas`
                     : 'Atendido personalmente por sus dueños, Superanfitriones en Airbnb'}
                 </li>
-                <li className="rounded-xl bg-sand-50 p-4 dark:bg-gray-800/60">
+                <li className="rounded-xl bg-sea-50 p-4 dark:bg-gray-800/60">
                   Pago seguro en nuestro sistema de reservas
                 </li>
-                <li className="rounded-xl bg-sand-50 p-4 dark:bg-gray-800/60">
+                <li className="rounded-xl bg-sea-50 p-4 dark:bg-gray-800/60">
                   Te respondemos por WhatsApp antes y durante tu estadía
                 </li>
               </ul>
@@ -255,7 +255,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                     href={whatsappLink(bookingText)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gold-500 px-5 py-3.5 text-base font-semibold text-navy-950 shadow transition hover:bg-gold-300"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-sea-500 px-5 py-3.5 text-base font-semibold text-white shadow transition hover:bg-sea-600"
                   >
                     <IconBrandWhatsapp className="h-5 w-5" />
                     Consultar disponibilidad
@@ -285,7 +285,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                         href={property.airbnbListingUrl}
                         target="_blank"
                         rel="nofollow noopener"
-                        className="inline-flex items-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm transition hover:border-gold-300 hover:text-gold-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-gold-500"
+                        className="inline-flex items-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm transition hover:border-gold-300 hover:text-sea-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-gold-500"
                       >
                         <svg
                           role="img"
@@ -304,7 +304,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                         href={hostProfileUrl}
                         target="_blank"
                         rel="nofollow noopener"
-                        className="inline-flex items-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm transition hover:border-gold-300 hover:text-gold-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-gold-500"
+                        className="inline-flex items-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm transition hover:border-gold-300 hover:text-sea-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-gold-500"
                       >
                         Perfil de Superanfitrión
                       </a>
@@ -316,13 +316,13 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
 
             <div
               id="amenities"
-              className="rounded-2xl border border-gray-200 bg-sand-50 p-6 dark:border-gray-700 dark:bg-gray-800"
+              className="rounded-2xl border border-gray-200 bg-sea-50 p-6 dark:border-gray-700 dark:bg-gray-800"
             >
               <h2 className="font-display text-h3 font-semibold text-ink dark:text-white">Servicios incluidos</h2>
         <ul className="mt-6 grid grid-cols-1 gap-y-3 text-sm sm:grid-cols-2">
                 {(property.amenities || []).map(a => (
           <li key={a} className="grid grid-cols-[1.75rem_1fr] items-start gap-x-2">
-                    <span className="flex h-5 w-5 items-center justify-center text-gold-700 dark:text-gold-400" aria-hidden="true">
+                    <span className="flex h-5 w-5 items-center justify-center text-sea-700 dark:text-gold-400" aria-hidden="true">
                       <AmenityIcon amenity={a} />
                     </span>
                     <span className="leading-snug text-ink-subtle dark:text-ink-dark-subtle">{a}</span>
@@ -381,7 +381,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
           </a>
           <a
             href="#reservar"
-            className="rounded-xl bg-gold-500 px-5 py-2.5 text-sm font-semibold text-navy-950 shadow"
+            className="rounded-xl bg-sea-500 px-5 py-2.5 text-sm font-semibold text-white shadow"
           >
             Reservar
           </a>

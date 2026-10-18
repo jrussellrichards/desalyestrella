@@ -86,7 +86,7 @@ export default function Beds24Booking({
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => trackEvent('begin_checkout', { item_name: propertyName, nights, adults })}
-        className="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-gold-500 px-5 py-3.5 text-base font-semibold text-navy-950 shadow transition hover:bg-gold-300"
+        className="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-sea-500 px-5 py-3.5 text-base font-semibold text-white shadow transition hover:bg-sea-600"
       >
         Ver precio y reservar
       </a>

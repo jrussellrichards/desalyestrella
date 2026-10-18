@@ -155,7 +155,7 @@ export default function TestimonialCarousel({ testimonials, autoAdvanceMs = 6000
                 aria-label={`Ir al testimonio ${i + 1}`}
                 onClick={() => goTo(i)}
                 className={`h-2.5 w-2.5 rounded-full transition ${
-                  i === index ? 'bg-gold-600' : 'bg-gray-300 dark:bg-gray-600'
+                  i === index ? 'bg-sea-500' : 'bg-gray-300 dark:bg-gray-600'
                 }`}
               />
             ))}

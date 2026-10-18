@@ -74,7 +74,7 @@ export default function PropertyCard({ property }: { property: Property }) {
           </p>
         )}
         <div className="mt-auto pt-4">
-          <span className="inline-flex items-center text-[11px] font-semibold uppercase tracking-wide text-gold-700 transition group-hover:text-gold-500 dark:text-gold-400">
+          <span className="inline-flex items-center text-[11px] font-semibold uppercase tracking-wide text-sea-700 transition group-hover:text-gold-500 dark:text-gold-400">
             Ver fotos y disponibilidad
             <svg className="ml-1 h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />

@@ -24,11 +24,11 @@ export default function ExperienceGuide({ destination }: { destination: Destinat
               <h2 className="font-display text-lg font-semibold text-ink dark:text-white">{exp.title}</h2>
               <p className="mt-2 text-sm leading-relaxed text-ink-subtle dark:text-ink-dark-subtle">{exp.description}</p>
               <div className="mt-4 flex flex-wrap gap-4 text-sm font-medium">
-                <a href={exp.mapsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-gold-700 hover:text-navy-900 dark:text-gold-400">
+                <a href={exp.mapsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sea-700 hover:text-navy-900 dark:text-gold-400">
                   <IconMapPin className="h-4 w-4" /> Ver en el mapa
                 </a>
                 {exp.instagramUrl && (
-                  <a href={exp.instagramUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-gold-700 hover:text-navy-900 dark:text-gold-400">
+                  <a href={exp.instagramUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sea-700 hover:text-navy-900 dark:text-gold-400">
                     <IconBrandInstagram className="h-4 w-4" /> Instagram
                   </a>
                 )}
@@ -43,7 +43,7 @@ export default function ExperienceGuide({ destination }: { destination: Destinat
             <p className="mt-1 text-sm text-white/80">Refugios frente al mar, atendidos por sus dueños.</p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Link href={`/refugios?l=${encodeURIComponent(destination.refugiosParam)}`} className="rounded-md bg-gold-500 px-5 py-2.5 text-sm font-semibold text-navy-950 hover:bg-gold-400">
+            <Link href={`/refugios?l=${encodeURIComponent(destination.refugiosParam)}`} className="rounded-md bg-sea-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-sea-600">
               Ver refugios
             </Link>
             <a href={whatsappLink(`Hola, quisiera consultar fechas en ${destination.refugiosParam}`)} target="_blank" rel="noopener noreferrer" className="rounded-md border border-white/40 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10">

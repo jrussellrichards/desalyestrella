@@ -48,39 +48,39 @@ const config: Config = {
           800: '#6e5232',
           900: '#523d26',
         },
-        // Acento fresco de mar, para etiquetas e íconos
+        // Turquesa de mar: acento vivo para botones, etiquetas e íconos
         sea: {
-          50: '#eef7f6',
-          100: '#d6ede9',
-          200: '#aedbd4',
-          300: '#7fc1b8',
-          400: '#55a59b',
-          500: '#3b8a80',
-          600: '#2f6f67',
-          700: '#285a54',
-          800: '#234a45',
-          900: '#1f3e3a',
+          50: '#ecfbfd',
+          100: '#cff4f8',
+          200: '#a2e8f0',
+          300: '#63d5e3',
+          400: '#22bccf',
+          500: '#06a2b6',
+          600: '#068299',
+          700: '#0b687c',
+          800: '#115566',
+          900: '#134756',
         },
-        // Base clara y cálida ("sal"), para que el azul y el dorado del logo destaquen
-        salt: '#FBF8F3',
-        // Grises cálidos: reemplazan los grises fríos de Tailwind en todo el sitio
+        // Base blanca y luminosa
+        salt: '#FFFFFF',
+        // Grises limpios (slate)
         gray: {
-          50: '#faf7f2',
-          100: '#f3eee6',
-          200: '#e7e0d5',
-          300: '#d4cbbd',
-          400: '#a89e90',
-          500: '#7c7366',
-          600: '#5e564c',
-          700: '#474039',
-          800: '#2e2924',
-          900: '#1e1a17',
-          950: '#12100e',
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          950: '#020617',
         },
         ink: {
-          DEFAULT: '#24211d',
-          subtle: '#4a443c',
-          faint: '#6f665a'
+          DEFAULT: '#14193a',
+          subtle: '#475569',
+          faint: '#64748b'
         },
         'ink-dark': {
           DEFAULT: '#e8e9ea',

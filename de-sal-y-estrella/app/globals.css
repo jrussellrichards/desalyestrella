@@ -2,8 +2,8 @@
 @config "../tailwind.config.ts";
 
 :root {
-  --background: #FBF8F3;
-  --foreground: #24211d;
+  --background: #ffffff;
+  --foreground: #14193a;
 }
 
 @theme inline {
@@ -13,7 +13,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #1e1a17;
+    --background: #0f172a;
     --foreground: #ededed;
   }
 }
