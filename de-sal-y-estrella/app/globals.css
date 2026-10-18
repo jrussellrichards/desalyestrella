@@ -1,7 +1,12 @@
 @import "tailwindcss";
 @config "../tailwind.config.ts";
 
+/* El sitio siempre se ve claro: las clases dark: solo aplican con .dark (nunca se usa),
+   así el modo oscuro del celular no lo vuelve azul. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
+  color-scheme: light;
   --background: #ffffff;
   --foreground: #14193a;
 }
@@ -9,13 +14,6 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f172a;
-    --foreground: #ededed;
-  }
 }
 
 body {
