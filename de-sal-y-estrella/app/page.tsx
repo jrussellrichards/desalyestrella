@@ -6,6 +6,7 @@ import { Property, Testimonial } from '@/types'
 import TestimonialCarousel from '@/components/TestimonialCarousel'
 import EmailCapture from '@/components/EmailCapture'
 import RefugioCard from '@/components/RefugioCard'
+import AirbnbBadges from '@/components/AirbnbBadges'
 import {
   IconBrandWhatsapp,
   IconStarFilled,
@@ -137,17 +138,9 @@ export default async function HomePage() {
             </a>
           </div>
 
-          <a
-            href={AIRBNB_PROFILE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-6 inline-flex items-center gap-2 text-sm text-white/90 hover:text-white"
-          >
-            <IconStarFilled className="h-4 w-4 text-gold-300" />
-            <span>
-              <strong className="font-semibold">{formatRating(AIRBNB_STATS.averageRating)}</strong> · {AIRBNB_STATS.totalReviews} reseñas · Superanfitriones
-            </span>
-          </a>
+          <div className="mt-8">
+            <AirbnbBadges rating={formatRating(AIRBNB_STATS.averageRating)} reviews={AIRBNB_STATS.totalReviews} href={AIRBNB_PROFILE_URL} tone="light" />
+          </div>
         </div>
       </section>
 
