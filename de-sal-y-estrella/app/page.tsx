@@ -9,8 +9,7 @@ import RefugioCard from '@/components/RefugioCard'
 import {
   IconBrandWhatsapp,
   IconStarFilled,
-  IconCalendarCheck,
-  IconShieldCheck,
+  IconBeach,
   IconMessageCircle,
   IconArrowRight,
   IconChevronDown,
@@ -45,32 +44,28 @@ const testimonialQuery = groq`*[_type == "testimonial"] | order(_createdAt desc)
 
 const formatRating = (n: number) => n.toFixed(2).replace('.', ',')
 
-const steps = [
+const reasons = [
   {
-    icon: IconCalendarCheck,
-    title: 'Elige fechas',
-    text: 'Ve el precio final en cada refugio.',
+    icon: IconBeach,
+    title: 'Frente al mar, de verdad',
+    text: 'En el mejor sector de la Avenida del Mar y a pasos de las olas de Pichilemu.',
   },
   {
-    icon: IconShieldCheck,
-    title: 'Reserva seguro',
-    text: 'Pagas en nuestro sistema de reservas.',
+    icon: IconStarFilled,
+    title: `${formatRating(AIRBNB_STATS.averageRating)} en ${AIRBNB_STATS.totalReviews} reseñas`,
+    text: 'Superanfitriones: nuestros huéspedes vuelven y nos recomiendan.',
   },
   {
     icon: IconMessageCircle,
-    title: 'Te acompañamos',
-    text: 'Te atendemos por WhatsApp.',
+    title: 'Te atienden sus dueños',
+    text: 'Javier te responde por WhatsApp antes y durante tu estadía.',
   },
 ]
 
 const faqs = [
   {
-    q: '¿Es seguro reservar directo?',
-    a: `Sí. Somos Superanfitriones en Airbnb, con ${AIRBNB_STATS.totalReviews} reseñas y un promedio de ${formatRating(AIRBNB_STATS.averageRating)}. Reservando directo te ahorras la comisión de la plataforma y hablas directamente con nosotros.`,
-  },
-  {
-    q: '¿Por qué es más barato reservar aquí?',
-    a: 'Las plataformas cobran una tarifa de servicio al huésped. Reservando directo no pagas esa comisión.',
+    q: '¿Es seguro reservar aquí?',
+    a: `Sí. Somos Superanfitriones en Airbnb, con ${AIRBNB_STATS.totalReviews} reseñas y un promedio de ${formatRating(AIRBNB_STATS.averageRating)}. Pagas en un sistema de reservas seguro y hablas directamente con nosotros.`,
   },
   {
     q: '¿Cómo funciona el check-in?',
@@ -115,7 +110,7 @@ export default async function HomePage() {
             La Serena · Pichilemu
           </p>
           <h1 className="mt-5 max-w-3xl font-display text-hero font-bold">Despierta frente al mar</h1>
-          <p className="mt-4 max-w-xl text-lg text-white/90 sm:text-xl">Reserva directo con nosotros, sin comisión de plataforma.</p>
+          <p className="mt-4 max-w-xl text-lg text-white/90 sm:text-xl">Departamentos en Aqua Resort La Serena y una cabaña en Pichilemu.</p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <a
@@ -157,7 +152,7 @@ export default async function HomePage() {
             { k: formatRating(AIRBNB_STATS.averageRating), v: 'Promedio en Airbnb' },
             { k: String(AIRBNB_STATS.totalReviews), v: 'Reseñas reales' },
             { k: 'Superanfitriones', v: 'Reconocidos por Airbnb' },
-            { k: '0%', v: 'Comisión al reservar directo' },
+            { k: String(properties.length), v: 'Refugios frente al mar' },
           ].map(item => (
             <div key={item.v}>
               <dt className="sr-only">{item.v}</dt>
@@ -184,24 +179,24 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* RESERVA DIRECTO */}
+      {/* POR QUÉ NOSOTROS */}
       <section className="bg-navy-900 py-20 text-white sm:py-28">
         <div className="mx-auto grid max-w-7xl gap-14 px-6 lg:grid-cols-2 lg:items-center lg:px-8">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-wider text-gold-300">Reserva directo</p>
-            <h2 className="mt-2 font-display text-h2 font-semibold">Mismo refugio, sin comisión</h2>
+            <p className="text-sm font-semibold uppercase tracking-wider text-gold-300">Por qué De Sal y Estrella</p>
+            <h2 className="mt-2 font-display text-h2 font-semibold">Refugios que se cuidan con cariño</h2>
             <p className="mt-5 text-copy-lg text-white/80">
-              Los mismos anfitriones de Airbnb, sin la tarifa de la plataforma.
+              Pocos refugios, elegidos y atendidos por nosotros mismos.
             </p>
           </div>
           <ol className="grid gap-5">
-            {steps.map((step, i) => (
+            {reasons.map(step => (
               <li key={step.title} className="flex gap-5 rounded-2xl bg-white/5 p-6 ring-1 ring-white/10">
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sea-300 text-navy-950">
                   <step.icon className="h-6 w-6" />
                 </span>
                 <div>
-                  <p className="font-display text-lg font-semibold">{i + 1}. {step.title}</p>
+                  <p className="font-display text-lg font-semibold">{step.title}</p>
                   <p className="mt-1 text-sm leading-relaxed text-white/75">{step.text}</p>
                 </div>
               </li>

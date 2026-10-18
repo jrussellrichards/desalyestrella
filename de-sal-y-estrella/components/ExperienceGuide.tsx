@@ -40,7 +40,7 @@ export default function ExperienceGuide({ destination }: { destination: Destinat
         <div className="mt-14 flex flex-col items-start gap-4 rounded-2xl bg-navy-900 p-8 text-white sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="font-display text-xl font-semibold">¿Dónde quedarte en {destination.name.split(' y ')[0]}?</p>
-            <p className="mt-1 text-sm text-white/80">Reserva directo con nosotros y ahórrate la comisión de las plataformas.</p>
+            <p className="mt-1 text-sm text-white/80">Refugios frente al mar, atendidos por sus dueños.</p>
           </div>
           <div className="flex flex-wrap gap-3">
             <Link href={`/refugios?l=${encodeURIComponent(destination.refugiosParam)}`} className="rounded-md bg-gold-500 px-5 py-2.5 text-sm font-semibold text-navy-950 hover:bg-gold-400">

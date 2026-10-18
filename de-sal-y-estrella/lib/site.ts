@@ -4,7 +4,7 @@
 export const SITE_URL = 'https://desalyestrella.cl'
 export const SITE_NAME = 'De Sal y Estrella'
 export const SITE_DESCRIPTION =
-  'Departamentos frente al mar en Aqua Resort La Serena y cabaña en Pichilemu. Superanfitriones en Airbnb, reserva directo con nosotros.'
+  'Departamentos frente al mar en Aqua Resort La Serena y cabaña en Pichilemu. Superanfitriones en Airbnb.'
 
 export const WHATSAPP_NUMBER = '56990736569'
 export const INSTAGRAM_URL = 'https://www.instagram.com/de_sal_y_estrella/'

@@ -76,7 +76,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const description =
     property.metaDescription ||
     property.tagline ||
-    `${property.name}${property.location ? ` en ${property.location}` : ''}. Reserva directo con De Sal y Estrella.`
+    `${property.name}${property.location ? ` en ${property.location}` : ''}. Reserva con De Sal y Estrella.`
   const cover = property.gallery?.find(hasAssetRef)
   const image = cover ? urlFor(cover).width(1200).height(630).fit('crop').auto('format').url() : '/og.jpg'
   return {
@@ -187,7 +187,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                     : 'Atendido personalmente por sus dueños, Superanfitriones en Airbnb'}
                 </li>
                 <li className="rounded-xl bg-sand-50 p-4 dark:bg-gray-800/60">
-                  Reservando directo te ahorras la comisión de la plataforma
+                  Pago seguro en nuestro sistema de reservas
                 </li>
                 <li className="rounded-xl bg-sand-50 p-4 dark:bg-gray-800/60">
                   Te respondemos por WhatsApp antes y durante tu estadía
@@ -228,7 +228,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
               id="reservar"
               className="scroll-mt-28 rounded-2xl border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800"
             >
-              <h2 className="font-display text-h3 font-semibold text-ink dark:text-white">Reserva directo</h2>
+              <h2 className="font-display text-h3 font-semibold text-ink dark:text-white">Reserva</h2>
               <p className="mt-1 text-sm text-ink-subtle dark:text-ink-dark-subtle">
                 {priceInfo ? (
                   <>
@@ -236,7 +236,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
                     {priceInfo.seasonNote && <span className="ml-1 text-xs">({priceInfo.seasonNote})</span>}
                   </>
                 ) : (
-                  'Sin comisión de plataforma. Elige tus fechas para ver el precio.'
+                  'Elige tus fechas para ver el precio.'
                 )}
               </p>
               <div id="calendario" className="mt-5 scroll-mt-28">
@@ -367,7 +367,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ slug:
             {priceInfo ? (
               <>Desde <strong className="text-base text-ink dark:text-white">{priceInfo.display}</strong> / noche</>
             ) : (
-              'Reserva directo, sin comisión'
+              'Precio según fechas'
             )}
           </span>
           <a

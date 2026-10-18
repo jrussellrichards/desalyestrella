@@ -10,7 +10,7 @@ export const revalidate = 300
 
 export const metadata: Metadata = {
   title: 'Refugios en La Serena y Pichilemu',
-  description: 'Departamentos frente al mar en Aqua Resort La Serena y cabaña en Pichilemu. Revisa fotos, disponibilidad y reserva directo.',
+  description: 'Departamentos frente al mar en Aqua Resort La Serena y cabaña en Pichilemu. Revisa fotos, disponibilidad y reserva.',
   alternates: { canonical: '/refugios' },
 }
 

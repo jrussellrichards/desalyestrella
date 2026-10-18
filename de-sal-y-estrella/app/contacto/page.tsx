@@ -7,7 +7,7 @@ import { INSTAGRAM_URL, SITE_URL, WHATSAPP_NUMBER } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Contacto y reservas',
-  description: 'Escríbenos por WhatsApp, email o formulario para consultar fechas y reservar directo en La Serena o Pichilemu.',
+  description: 'Escríbenos por WhatsApp, email o formulario para consultar fechas y reservar en La Serena o Pichilemu.',
   alternates: { canonical: '/contacto' },
 }
 
