@@ -132,7 +132,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
           <a href="#wifi" className={`${card} flex flex-col gap-1`}>
             <IconWifi className="h-6 w-6 text-sea-500" />
             <span className="font-semibold text-ink">WiFi</span>
-            <span className="text-xs text-ink-subtle">{wifiName ? wifiName : '800 Mbps'}</span>
+            <span className="text-xs text-ink-subtle">{wifiPassword ? 'Ver clave' : '800 Mbps'}</span>
           </a>
           {parking ? (
             <a href="#llegada" className={`${card} flex flex-col gap-1`}>
@@ -214,13 +214,16 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
               <p className="font-semibold text-ink">WiFi</p>
               <span className="rounded-full bg-sea-50 px-2 py-0.5 text-xs font-semibold text-sea-700">Alta velocidad 800 Mbps</span>
             </div>
-            {wifiName && wifiPassword ? (
+            {wifiPassword ? (
               <div className="mt-3 space-y-2 text-sm">
-                <p className="text-ink-subtle">Red: <strong className="text-ink">{wifiName}</strong></p>
+                {wifiName && <p className="text-ink-subtle">Red: <strong className="text-ink">{wifiName}</strong></p>}
                 <div className="flex flex-wrap items-center gap-3">
-                  <p className="text-ink-subtle">Clave: <strong className="text-ink">{wifiPassword}</strong></p>
+                  <p className="text-ink-subtle">Clave: <strong className="font-mono text-base text-ink">{wifiPassword}</strong></p>
                   <CopyButton value={wifiPassword} label="Copiar clave" />
                 </div>
+                {wifiPassword.endsWith('.') && (
+                  <p className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-900">Ojo: la clave termina con un punto (.) y la primera letra es mayúscula.</p>
+                )}
               </div>
             ) : (
               <p className="mt-2 text-sm text-ink-subtle">Te enviamos la red y la clave por WhatsApp antes de tu llegada.</p>
@@ -313,8 +316,7 @@ export default async function GuestGuidePage({ params }: { params: Promise<{ slu
           <div className={`${card} flex items-center gap-3`}>
             <IconClock className="h-6 w-6 shrink-0 text-sea-500" />
             <p className="text-sm text-ink">
-              {stay.checkOut ? <>Check-out hasta las <strong>{stay.checkOut}</strong>.</> : 'La hora de salida te la confirmamos por WhatsApp.'}{' '}
-              ¿Necesitas salir más tarde? Pregúntanos.
+              {stay.checkOut ? <>Check-out hasta las <strong>{stay.checkOut}</strong>.</> : 'La hora de salida te la confirmamos por WhatsApp.'}
             </p>
           </div>
           <ul className={`${card} space-y-3`}>
