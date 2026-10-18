@@ -106,14 +106,8 @@ export default function Header() {
             {isEnglish ? 'Book' : 'Reservar'}
           </Link>
         </nav>
+        {/* En el celular el cambio de idioma va dentro del menú, para no apretar el logo */}
         <div className="flex items-center gap-2 md:hidden">
-            <Link
-              href={langSwitch.href}
-              aria-label={langSwitch.aria}
-              className="rounded-md px-2 py-1 text-xs font-bold tracking-wider text-navy-700 ring-1 ring-gray-200 transition hover:text-sea-600 dark:text-white/80 dark:ring-white/20"
-            >
-              {langSwitch.label}
-            </Link>
           <Link
             href="/refugios"
             data-track="click_reservar_header"
@@ -164,6 +158,14 @@ export default function Header() {
                   {s.icon}
                 </a>
               ))}
+              <Link
+                href={langSwitch.href}
+                aria-label={langSwitch.aria}
+                onClick={() => setIsMenuOpen(false)}
+                className="ml-auto rounded-md px-3 py-1.5 text-sm font-bold tracking-wider text-navy-700 ring-1 ring-gray-200 transition hover:text-sea-600 dark:text-white/80 dark:ring-white/20"
+              >
+                {isEnglish ? 'Español' : 'English'}
+              </Link>
             </div>
           </div>
         </div>
