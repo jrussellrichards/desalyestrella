@@ -10,6 +10,8 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const pathname = usePathname()
+  const isEnglish = pathname === '/en' || pathname?.startsWith('/en/')
+  const langSwitch = isEnglish ? { href: '/', label: 'ES', aria: 'Ver en español' } : { href: '/en', label: 'EN', aria: 'View in English' }
   const isActive = (href: string) => pathname === href || pathname?.startsWith(href + '/')
   const navLinks = [
     { href: '/refugios', label: 'Refugios' },
@@ -81,21 +83,35 @@ export default function Header() {
             ))}
           </div>
           <Link
+            href={langSwitch.href}
+            aria-label={langSwitch.aria}
+            className="rounded-md px-2 py-1 text-xs font-bold tracking-wider text-navy-700 ring-1 ring-gray-200 transition hover:text-sea-600"
+          >
+            {langSwitch.label}
+          </Link>
+          <Link
             href="/refugios"
             data-track="click_reservar_header"
             className="rounded-full bg-sea-500 px-5 py-2.5 text-sm font-semibold text-white shadow transition hover:bg-sea-600"
           >
-            Reservar
+            {isEnglish ? 'Book' : 'Reservar'}
           </Link>
         </nav>
         <div className="flex items-center gap-2 md:hidden">
+            <Link
+              href={langSwitch.href}
+              aria-label={langSwitch.aria}
+              className="rounded-md px-2 py-1 text-xs font-bold tracking-wider text-navy-700 ring-1 ring-gray-200 transition hover:text-sea-600"
+            >
+              {langSwitch.label}
+            </Link>
           <Link
             href="/refugios"
             data-track="click_reservar_header"
             onClick={() => setIsMenuOpen(false)}
             className="rounded-full bg-sea-500 px-4 py-2 text-sm font-semibold text-white shadow"
           >
-            Reservar
+            {isEnglish ? 'Book' : 'Reservar'}
           </Link>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
