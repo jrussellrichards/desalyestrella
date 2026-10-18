@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import Image from 'next/image'
 import { INSTAGRAM_URL, whatsappLink } from '@/lib/site'
@@ -8,12 +9,12 @@ import { INSTAGRAM_URL, whatsappLink } from '@/lib/site'
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
+  const pathname = usePathname()
+  const isActive = (href: string) => pathname === href || pathname?.startsWith(href + '/')
   const navLinks = [
-    { href: '/', label: 'Inicio' },
-    { href: '/historia', label: 'Nuestra Historia' },
     { href: '/refugios', label: 'Refugios' },
     { href: '/experiencias', label: 'Qué hacer' },
-    { href: '/blog', label: 'Guías de Viaje' },
+    { href: '/historia', label: 'Nuestra historia' },
     { href: '/contacto', label: 'Contacto' },
   ]
   const socialLinks = [
@@ -59,7 +60,8 @@ export default function Header() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-sm font-medium transition-colors duration-200 hover:text-gray-300"
+              aria-current={isActive(l.href) ? 'page' : undefined}
+              className={`text-sm font-medium transition-colors duration-200 hover:text-gold-300 ${isActive(l.href) ? 'text-gold-300' : ''}`}
             >
               {l.label}
             </Link>
@@ -78,8 +80,23 @@ export default function Header() {
               </a>
             ))}
           </div>
+          <Link
+            href="/refugios"
+            data-track="click_reservar_header"
+            className="rounded-xl bg-gold-500 px-5 py-2.5 text-sm font-semibold text-navy-950 shadow transition hover:bg-gold-300"
+          >
+            Reservar
+          </Link>
         </nav>
-        <div className="md:hidden">
+        <div className="flex items-center gap-2 md:hidden">
+          <Link
+            href="/refugios"
+            data-track="click_reservar_header"
+            onClick={() => setIsMenuOpen(false)}
+            className="rounded-xl bg-gold-500 px-4 py-2 text-sm font-semibold text-navy-950 shadow"
+          >
+            Reservar
+          </Link>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="rounded-md p-2 text-gray-300 hover:bg-navy-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"

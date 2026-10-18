@@ -40,12 +40,16 @@ export default function Beds24Booking({
   roomId,
   maxGuests = 4,
   propertyName,
+  variant = 'card',
 }: {
   propId?: number
   roomId?: number
   maxGuests?: number
   propertyName: string
+  // 'sidebar': campos apilados y sin borde, para ir dentro del recuadro de reserva
+  variant?: 'card' | 'sidebar'
 }) {
+  const sidebar = variant === 'sidebar'
   const [checkin, setCheckin] = useState('')
   const [nights, setNights] = useState(2)
   const [adults, setAdults] = useState(2)
@@ -54,9 +58,9 @@ export default function Beds24Booking({
   const field = 'mt-1 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-navy-500 focus:outline-none focus:ring-2 focus:ring-navy-500/30 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100'
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-      <div className="grid gap-4 sm:grid-cols-3">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+    <div className={sidebar ? '' : 'rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-800'}>
+      <div className={sidebar ? 'grid grid-cols-2 gap-3' : 'grid gap-4 sm:grid-cols-3'}>
+        <label className={`block text-sm font-medium text-gray-700 dark:text-gray-300 ${sidebar ? 'col-span-2' : ''}`}>
           Llegada
           <input type="date" min={todayPlus(0)} value={checkin} onChange={e => setCheckin(e.target.value)} className={field} />
         </label>
@@ -82,12 +86,12 @@ export default function Beds24Booking({
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => trackEvent('begin_checkout', { item_name: propertyName, nights, adults })}
-        className="mt-5 inline-flex w-full items-center justify-center rounded-md bg-navy-900 px-5 py-3 text-sm font-semibold text-white shadow hover:bg-navy-800"
+        className="mt-5 inline-flex w-full items-center justify-center rounded-xl bg-gold-500 px-5 py-3.5 text-base font-semibold text-navy-950 shadow transition hover:bg-gold-300"
       >
         Ver precio y reservar
       </a>
       <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">
-        Pago seguro en nuestro sistema de reservas (Beds24). Verás la disponibilidad y el precio final antes de pagar.
+        Pago seguro en nuestro sistema de reservas. Verás la disponibilidad y el precio final antes de pagar.
       </p>
     </div>
   )

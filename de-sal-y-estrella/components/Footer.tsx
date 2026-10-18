@@ -47,7 +47,6 @@ export default async function Footer() {
           <ul className="mt-4 space-y-2 text-sm">
             <li><Link href="/experiencias/estrella" className="hover:text-white">Qué hacer en La Serena</Link></li>
             <li><Link href="/experiencias/sal" className="hover:text-white">Qué hacer en Pichilemu</Link></li>
-            <li><Link href="/blog" className="hover:text-white">Guías de viaje</Link></li>
             <li><Link href="/historia" className="hover:text-white">Nuestra historia</Link></li>
           </ul>
         </div>

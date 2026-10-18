@@ -1,10 +1,8 @@
 import { client } from '@/lib/sanity.client'
 import { groq } from 'next-sanity'
-import PropertyCard from '@/components/PropertyCard'
+import RefugioCard from '@/components/RefugioCard'
 import { Property } from '@/types'
 import { fetchSettings } from '@/lib/settings'
-import { urlFor } from '@/lib/image'
-import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
@@ -16,7 +14,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/refugios' },
 }
 
-const query = groq`*[_type == "property"]{
+const query = groq`*[_type == "property"] | order(_createdAt asc){
   _id,
   name,
   slug,
@@ -26,6 +24,8 @@ const query = groq`*[_type == "property"]{
   capacity,
   bedrooms,
   bathrooms,
+  basePrice,
+  seasonalAdjustments,
   rating,
   reviewCount
 }`
@@ -50,100 +50,66 @@ export default async function RefugiosPage({ searchParams }: Props) {
   const destinations = (settings?.destinations && settings.destinations.length > 0)
     ? settings.destinations
     : [
-        {
-          _key: 'pichilemu-fallback',
-          title: 'Pichilemu',
-          slugParam: 'Pichilemu',
-          description: 'Capital del surf chileno. Olas consistentes, energía salina y atardeceres intensos.'
-        },
-        {
-          _key: 'la-serena-fallback',
-          title: 'La Serena',
-          slugParam: 'La Serena',
-          description: 'Playas amplias, bruma matinal, arquitectura tradicional y cielos diáfanos.'
-        }
+        { _key: 'la-serena-fallback', title: 'La Serena', slugParam: 'La Serena' },
+        { _key: 'pichilemu-fallback', title: 'Pichilemu', slugParam: 'Pichilemu' },
       ]
+
+  const chips = [{ title: 'Todos', href: '/refugios', active: !locationFilter }].concat(
+    destinations.map(d => ({
+      title: d.title,
+      href: `/refugios?l=${encodeURIComponent(d.slugParam)}`,
+      active: locationFilter === d.slugParam.toLowerCase(),
+    }))
+  )
 
   return (
     <div className="bg-white dark:bg-gray-900">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-3xl text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-            Nuestros Refugios
-          </h1>
-          <p className="mt-4 mx-auto max-w-2xl text-lg text-gray-600 dark:text-gray-300">
-            Cada uno de nuestros espacios está diseñado para ofrecer una conexión única con los paisajes más inspiradores de Chile.
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
+        <div className="max-w-2xl">
+          <p className="text-sm font-semibold uppercase tracking-wider text-gold-700">Nuestros refugios</p>
+          <h1 className="mt-2 font-display text-h1 font-semibold text-ink dark:text-white">Elige dónde despertar</h1>
+          <p className="mt-4 text-copy-lg text-ink-subtle dark:text-ink-dark-subtle">
+            Departamentos frente al mar en Aqua Resort La Serena y una cabaña a pasos de la playa en Pichilemu. Revisa fotos, disponibilidad y precio, y reserva directo.
           </p>
         </div>
 
-        {locationFilter && (
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            {destinations.map(d => {
-              const active = locationFilter === d.slugParam.toLowerCase()
-              return (
-                <a
-                  key={d.slugParam}
-                  href={active ? '/refugios' : `/refugios?l=${encodeURIComponent(d.slugParam)}`}
-                  className={`inline-flex items-center rounded-full border px-4 py-1.5 text-sm transition ${
-                    active
-                      ? 'border-navy-900 bg-navy-900 text-white shadow'
-                      : 'border-gray-300 bg-white text-gray-700 hover:border-gold-400 hover:text-gold-700 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-gold-500 dark:hover:text-gold-400'
-                  }`}
-                >
-                  {d.title}
-                  {active && (
-                    <span className="ml-2 text-xs font-medium opacity-80">(x)</span>
-                  )}
-                </a>
-              )
-            })}
-          </div>
+        <nav aria-label="Filtrar por destino" className="mt-8 flex flex-wrap gap-3">
+          {chips.map(c => (
+            <Link
+              key={c.title}
+              href={c.href}
+              aria-current={c.active ? 'page' : undefined}
+              className={`inline-flex items-center rounded-full border px-4 py-2 text-sm font-medium transition ${
+                c.active
+                  ? 'border-navy-900 bg-navy-900 text-white shadow'
+                  : 'border-gray-300 bg-white text-ink-subtle hover:border-gold-500 hover:text-navy-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200'
+              }`}
+            >
+              {c.title}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((property: Property) => (
+            <RefugioCard key={property._id} property={property} />
+          ))}
+        </div>
+        {filtered.length === 0 && (
+          <p className="mt-10 text-sm text-ink-subtle">
+            No hay refugios en esa ubicación. <Link href="/refugios" className="font-medium text-gold-700 hover:underline">Ver todos</Link>
+          </p>
         )}
 
         {!locationFilter && (
-          <>
-            <div className="mt-14 mx-auto flex max-w-5xl flex-wrap justify-center gap-10">
-              {destinations.map(dest => {
-                const imageUrl = dest.image?.asset
-                  ? urlFor(dest.image).width(1200).height(900).fit('crop').auto('format').url()
-                  : (dest.slugParam.toLowerCase().includes('pich') ? '/destinos/pichilemu.jpg' : '/destinos/la-serena.jpg')
-                return (
-                  <div key={dest._key || dest.slugParam} className="w-full max-w-sm">
-                    <Link
-                      href={`/refugios?l=${encodeURIComponent(dest.slugParam)}`}
-                      className="group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl focus:outline-none focus:ring-4 focus:ring-gold-500/60"
-                    >
-                      <div className="absolute inset-0 bg-black">
-                        <Image
-                          src={imageUrl}
-                          alt={dest.title}
-                          fill
-                          sizes="(min-width: 640px) 50vw, 100vw"
-                          className="object-cover transition duration-700 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/10" />
-                      </div>
-                      <div className="relative flex h-full flex-col justify-end p-6">
-                        <h3 className="text-xl font-semibold text-white drop-shadow-md">{dest.title}</h3>
-                        {dest.description && (
-                          <p className="mt-2 line-clamp-3 text-sm text-white/85">{dest.description}</p>
-                        )}
-                        <span className="mt-4 inline-flex items-center text-sm font-medium text-gold-300">Ver refugios <span className="ml-1 transition group-hover:translate-x-1">→</span></span>
-                      </div>
-                    </Link>
-                  </div>
-                )
-              })}
-            </div>
-            {/* Razones para elegir cada destino */}
-            <section className="mx-auto mt-20 max-w-6xl">
+            <section className="mx-auto mt-24 max-w-6xl border-t border-gray-100 pt-16 dark:border-gray-800">
               <div className="text-center mb-12">
-                <h2 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-3xl">¿No sabes qué destino elegir?</h2>
+                <h2 className="font-display text-h2 font-semibold text-ink dark:text-white">¿No sabes qué destino elegir?</h2>
                 <p className="mt-3 text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-base">Cada lugar ofrece una energía distinta. Elige según el tipo de conexión con la naturaleza y el ritmo que buscas para tu estadía.</p>
               </div>
                 <div className="grid gap-10 md:grid-cols-2">
                 <div className="rounded-2xl border border-gray-200/70 dark:border-gray-700/70 bg-white/80 dark:bg-gray-800/60 backdrop-blur-sm p-8 shadow-sm">
-                  <h3 className="text-xl font-semibold text-gold-700 dark:text-gold-400">La Serena</h3>
+                  <h3 className="text-xl font-display font-semibold text-navy-900 dark:text-gold-300">La Serena</h3>
                   <div className="mt-4 space-y-4 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
                   <p>Elige La Serena si buscas el equilibrio perfecto entre el descanso en la playa, la cultura y la exploración. Esta ciudad te ofrece la calma de su costa y te abre las puertas a las maravillas del Valle del Elqui. Es tu destino si buscas:</p>
                   <ul className="space-y-2">
@@ -155,7 +121,7 @@ export default async function RefugiosPage({ searchParams }: Props) {
                   </div>
                 </div>
                 <div className="rounded-2xl border border-gray-200/70 dark:border-gray-700/70 bg-white/80 dark:bg-gray-800/60 backdrop-blur-sm p-8 shadow-sm">
-                  <h3 className="text-xl font-semibold text-gold-700 dark:text-gold-400">Pichilemu</h3>
+                  <h3 className="text-xl font-display font-semibold text-navy-900 dark:text-gold-300">Pichilemu</h3>
                   <div className="mt-4 space-y-4 text-sm leading-relaxed text-gray-700 dark:text-gray-300">
                   <p>Elige Pichilemu si tu energía vibra con el océano, la aventura y un espíritu libre. En la capital mundial del surf, cada día es una invitación a conectar con la naturaleza en su estado más puro. Es tu destino si buscas:</p>
                   <ul className="space-y-2">
@@ -168,22 +134,6 @@ export default async function RefugiosPage({ searchParams }: Props) {
                 </div>
                 </div>
             </section>
-          </>
-        )}
-        {locationFilter && (
-          <div className="mt-12 mx-auto flex max-w-6xl flex-wrap justify-center gap-8">
-            {filtered.length === 0 && (
-              <div className="col-span-full flex flex-col items-center gap-4 text-center">
-                <p className="text-sm text-gray-500 dark:text-gray-400">No hay refugios en esa ubicación.</p>
-                <Link href="/refugios" className="text-sm font-medium text-gold-700 hover:underline dark:text-gold-400">Ver destinos</Link>
-              </div>
-            )}
-            {filtered.map((property: Property) => (
-              <div key={property._id} className="w-full max-w-sm">
-                <PropertyCard property={property} />
-              </div>
-            ))}
-          </div>
         )}
       </div>
     </div>
