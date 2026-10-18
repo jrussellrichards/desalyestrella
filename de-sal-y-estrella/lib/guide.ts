@@ -64,7 +64,7 @@ const aquaHowTo: HowTo[] = [
   {
     id: 'tv',
     title: 'TV',
-    text: 'Tiene TV digital, Prime Video, YouTube Premium y YouTube Music, con las cuentas ya conectadas.',
+    text: 'Tiene TV digital, Prime Video, YouTube Premium y YouTube Music, con las cuentas ya conectadas. A veces un huésped anterior cambia o cierra una cuenta: si alguna no está conectada, escríbele a Javier por WhatsApp y te ayuda a conectarla.',
   },
   {
     id: 'basura',
