@@ -41,7 +41,7 @@ export default function Header() {
   ]
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 text-navy-900 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 text-navy-900 backdrop-blur dark:border-white/10 dark:bg-[#0f172a]/95 dark:text-white">
       <div className="mx-auto flex max-w-[1920px] items-center justify-between py-4 px-6 sm:px-8 lg:px-8">
         <Link
           href="/"
@@ -53,7 +53,16 @@ export default function Header() {
             alt="De Sal y Estrella"
             width={1160}
             height={356}
-            className="h-12 w-auto sm:h-14"
+            className="h-12 w-auto sm:h-14 dark:hidden"
+            priority
+          />
+          {/* Con el celular en modo oscuro, logo en versión clara */}
+          <Image
+            src="/brand/logo-horizontal-claro.png"
+            alt="De Sal y Estrella"
+            width={1160}
+            height={356}
+            className="hidden h-12 w-auto sm:h-14 dark:block"
             priority
           />
         </Link>
@@ -68,7 +77,7 @@ export default function Header() {
               {l.label}
             </Link>
           ))}
-          <div className="flex items-center gap-3 pl-4 border-l border-gray-200">
+          <div className="flex items-center gap-3 pl-4 border-l border-gray-200 dark:border-white/15">
             {socialLinks.map(s => (
               <a
                 key={s.name}
@@ -76,7 +85,7 @@ export default function Header() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.name}
-                className="rounded-md p-1.5 text-navy-700 hover:text-sea-600 hover:bg-sea-50 transition"
+                className="rounded-md p-1.5 text-navy-700 hover:text-sea-600 hover:bg-sea-50 transition dark:text-white/80 dark:hover:bg-white/10"
               >
                 {s.icon}
               </a>
@@ -85,7 +94,7 @@ export default function Header() {
           <Link
             href={langSwitch.href}
             aria-label={langSwitch.aria}
-            className="rounded-md px-2 py-1 text-xs font-bold tracking-wider text-navy-700 ring-1 ring-gray-200 transition hover:text-sea-600"
+            className="rounded-md px-2 py-1 text-xs font-bold tracking-wider text-navy-700 ring-1 ring-gray-200 transition hover:text-sea-600 dark:text-white/80 dark:ring-white/20"
           >
             {langSwitch.label}
           </Link>
@@ -101,7 +110,7 @@ export default function Header() {
             <Link
               href={langSwitch.href}
               aria-label={langSwitch.aria}
-              className="rounded-md px-2 py-1 text-xs font-bold tracking-wider text-navy-700 ring-1 ring-gray-200 transition hover:text-sea-600"
+              className="rounded-md px-2 py-1 text-xs font-bold tracking-wider text-navy-700 ring-1 ring-gray-200 transition hover:text-sea-600 dark:text-white/80 dark:ring-white/20"
             >
               {langSwitch.label}
             </Link>
@@ -115,7 +124,7 @@ export default function Header() {
           </Link>
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="rounded-md p-2 text-navy-900 hover:bg-sea-50 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sea-500"
+            className="rounded-md p-2 text-navy-900 hover:bg-sea-50 dark:text-white dark:hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sea-500"
             aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
             aria-expanded={isMenuOpen}
           >
@@ -137,12 +146,12 @@ export default function Header() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setIsMenuOpen(false)}
-                className="block rounded-md px-3 py-2 text-base font-medium text-navy-900 transition-colors duration-200 hover:bg-sea-50 hover:text-sea-700"
+                className="block rounded-md px-3 py-2 text-base font-medium text-navy-900 transition-colors duration-200 hover:bg-sea-50 hover:text-sea-700 dark:text-white dark:hover:bg-white/10"
               >
                 {l.label}
               </Link>
             ))}
-            <div className="mt-4 flex items-center gap-4 border-t border-gray-200 pt-4">
+            <div className="mt-4 flex items-center gap-4 border-t border-gray-200 pt-4 dark:border-white/15">
               {socialLinks.map(s => (
                 <a
                   key={s.name}
@@ -150,7 +159,7 @@ export default function Header() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.name}
-                  className="inline-flex items-center justify-center rounded-md p-2 text-navy-700 hover:bg-sea-50 hover:text-sea-700 transition"
+                  className="inline-flex items-center justify-center rounded-md p-2 text-navy-700 hover:bg-sea-50 hover:text-sea-700 transition dark:text-white/80 dark:hover:bg-white/10"
                 >
                   {s.icon}
                 </a>
